@@ -1,0 +1,17 @@
+# COMP370ON1-Group5
+COMP370 ON1 - Group 5 Project
+<linearlayout
+xmlns:android="http://schema.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+android: padding="16dp">
+<text view
+android:id="@+id/titleTextView"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_gravity="center_horizontal"
+android:layout_marginBottom="24dp"
+android:text="Hello"
+Android textsize="20sp"
+android:textStyle="bold"/>
