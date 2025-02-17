@@ -5,4 +5,8 @@
     <string name="title_term_plans">Term Plans</string>
     <string name="title_courses">Courses</string>
     <string name="title_profile">Profile</string>
+
+    <!--  CoursePlan Fragment  -->
+    <string name="create_new_course_plan">Create New</string>
+    <string name="title_activity_create_new_course_plan">CreateNewCoursePlanActivity</string>
 </resources>
