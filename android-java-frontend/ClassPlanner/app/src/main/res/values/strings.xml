@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">ClassPlanner</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <!--  Bottom Menu Items  -->
+    <string name="title_course_plans">Course Plans</string>
+    <string name="title_term_plans">Term Plans</string>
+    <string name="title_courses">Courses</string>
+    <string name="title_profile">Profile</string>
 </resources>
