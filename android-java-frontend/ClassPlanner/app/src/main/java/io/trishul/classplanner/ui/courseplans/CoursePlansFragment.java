@@ -1,4 +1,4 @@
-package io.trishul.classplanner.ui.dashboard;
+package io.trishul.classplanner.ui.courseplans;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,22 +8,23 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import io.trishul.classplanner.databinding.FragmentDashboardBinding;
 
-public class DashboardFragment extends Fragment {
+import io.trishul.classplanner.databinding.FragmentCoursePlansBinding;
 
-private FragmentDashboardBinding binding;
+public class CoursePlansFragment extends Fragment {
+
+private FragmentCoursePlansBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
-        DashboardViewModel dashboardViewModel =
-                new ViewModelProvider(this).get(DashboardViewModel.class);
+        CoursePlansViewModel coursePlansViewModel =
+                new ViewModelProvider(this).get(CoursePlansViewModel.class);
 
-    binding = FragmentDashboardBinding.inflate(inflater, container, false);
+    binding = FragmentCoursePlansBinding.inflate(inflater, container, false);
     View root = binding.getRoot();
 
-        final TextView textView = binding.textDashboard;
-        dashboardViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        final TextView textView = binding.textHome;
+        coursePlansViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 

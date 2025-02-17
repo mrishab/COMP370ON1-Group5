@@ -1,4 +1,4 @@
-package io.trishul.classplanner.ui.notifications;
+package io.trishul.classplanner.ui.courses;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,22 +8,23 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import io.trishul.classplanner.databinding.FragmentNotificationsBinding;
 
-public class NotificationsFragment extends Fragment {
+import io.trishul.classplanner.databinding.FragmentCoursesBinding;
 
-private FragmentNotificationsBinding binding;
+public class CoursesFragment extends Fragment {
+
+private FragmentCoursesBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
-        NotificationsViewModel notificationsViewModel =
-                new ViewModelProvider(this).get(NotificationsViewModel.class);
+        CoursesViewModel coursesViewModel =
+                new ViewModelProvider(this).get(CoursesViewModel.class);
 
-    binding = FragmentNotificationsBinding.inflate(inflater, container, false);
+    binding = FragmentCoursesBinding.inflate(inflater, container, false);
     View root = binding.getRoot();
 
         final TextView textView = binding.textNotifications;
-        notificationsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        coursesViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 

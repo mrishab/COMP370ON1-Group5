@@ -3,23 +3,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/navigation_course_plans">
 
     <fragment
-        android:id="@+id/navigation_home"
-        android:name="io.trishul.classplanner.ui.home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        android:id="@+id/navigation_course_plans"
+        android:name="io.trishul.classplanner.ui.courseplans.CoursePlansFragment"
+        android:label="@string/title_course_plans"
+        tools:layout="@layout/fragment_course_plans" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="io.trishul.classplanner.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/navigation_term_plans"
+        android:name="io.trishul.classplanner.ui.termplan.TermPlanFragment"
+        android:label="@string/title_term_plans"
+        tools:layout="@layout/fragment_term_plan" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="io.trishul.classplanner.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_courses"
+        android:name="io.trishul.classplanner.ui.courses.CoursesFragment"
+        android:label="@string/title_courses"
+        tools:layout="@layout/fragment_courses" />
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="io.trishul.classplanner.ui.profile.ProfileFragment"
+        android:label="@string/title_profile"
+        tools:layout="@layout/fragment_courses" />
 </navigation>
