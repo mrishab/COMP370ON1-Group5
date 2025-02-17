@@ -20,8 +20,8 @@ private FragmentCoursesBinding binding;
         CoursesViewModel coursesViewModel =
                 new ViewModelProvider(this).get(CoursesViewModel.class);
 
-    binding = FragmentCoursesBinding.inflate(inflater, container, false);
-    View root = binding.getRoot();
+        binding = FragmentCoursesBinding.inflate(inflater, container, false);
+        View root = binding.getRoot();
 
         final TextView textView = binding.textNotifications;
         coursesViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
