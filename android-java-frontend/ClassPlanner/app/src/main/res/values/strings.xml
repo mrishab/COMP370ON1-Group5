@@ -9,4 +9,25 @@
     <!--  CoursePlan Fragment  -->
     <string name="create_new_course_plan">Create New</string>
     <string name="title_activity_create_new_course_plan">CreateNewCoursePlanActivity</string>
+
+    <!--  Create New Course Plan Activity  -->
+    <string name="button_text_create_new_course_plan_back_button">Back</string>
+    <string name="button_text_create_new_course_plan_next_button">Next</string>
+
+    <!--  UploadGradPlan Fragment  -->
+    <string name="title_activity_upload_grad_plan">UploadGradPlanActivity</string>
+    <string name="img_button_upload_grad_plan_content_description">Upload Grad Plan Button</string>
+    <string name="button_text_upload_grad_plan">Upload Grad Plan</string>
+    <string name="text_upload_grad_plan_instructions">
+        <ol>
+            <li>Login to my.ufv.ca</li>\n
+            <li>Open Grad Planner</li>\n
+            <li>Export the Grad Planner as PDF</li>\n
+            <li>Save to your device</li>\n
+            <li>Click on the upload button above and select the file you just saved.</li>\n
+        </ol>
+    </string>
+    <string name="text_upload_grad_plan_selected_filename">No file selected</string>
+    <string name="text_upload_grad_plan_selected_filetype_error">Invalid file type, only PDFs allowed</string>
+
 </resources>
