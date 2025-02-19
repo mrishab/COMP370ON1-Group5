@@ -1,0 +1,48 @@
+services:
+  classplanner_app:
+    build:
+      context: .
+    container_name: classplanner_app
+    entrypoint: ["/bin/bash", "-c"]
+    # Enabled debugger to listening on all interfaces at port 8000
+    command: ["java -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=*:8000 -jar app.jar"]
+    ports:
+      # Debug port
+      - 8000:8000
+    depends_on:
+      - classplanner_postgres
+
+  classplanner_postgres:
+    image: postgres:17-alpine
+    container_name: classplanner_postgres
+    restart: always
+    command: ["postgres", "-c", "log_statement=all"]
+    ports:
+      - "5432:${POSTGRES_PORT}"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  classplanner_pgadmin:
+    image: dpage/pgadmin4
+    container_name: classplanner_pgadmin
+    restart: always
+    ports:
+        - "8443:443"
+    logging:
+        driver: none
+    environment:
+        PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+        PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+        PGADMIN_LISTEN_PORT: "443"
+    volumes:
+      - db-admin-data:/var/lib/pgadmin
+    depends_on:
+      - classplanner_postgres
+
+volumes:
+  db-admin-data:
+  db-data:
