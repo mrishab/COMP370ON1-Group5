@@ -1,4 +1,4 @@
-package io.trishul.classplanner.ui.courseplans.create;
+package io.trishul.classplanner.ui.courseplans.create.upload;
 
 import android.app.Activity;
 import android.content.Context;
@@ -20,8 +20,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import java.io.File;
-
 import io.trishul.classplanner.databinding.FragmentUploadGradPlanBinding;
 import io.trishul.classplanner.R;
 
@@ -37,13 +35,14 @@ public class UploadGradPlanFragment extends Fragment {
         this.uploadGradPlanModel =
                 new ViewModelProvider(this).get(UploadGradPlanModel.class);
 
-        binding = FragmentUploadGradPlanBinding.inflate(inflater, container, false);
+        this.binding = FragmentUploadGradPlanBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         this.nextButton = getActivity().findViewById(R.id.button_create_course_plan_next);
-        activateNextButtonIfReady();
+        this.selectedFileNameTextView = binding.textUploadGradPlanFileName;
 
-        selectedFileNameTextView = binding.textUploadGradPlanFileName;
+        activateNextButtonIfReady();
+        setSelectedFileName();
 
         filePicker = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == Activity.RESULT_OK) {
