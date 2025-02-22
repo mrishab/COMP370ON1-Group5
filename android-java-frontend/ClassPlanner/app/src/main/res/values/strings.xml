@@ -50,5 +50,7 @@
     <string name="hour_21_00">21:00</string>
     <string name="hour_22_00">22:00</string>
     <string name="header_logo">Header Logo</string>
+    <string name="availability_footer">Select the hours for which you\'re available to take classes in the next semester</string>
+    <string name="title_select_availability">Select your availability</string>
 
 </resources>

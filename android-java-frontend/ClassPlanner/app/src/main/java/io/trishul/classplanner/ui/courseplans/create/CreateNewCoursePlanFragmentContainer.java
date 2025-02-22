@@ -6,7 +6,7 @@ import io.trishul.classplanner.ui.courseplans.create.availability.SelectAvailabi
 import io.trishul.classplanner.ui.courseplans.create.upload.UploadGradPlanFragment;
 
 public class CreateNewCoursePlanFragmentContainer {
-    public static final int MAX_STEPS = 2;
+    public static final int MAX_STEPS = 3;
 
     public Fragment getFragment(int step) {
         switch (step) {
