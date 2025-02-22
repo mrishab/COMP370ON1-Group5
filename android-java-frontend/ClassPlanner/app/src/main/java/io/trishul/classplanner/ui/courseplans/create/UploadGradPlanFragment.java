@@ -1,12 +1,16 @@
 package io.trishul.classplanner.ui.courseplans.create;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -16,32 +20,38 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.io.File;
+
 import io.trishul.classplanner.databinding.FragmentUploadGradPlanBinding;
 import io.trishul.classplanner.R;
 
 public class UploadGradPlanFragment extends Fragment {
     private FragmentUploadGradPlanBinding binding;
     private ActivityResultLauncher<Intent> filePicker;
+    private Button nextButton;
+    private TextView selectedFileNameTextView;
+    private UploadGradPlanModel uploadGradPlanModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
-        UploadGradPlanModel uploadGradPlanModel =
+        this.uploadGradPlanModel =
                 new ViewModelProvider(this).get(UploadGradPlanModel.class);
 
         binding = FragmentUploadGradPlanBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        TextView selectedFileNameTextView = binding.textUploadGradPlanFileName;
+        this.nextButton = getActivity().findViewById(R.id.button_create_course_plan_next);
+        activateNextButtonIfReady();
+
+        selectedFileNameTextView = binding.textUploadGradPlanFileName;
 
         filePicker = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == Activity.RESULT_OK) {
                 Intent data = result.getData();
                 Uri fileUri = data.getData();
-                if (fileUri != null && fileUri.toString().endsWith(".pdf")) {
-                    selectedFileNameTextView.setText(fileUri.getLastPathSegment());
-                } else {
-                    selectedFileNameTextView.setText(getString(R.string.text_upload_grad_plan_selected_filetype_error));
-                }
+                uploadGradPlanModel.setGradPlanUri(fileUri);
+                setSelectedFileName();
+                activateNextButtonIfReady();
             }
         });
 
@@ -53,6 +63,33 @@ public class UploadGradPlanFragment extends Fragment {
         });
 
         return root;
+    }
+
+    private void activateNextButtonIfReady() {
+        nextButton.setEnabled(uploadGradPlanModel.getGradPlanUri().getValue() != null);
+    }
+
+    private void setSelectedFileName() {
+        Uri fileUri = uploadGradPlanModel.getGradPlanUri().getValue();
+        if (fileUri != null) {
+            String fileName = getFileName(requireContext(), fileUri);
+            if (fileName != null) {
+                selectedFileNameTextView.setText(fileName);
+            }
+        }
+    }
+
+    private String getFileName(Context context, Uri uri) {
+        String fileName = null;
+        String[] projection = {MediaStore.MediaColumns.DISPLAY_NAME};
+
+        Cursor cursor = context.getContentResolver().query(uri, projection, null, null, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DISPLAY_NAME);
+            fileName = cursor.getString(columnIndex);
+            cursor.close();
+        }
+        return fileName;
     }
 
 
