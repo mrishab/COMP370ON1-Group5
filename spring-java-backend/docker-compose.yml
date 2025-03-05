@@ -1,10 +1,15 @@
 version: '3.4'
 
 services:
-  comp370on1group5:
-    image: comp370on1group5
+  classplanner_app:
+    image: classplanner_app:${VERSION}
+    container_name: classplanner_app
     build:
       context: .
       dockerfile: ./Dockerfile
     ports:
-      - 8000:8000
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
