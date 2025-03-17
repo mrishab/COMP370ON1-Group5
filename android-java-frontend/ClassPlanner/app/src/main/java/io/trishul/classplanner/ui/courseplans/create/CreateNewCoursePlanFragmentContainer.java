@@ -3,6 +3,7 @@ package io.trishul.classplanner.ui.courseplans.create;
 import androidx.fragment.app.Fragment;
 
 import io.trishul.classplanner.ui.courseplans.create.availability.SelectAvailabilityFragment;
+import io.trishul.classplanner.ui.courseplans.create.preference.SelectPreferencesFragment;
 import io.trishul.classplanner.ui.courseplans.create.upload.UploadGradPlanFragment;
 
 public class CreateNewCoursePlanFragmentContainer {
@@ -14,6 +15,8 @@ public class CreateNewCoursePlanFragmentContainer {
                 return new UploadGradPlanFragment();
             case 1:
                 return new SelectAvailabilityFragment();
+            case 2:
+                return new SelectPreferencesFragment();
             default:
                 throw new IllegalArgumentException("Invalid step: " + step);
         }
