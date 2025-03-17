@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.ToggleButton;
@@ -13,32 +14,40 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import io.trishul.classplanner.R;
 import io.trishul.classplanner.databinding.FragmentSelectAvailabilityBinding;
 
 public class SelectAvailabilityFragment extends Fragment {
     private SelectAvailabilityModel selectAvailabilityModel;
-    private List<ToggleButton> availabilityButtons;
     private FragmentSelectAvailabilityBinding binding;
+    private Button nextButton;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         this.selectAvailabilityModel =
                 new ViewModelProvider(this).get(SelectAvailabilityModel.class);
 
+        this.nextButton = getActivity().findViewById(R.id.button_create_course_plan_next);
+
         binding = FragmentSelectAvailabilityBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        this.availabilityButtons = getAvailabilityButtons(root);
-
+        setNextButtonActiveIfReady();
+        getAvailabilityButtons(root);
 
         return root;
     }
+
+    private void setNextButtonActiveIfReady() {
+        if (selectAvailabilityModel.isMinimumAvailabilitySelected()) {
+            nextButton.setEnabled(true);
+        } else {
+            nextButton.setEnabled(false);
+        }
+    }
+
 
     private List<ToggleButton> getAvailabilityButtons(View root) {
         List<ToggleButton> availabilityButtons = new ArrayList<>();
@@ -49,42 +58,29 @@ public class SelectAvailabilityFragment extends Fragment {
                 View view = row.getChildAt(j);
                 view.setOnClickListener(this::onAvailabilityToggleButton);
                 availabilityButtons.add((ToggleButton) view);
-                setToggleButtonChecked((ToggleButton) view);
             }
         }
         return availabilityButtons;
     }
 
-    private void setToggleButtonChecked(ToggleButton toggleButton) {
-        Map<String, Set<Integer>> availabilityMap = this.selectAvailabilityModel.getAvailability().getValue();
-        String tag = (String) toggleButton.getTag();
+    private void initButtonState(ToggleButton button) {
+        String tag = (String) button.getTag();
         String[] tagParts = tag.split(";");
         String day = tagParts[0];
-        Integer hour = Integer.parseInt(tagParts[1]);
-        Set<Integer> hours = availabilityMap.computeIfAbsent(day, k -> new HashSet<>());
+        int hour = Integer.parseInt(tagParts[1]);
 
-        if (hours.contains(hour)) {
-            toggleButton.setChecked(true);
-        } else {
-            toggleButton.setChecked(false);
-        }
+        button.setChecked(selectAvailabilityModel.getAvailabilityForDayAndHour(day, hour));
     }
 
+
     public void onAvailabilityToggleButton(View view) {
-        ToggleButton toggleButton = (ToggleButton) view;;
-        Map<String, Set<Integer>> availabilityMap = this.selectAvailabilityModel.getAvailability().getValue();
         String tag = (String) view.getTag();
 
         String[] tagParts = tag.split(";");
         String day = tagParts[0];
-        Integer hour = Integer.parseInt(tagParts[1]);
+        int hour = Integer.parseInt(tagParts[1]);
 
-
-        Set<Integer> hours = availabilityMap.computeIfAbsent(day, k -> new HashSet<>());
-        if (toggleButton.isChecked()) {
-            hours.add(hour);
-        } else {
-            hours.remove(hour);
-        }
+        selectAvailabilityModel.toggleAvailabilityForDayAndHour(day, hour);
+        setNextButtonActiveIfReady();
     }
 }
