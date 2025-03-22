@@ -33,3 +33,21 @@ build/
 .env
 dependency-check-data/
 *.log
+
+# Android Frontend 
+**/build/
+.gradle/
+local.properties
+*.apk
+*.ap_
+
+# VS Code
+.vscode/
+
+# Android Studio
+.cxx/
+.externalNativeBuild/
+
+# Mac/Windows system files
+.DS_Store
+Thumbs.db
