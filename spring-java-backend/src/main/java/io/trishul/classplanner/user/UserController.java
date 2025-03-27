@@ -34,6 +34,16 @@ public class UserController {
     }
   }
 
+  @PostMapping("/register")
+  public ResponseEntity<User> registerUser(@RequestBody RegisterRequest registerRequest) {
+    User newUser = User.builder().firstName(registerRequest.getFirstName())
+        .lastName(registerRequest.getLastName()).email(registerRequest.getEmail())
+        .password(registerRequest.getPassword()).build();
+
+    User savedUser = userRepository.save(newUser);
+    return ResponseEntity.ok(savedUser);
+  }
+
   @GetMapping("")
   public List<User> getAllUsers() {
     return userRepository.findAll();

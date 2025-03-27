@@ -5,12 +5,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
+import android.widget.TextView;
+import android.content.Intent;
 import androidx.appcompat.app.AppCompatActivity;
-
 import io.trishul.classplanner.R;
 import io.trishul.classplanner.network.AuthApi;
 import io.trishul.classplanner.network.LoginRequest;
+import io.trishul.classplanner.ui.register.RegisterActivity;
+import io.trishul.classplanner.MainActivity;
+import io.trishul.classplanner.model.User;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -32,6 +35,15 @@ public class LoginActivity extends AppCompatActivity {
         passwordInput = findViewById(R.id.passwordInput);
         loginButton = findViewById(R.id.loginButton);
 
+        TextView goToRegister = findViewById(R.id.goToRegister);
+        goToRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
+
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -51,21 +63,25 @@ public class LoginActivity extends AppCompatActivity {
                 AuthApi authApi = retrofit.create(AuthApi.class);
                 LoginRequest loginRequest = new LoginRequest(email, password);
 
-                authApi.login(loginRequest).enqueue(new Callback<Void>() {
+                authApi.login(loginRequest).enqueue(new Callback<User>() {
                     @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
+                    public void onResponse(Call<User> call, Response<User> response) {
                         if (response.isSuccessful()) {
-                            Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
+                            User user = response.body();
+                            Toast.makeText(LoginActivity.this, "Welcome " + user.getFirstName(), Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(intent);
+                            finish();
                         } else {
                             Toast.makeText(LoginActivity.this, "Login failed: " + response.code(), Toast.LENGTH_SHORT).show();
                         }
                     }
-
+                
                     @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
+                    public void onFailure(Call<User> call, Throwable t) {
                         Toast.makeText(LoginActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
                     }
-                });
+                });                
             }
         });
     }
