@@ -28,4 +28,10 @@
         android:name="io.trishul.classplanner.ui.profile.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_courses" />
+
+    <fragment
+        android:id="@+id/navigation_class_plan"
+        android:name="io.trishul.classplanner.ui.courseplans.ClassPlanFragment"
+        android:label="Class Plan"
+        tools:layout="@layout/fragment_class_plan" />
 </navigation>

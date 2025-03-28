@@ -27,6 +27,8 @@
 
         <activity android:name=".ui.register.RegisterActivity" />
 
+        <activity android:name=".MainActivity" />
+
         <activity
             android:name=".CreateNewCoursePlanActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
