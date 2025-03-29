@@ -7,6 +7,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 import android.widget.TextView;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import androidx.appcompat.app.AppCompatActivity;
 import io.trishul.classplanner.R;
 import io.trishul.classplanner.network.AuthApi;
@@ -28,6 +29,16 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+        String userEmail = prefs.getString("userEmail", null);
+
+        if (userEmail != null) {
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
@@ -69,6 +80,11 @@ public class LoginActivity extends AppCompatActivity {
                         if (response.isSuccessful()) {
                             User user = response.body();
                             Toast.makeText(LoginActivity.this, "Welcome " + user.getFirstName(), Toast.LENGTH_SHORT).show();
+                            SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+                            SharedPreferences.Editor editor = prefs.edit();
+                            editor.putString("userEmail", user.getEmail()); 
+                            editor.apply();
+
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(intent);
                             finish();
