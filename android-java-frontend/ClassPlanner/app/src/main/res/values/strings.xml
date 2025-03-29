@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">ClassPlanner</string>
     <!--  Bottom Menu Items  -->
-    <string name="title_course_plans">Course Plans</string>
-    <string name="title_term_plans">Term Plans</string>
-    <string name="title_courses">Courses</string>
+    <string name="title_grad_plans">Grad Plans</string>
+    <string name="title_class_plans">Class Plans</string>
+    <string name="title_classes">Classes</string>
     <string name="title_profile">Profile</string>
 
     <!--  CoursePlan Fragment  -->

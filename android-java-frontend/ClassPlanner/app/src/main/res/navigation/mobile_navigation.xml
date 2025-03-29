@@ -8,19 +8,19 @@
     <fragment
         android:id="@+id/navigation_course_plans"
         android:name="io.trishul.classplanner.ui.courseplans.CoursePlansFragment"
-        android:label="@string/title_course_plans"
+        android:label="@string/title_grad_plans"
         tools:layout="@layout/fragment_course_plans" />
 
     <fragment
         android:id="@+id/navigation_term_plans"
         android:name="io.trishul.classplanner.ui.termplan.TermPlanFragment"
-        android:label="@string/title_term_plans"
+        android:label="@string/title_class_plans"
         tools:layout="@layout/fragment_term_plan" />
 
     <fragment
         android:id="@+id/navigation_courses"
         android:name="io.trishul.classplanner.ui.courses.CoursesFragment"
-        android:label="@string/title_courses"
+        android:label="@string/title_classes"
         tools:layout="@layout/fragment_courses" />
 
     <fragment

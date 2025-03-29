@@ -4,20 +4,19 @@
     <item
         android:id="@+id/navigation_course_plans"
         android:icon="@drawable/ic_home_black_24dp"
-        android:title="@string/title_course_plans"/>
+        android:title="@string/title_grad_plans" />
 
     <item
         android:id="@+id/navigation_term_plans"
         android:icon="@drawable/ic_book_24dp"
-        android:title="@string/title_term_plans"/>
+        android:title="@string/title_class_plans" />
 
     <item
         android:id="@+id/navigation_courses"
         android:icon="@drawable/ic_calendar_24dp"
-        android:title="@string/title_courses"/>
-
+        android:title="@string/title_classes" />
     <item
         android:id="@+id/navigation_profile"
         android:icon="@drawable/ic_profile_24dp"
-        android:title="@string/title_profile"/>
+        android:title="@string/title_profile" />
 </menu>
