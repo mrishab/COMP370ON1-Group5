@@ -29,23 +29,31 @@ public class CreateNewClassPlanActivity extends AppCompatActivity {
         setCurrentFragment();
 
         Button backButton = findViewById(R.id.button_create_class_plan_back);
+        Button nextButton = findViewById(R.id.button_create_class_plan_next);
+
         backButton.setOnClickListener(v -> {
             if (currentStep > 0) {
-                // If not on the first step, just go back to previous step
                 updateCurrentStep(-1);
                 setCurrentFragment();
+                updateNextButtonText(nextButton);
             } else {
-                // If on the first step, show exit confirmation dialog
                 showExitConfirmationDialog();
             }
         });
 
-        Button nextButton = findViewById(R.id.button_create_class_plan_next);
-        nextButton.setEnabled(false);
         nextButton.setOnClickListener(v -> {
-            updateCurrentStep(1);
-            setCurrentFragment();
+            if (CreateNewClassPlanFragmentContainer.isLastStep(currentStep)) {
+                showSubmitConfirmationDialog();
+            } else {
+                updateCurrentStep(1);
+                setCurrentFragment();
+                updateNextButtonText(nextButton);
+            }
         });
+    }
+
+    private void updateNextButtonText(Button nextButton) {
+        nextButton.setText(CreateNewClassPlanFragmentContainer.isLastStep(currentStep) ? R.string.button_text_submit : R.string.button_text_create_new_class_plan_next_button);
     }
 
     private void showExitConfirmationDialog() {
@@ -53,13 +61,28 @@ public class CreateNewClassPlanActivity extends AppCompatActivity {
                 .setTitle(R.string.exit_confirmation_title)
                 .setMessage(R.string.exit_confirmation_message)
                 .setPositiveButton(R.string.exit_confirmation_positive, (dialog, which) -> {
-                    // Navigate back to MainActivity
                     Intent intent = new Intent(this, MainActivity.class);
                     startActivity(intent);
                     finish();
                 })
                 .setNegativeButton(R.string.exit_confirmation_negative, (dialog, which) -> {
-                    // Dismiss the dialog (does nothing else)
+                    dialog.dismiss();
+                })
+                .setCancelable(true)
+                .show();
+    }
+
+    private void showSubmitConfirmationDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.submit_confirmation_title)
+                .setMessage(R.string.submit_confirmation_message)
+                .setPositiveButton(R.string.submit_confirmation_positive, (dialog, which) -> {
+                    // TODO: Add submission logic here
+                    Intent intent = new Intent(this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                })
+                .setNegativeButton(R.string.submit_confirmation_negative, (dialog, which) -> {
                     dialog.dismiss();
                 })
                 .setCancelable(true)

@@ -9,6 +9,10 @@ import io.trishul.classplanner.ui.classplans.create.upload.UploadGradPlanFragmen
 public class CreateNewClassPlanFragmentContainer {
     public static final int MAX_STEPS = 3;
 
+    public static boolean isLastStep(int step) {
+        return step == MAX_STEPS - 1;
+    }
+
     public Fragment getFragment(int step) {
         switch (step) {
             case 0:
