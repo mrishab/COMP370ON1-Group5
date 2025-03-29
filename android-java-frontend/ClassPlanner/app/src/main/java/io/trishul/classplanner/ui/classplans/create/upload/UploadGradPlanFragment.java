@@ -22,18 +22,19 @@ import androidx.lifecycle.ViewModelProvider;
 
 import io.trishul.classplanner.databinding.FragmentUploadGradPlanBinding;
 import io.trishul.classplanner.R;
+import io.trishul.classplanner.ui.classplans.create.CreateNewClassPlanActivityModel;
 
 public class UploadGradPlanFragment extends Fragment {
     private FragmentUploadGradPlanBinding binding;
     private ActivityResultLauncher<Intent> filePicker;
     private Button nextButton;
     private TextView selectedFileNameTextView;
-    private UploadGradPlanModel uploadGradPlanModel;
+    private CreateNewClassPlanActivityModel createNewClassPlanActivityModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
-        this.uploadGradPlanModel =
-                new ViewModelProvider(this).get(UploadGradPlanModel.class);
+        this.createNewClassPlanActivityModel =
+                new ViewModelProvider(requireActivity()).get(CreateNewClassPlanActivityModel.class);
 
         this.binding = FragmentUploadGradPlanBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -48,7 +49,7 @@ public class UploadGradPlanFragment extends Fragment {
             if (result.getResultCode() == Activity.RESULT_OK) {
                 Intent data = result.getData();
                 Uri fileUri = data.getData();
-                uploadGradPlanModel.setGradPlanUri(fileUri);
+                createNewClassPlanActivityModel.setGradPlanUri(fileUri);
                 setSelectedFileName();
                 activateNextButtonIfReady();
             }
@@ -71,11 +72,11 @@ public class UploadGradPlanFragment extends Fragment {
     }
 
     private void activateNextButtonIfReady() {
-        nextButton.setEnabled(uploadGradPlanModel.getGradPlanUri().getValue() != null);
+        nextButton.setEnabled(createNewClassPlanActivityModel.getGradPlanUri().getValue() != null);
     }
 
     private void setSelectedFileName() {
-        Uri fileUri = uploadGradPlanModel.getGradPlanUri().getValue();
+        Uri fileUri = createNewClassPlanActivityModel.getGradPlanUri().getValue();
         if (fileUri != null) {
             String fileName = getFileName(requireContext(), fileUri);
             if (fileName != null) {
@@ -97,8 +98,7 @@ public class UploadGradPlanFragment extends Fragment {
         return fileName;
     }
 
-
-@Override
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;

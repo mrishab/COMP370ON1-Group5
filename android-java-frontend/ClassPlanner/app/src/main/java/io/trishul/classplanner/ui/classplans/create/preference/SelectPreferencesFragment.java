@@ -16,16 +16,17 @@ import com.google.android.material.slider.Slider;
 
 import io.trishul.classplanner.databinding.FragmentSelectPreferencesBinding;
 import io.trishul.classplanner.R;
+import io.trishul.classplanner.ui.classplans.create.CreateNewClassPlanActivityModel;
 
 public class SelectPreferencesFragment extends Fragment {
     private FragmentSelectPreferencesBinding binding;
-    private SelectPreferencesModal selectPreferencesModal;
+    private CreateNewClassPlanActivityModel createNewClassPlanActivityModel;
     private Button nextButton;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        this.selectPreferencesModal =
-                new ViewModelProvider(this).get(SelectPreferencesModal.class);
+        this.createNewClassPlanActivityModel =
+                new ViewModelProvider(requireActivity()).get(CreateNewClassPlanActivityModel.class);
 
         this.binding = FragmentSelectPreferencesBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -57,18 +58,18 @@ public class SelectPreferencesFragment extends Fragment {
     // TODO: Save these preferences
     private void savePreferences() {
         int desiredClasses = Math.round(binding.sliderInputDesiredNumberOfClasses.getValue());
-        selectPreferencesModal.setDesiredNumberOfClasses(desiredClasses);
+        createNewClassPlanActivityModel.setDesiredNumberOfClasses(desiredClasses);
 
         int selectedBurdenId = binding.burdenCapacityRadioGroup.getCheckedRadioButtonId();
         if (selectedBurdenId != -1) {
             RadioButton selectedBurden = binding.getRoot().findViewById(selectedBurdenId);
-            selectPreferencesModal.setBurdenCapacity(selectedBurden.getText().toString());
+            createNewClassPlanActivityModel.setBurdenCapacity(selectedBurden.getText().toString());
         }
 
         int selectedDistributionId = binding.classDistributionRadioGroup.getCheckedRadioButtonId();
         if (selectedDistributionId != -1) {
             RadioButton selectedDistribution = binding.getRoot().findViewById(selectedDistributionId);
-            selectPreferencesModal.setClassDistribution(selectedDistribution.getText().toString());
+            createNewClassPlanActivityModel.setClassDistribution(selectedDistribution.getText().toString());
         }
     }
 

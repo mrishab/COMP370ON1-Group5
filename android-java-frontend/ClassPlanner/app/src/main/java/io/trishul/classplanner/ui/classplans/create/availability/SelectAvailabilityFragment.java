@@ -18,16 +18,17 @@ import java.util.List;
 
 import io.trishul.classplanner.R;
 import io.trishul.classplanner.databinding.FragmentSelectAvailabilityBinding;
+import io.trishul.classplanner.ui.classplans.create.CreateNewClassPlanActivityModel;
 
 public class SelectAvailabilityFragment extends Fragment {
-    private SelectAvailabilityModel selectAvailabilityModel;
+    private CreateNewClassPlanActivityModel createNewClassPlanActivityModel;
     private FragmentSelectAvailabilityBinding binding;
     private Button nextButton;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        this.selectAvailabilityModel =
-                new ViewModelProvider(this).get(SelectAvailabilityModel.class);
+        this.createNewClassPlanActivityModel =
+                new ViewModelProvider(requireActivity()).get(CreateNewClassPlanActivityModel.class);
 
         this.nextButton = getActivity().findViewById(R.id.button_create_class_plan_next);
 
@@ -47,7 +48,7 @@ public class SelectAvailabilityFragment extends Fragment {
     }
 
     private void setNextButtonActiveIfReady() {
-        if (selectAvailabilityModel.isMinimumAvailabilitySelected()) {
+        if (createNewClassPlanActivityModel.isMinimumAvailabilitySelected()) {
             nextButton.setEnabled(true);
         } else {
             nextButton.setEnabled(false);
@@ -75,7 +76,7 @@ public class SelectAvailabilityFragment extends Fragment {
         String day = tagParts[0];
         int hour = Integer.parseInt(tagParts[1]);
 
-        button.setChecked(selectAvailabilityModel.getAvailabilityForDayAndHour(day, hour));
+        button.setChecked(createNewClassPlanActivityModel.getAvailabilityForDayAndHour(day, hour));
     }
 
 
@@ -86,7 +87,7 @@ public class SelectAvailabilityFragment extends Fragment {
         String day = tagParts[0];
         int hour = Integer.parseInt(tagParts[1]);
 
-        selectAvailabilityModel.toggleAvailabilityForDayAndHour(day, hour);
+        createNewClassPlanActivityModel.toggleAvailabilityForDayAndHour(day, hour);
         setNextButtonActiveIfReady();
     }
 }
