@@ -1,4 +1,4 @@
-package io.trishul.classplanner.ui.courses;
+package io.trishul.classplanner.ui.classes;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,22 +9,22 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import io.trishul.classplanner.databinding.FragmentCoursesBinding;
+import io.trishul.classplanner.databinding.FragmentClassesBinding;
 
-public class CoursesFragment extends Fragment {
+public class ClassesFragment extends Fragment {
 
-private FragmentCoursesBinding binding;
+private FragmentClassesBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
-        CoursesViewModel coursesViewModel =
-                new ViewModelProvider(this).get(CoursesViewModel.class);
+        ClassesViewModel classesViewModel =
+                new ViewModelProvider(this).get(ClassesViewModel.class);
 
-        binding = FragmentCoursesBinding.inflate(inflater, container, false);
+        binding = FragmentClassesBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         final TextView textView = binding.textNotifications;
-        coursesViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        classesViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 

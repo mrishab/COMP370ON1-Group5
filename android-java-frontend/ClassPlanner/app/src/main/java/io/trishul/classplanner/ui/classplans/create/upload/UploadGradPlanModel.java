@@ -1,4 +1,4 @@
-package io.trishul.classplanner.ui.courseplans.create.upload;
+package io.trishul.classplanner.ui.classplans.create.upload;
 
 import android.net.Uri;
 

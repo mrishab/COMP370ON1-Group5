@@ -1,4 +1,4 @@
-package io.trishul.classplanner.ui.courseplans.create.preference;
+package io.trishul.classplanner.ui.classplans.create.preference;
 
 import android.net.Uri;
 
@@ -6,22 +6,22 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 public class SelectPreferencesModal extends ViewModel {
-    private final MutableLiveData<Integer> desiredNumberOfCourses;
+    private final MutableLiveData<Integer> desiredNumberOfClasses;
     private final MutableLiveData<String> burdenCapacity;
     private final MutableLiveData<String> classDistribution;
 
     public SelectPreferencesModal() {
-        this.desiredNumberOfCourses = new MutableLiveData<>(5);
+        this.desiredNumberOfClasses = new MutableLiveData<>(5);
         this.burdenCapacity = new MutableLiveData<>("MEDIUM");
         this.classDistribution = new MutableLiveData<>("CONCENTRATED");
     }
 
-    public MutableLiveData<Integer> getDesiredNumberOfCourses() {
-        return desiredNumberOfCourses;
+    public MutableLiveData<Integer> getDesiredNumberOfClasses() {
+        return desiredNumberOfClasses;
     }
 
-    public void setDesiredNumberOfCourses(Integer desiredNumberOfCourses) {
-        this.desiredNumberOfCourses.setValue(desiredNumberOfCourses);
+    public void setDesiredNumberOfClasses(Integer desiredNumberOfClasses) {
+        this.desiredNumberOfClasses.setValue(desiredNumberOfClasses);
     }
 
     public MutableLiveData<String> getBurdenCapacity() {

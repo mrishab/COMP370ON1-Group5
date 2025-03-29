@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_course_plans"
+        android:id="@+id/navigation_class_plans"
         android:icon="@drawable/ic_home_black_24dp"
         android:title="@string/title_grad_plans" />
 
@@ -12,7 +12,7 @@
         android:title="@string/title_class_plans" />
 
     <item
-        android:id="@+id/navigation_courses"
+        android:id="@+id/navigation_classes"
         android:icon="@drawable/ic_calendar_24dp"
         android:title="@string/title_classes" />
     <item

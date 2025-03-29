@@ -1,14 +1,14 @@
-package io.trishul.classplanner.ui.courses;
+package io.trishul.classplanner.ui.classes;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class CoursesViewModel extends ViewModel {
+public class ClassesViewModel extends ViewModel {
 
     private final MutableLiveData<String> mText;
 
-    public CoursesViewModel() {
+    public ClassesViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is notifications fragment");
     }

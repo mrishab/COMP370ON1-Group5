@@ -1,4 +1,4 @@
-package io.trishul.classplanner.ui.courseplans.create.availability;
+package io.trishul.classplanner.ui.classplans.create.availability;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;

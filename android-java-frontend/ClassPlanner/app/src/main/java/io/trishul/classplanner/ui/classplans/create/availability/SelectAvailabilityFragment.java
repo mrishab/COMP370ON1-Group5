@@ -1,4 +1,4 @@
-package io.trishul.classplanner.ui.courseplans.create.availability;
+package io.trishul.classplanner.ui.classplans.create.availability;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -29,7 +29,7 @@ public class SelectAvailabilityFragment extends Fragment {
         this.selectAvailabilityModel =
                 new ViewModelProvider(this).get(SelectAvailabilityModel.class);
 
-        this.nextButton = getActivity().findViewById(R.id.button_create_course_plan_next);
+        this.nextButton = getActivity().findViewById(R.id.button_create_class_plan_next);
 
         binding = FragmentSelectAvailabilityBinding.inflate(inflater, container, false);
         View root = binding.getRoot();

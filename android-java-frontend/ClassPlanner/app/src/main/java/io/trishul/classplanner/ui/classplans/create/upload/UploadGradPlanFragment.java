@@ -1,4 +1,4 @@
-package io.trishul.classplanner.ui.courseplans.create.upload;
+package io.trishul.classplanner.ui.classplans.create.upload;
 
 import android.app.Activity;
 import android.content.Context;
@@ -38,7 +38,7 @@ public class UploadGradPlanFragment extends Fragment {
         this.binding = FragmentUploadGradPlanBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        this.nextButton = getActivity().findViewById(R.id.button_create_course_plan_next);
+        this.nextButton = getActivity().findViewById(R.id.button_create_class_plan_next);
         this.selectedFileNameTextView = binding.textUploadGradPlanFileName;
 
         activateNextButtonIfReady();

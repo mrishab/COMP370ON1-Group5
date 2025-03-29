@@ -25,10 +25,10 @@
     </LinearLayout>
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragment_container_create_new_course_plan"
+        android:id="@+id/fragment_container_create_new_class_plan"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/navigation_buttons_create_new_course_plan"
+        app:layout_constraintBottom_toTopOf="@+id/navigation_buttons_create_new_class_plan"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -36,7 +36,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <LinearLayout
-        android:id="@+id/navigation_buttons_create_new_course_plan"
+        android:id="@+id/navigation_buttons_create_new_class_plan"
         style="?android:attr/buttonBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -50,18 +50,18 @@
         android:gravity="center">
 
         <Button
-            android:id="@+id/button_create_course_plan_back"
+            android:id="@+id/button_create_class_plan_back"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:layout_marginEnd="20dp"
-            android:text="@string/button_text_create_new_course_plan_back_button" />
+            android:text="@string/button_text_create_new_class_plan_back_button" />
 
         <Button
-            android:id="@+id/button_create_course_plan_next"
+            android:id="@+id/button_create_class_plan_next"
             android:layout_width="151dp"
             android:layout_height="wrap_content"
-            android:text="@string/button_text_create_new_course_plan_next_button"
+            android:text="@string/button_text_create_new_class_plan_next_button"
             android:layout_marginStart="20dp"
             android:textAlignment="center" />
     </LinearLayout>

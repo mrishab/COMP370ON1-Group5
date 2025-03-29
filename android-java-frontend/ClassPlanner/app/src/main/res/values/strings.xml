@@ -6,13 +6,13 @@
     <string name="title_classes">Classes</string>
     <string name="title_profile">Profile</string>
 
-    <!--  CoursePlan Fragment  -->
-    <string name="create_new_course_plan">Create New</string>
-    <string name="title_activity_create_new_course_plan">CreateNewCoursePlanActivity</string>
+    <!--  ClassPlan Fragment  -->
+    <string name="create_new_class_plan">Create New</string>
+    <string name="title_activity_create_new_class_plan">CreateNewClassPlanActivity</string>
 
-    <!--  Create New Course Plan Activity  -->
-    <string name="button_text_create_new_course_plan_back_button">Back</string>
-    <string name="button_text_create_new_course_plan_next_button">Next</string>
+    <!--  Create New Class Plan Activity  -->
+    <string name="button_text_create_new_class_plan_back_button">Back</string>
+    <string name="button_text_create_new_class_plan_next_button">Next</string>
 
     <!--  UploadGradPlan Fragment  -->
     <string name="title_activity_upload_grad_plan">UploadGradPlanActivity</string>
@@ -31,7 +31,7 @@
     <string name="text_upload_grad_plan_selected_filetype_error">Invalid file type, only PDFs allowed</string>
     
     <!-- Exit Confirmation Dialog -->
-    <string name="exit_confirmation_title">Exit Course Plan Creation</string>
+    <string name="exit_confirmation_title">Exit Class Plan Creation</string>
     <string name="exit_confirmation_message">Are you sure you want to exit? Your progress will not be saved.</string>
     <string name="exit_confirmation_positive">Confirm</string>
     <string name="exit_confirmation_negative">Cancel</string>
@@ -59,19 +59,19 @@
     <string name="header_logo">Header Logo</string>
     <string name="availability_footer">Select the hours for which you\'re available to take classes in the next semester</string>
     <string name="title_select_availability">Select your availability</string>
-    <string name="desired_number_of_courses">Desired number of courses</string>
+    <string name="desired_number_of_classes">Desired number of classes</string>
     <string name="text_subheading_burden_capacity">Burden Capacity</string>
     <string name="burden_capacity_high_radio_button_label">High</string>
     <string name="burden_capacity_medium_radio_button_label">Medium</string>
     <string name="burden_capacity_low_radio_button_label">Low</string>
-    <string name="text_description_burden_cap_high">This option will prioritize upper-level courses.</string>
-    <string name="text_description_burden_cap_medium">This option will mix upper and lower level courses.</string>
-    <string name="text_description_burden_cap_low">This option will prioritize lower-level courses.</string>
+    <string name="text_description_burden_cap_high">This option will prioritize upper-level classes.</string>
+    <string name="text_description_burden_cap_medium">This option will mix upper and lower level classes.</string>
+    <string name="text_description_burden_cap_low">This option will prioritize lower-level classes.</string>
     <string name="text_subheading_class_distribution">Class Distribution</string>
     <string name="class_distribution_concentrated_radio_button_label">Concentrated</string>
     <string name="class_distribution_sparse_radio_button_label">Sparse</string>
     <string name="text_description_class_distribution_concentrated">This option will try to pick classes on the same days.</string>
     <string name="text_description_class_distribution_sparrse">This option will spread the classes throughout the week.</string>
-    <string name="text_input_desired_number_of_courses_default_value">3</string>
+    <string name="text_input_desired_number_of_classes_default_value">3</string>
 
 </resources>

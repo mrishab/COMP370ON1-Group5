@@ -1,4 +1,4 @@
-package io.trishul.classplanner.ui.courseplans.create.preference;
+package io.trishul.classplanner.ui.classplans.create.preference;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -30,10 +30,10 @@ public class SelectPreferencesFragment extends Fragment {
         this.binding = FragmentSelectPreferencesBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        this.nextButton = getActivity().findViewById(R.id.button_create_course_plan_next);
+        this.nextButton = getActivity().findViewById(R.id.button_create_class_plan_next);
 
-        Slider slider = root.findViewById(R.id.slider_input_desired_number_of_courses);
-        TextView textDisplay = root.findViewById(R.id.text_display_desired_number_of_courses);
+        Slider slider = root.findViewById(R.id.slider_input_desired_number_of_classes);
+        TextView textDisplay = root.findViewById(R.id.text_display_desired_number_of_classes);
 
         slider.addOnChangeListener((s, value, fromUser) -> {
             textDisplay.setText(String.valueOf((int) value));
@@ -50,8 +50,8 @@ public class SelectPreferencesFragment extends Fragment {
     }
 
     private void savePreferences() {
-        int desiredCourses = Math.round(binding.sliderInputDesiredNumberOfCourses.getValue());
-        selectPreferencesModal.setDesiredNumberOfCourses(desiredCourses);
+        int desiredClasses = Math.round(binding.sliderInputDesiredNumberOfClasses.getValue());
+        selectPreferencesModal.setDesiredNumberOfClasses(desiredClasses);
 
         int selectedBurdenId = binding.burdenCapacityRadioGroup.getCheckedRadioButtonId();
         if (selectedBurdenId != -1) {

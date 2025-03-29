@@ -1,12 +1,12 @@
-package io.trishul.classplanner.ui.courseplans.create;
+package io.trishul.classplanner.ui.classplans.create;
 
 import androidx.fragment.app.Fragment;
 
-import io.trishul.classplanner.ui.courseplans.create.availability.SelectAvailabilityFragment;
-import io.trishul.classplanner.ui.courseplans.create.preference.SelectPreferencesFragment;
-import io.trishul.classplanner.ui.courseplans.create.upload.UploadGradPlanFragment;
+import io.trishul.classplanner.ui.classplans.create.availability.SelectAvailabilityFragment;
+import io.trishul.classplanner.ui.classplans.create.preference.SelectPreferencesFragment;
+import io.trishul.classplanner.ui.classplans.create.upload.UploadGradPlanFragment;
 
-public class CreateNewCoursePlanFragmentContainer {
+public class CreateNewClassPlanFragmentContainer {
     public static final int MAX_STEPS = 3;
 
     public Fragment getFragment(int step) {
