@@ -40,6 +40,12 @@ public class SelectAvailabilityFragment extends Fragment {
         return root;
     }
 
+    @Override
+    public void onHiddenChanged(boolean isHidden) {
+        super.onHiddenChanged(isHidden);
+        setNextButtonActiveIfReady();
+    }
+
     private void setNextButtonActiveIfReady() {
         if (selectAvailabilityModel.isMinimumAvailabilitySelected()) {
             nextButton.setEnabled(true);

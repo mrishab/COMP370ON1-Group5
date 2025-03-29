@@ -44,11 +44,17 @@ public class SelectPreferencesFragment extends Fragment {
         return root;
     }
 
-    private void activateNextButtonIfReady() {
-        nextButton.setEnabled(true);
-        nextButton.setOnClickListener(v -> savePreferences());
+    @Override
+    public void onHiddenChanged(boolean isHidden) {
+        super.onHiddenChanged(isHidden);
+        activateNextButtonIfReady();
     }
 
+    private void activateNextButtonIfReady() {
+        nextButton.setEnabled(true);
+    }
+
+    // TODO: Save these preferences
     private void savePreferences() {
         int desiredClasses = Math.round(binding.sliderInputDesiredNumberOfClasses.getValue());
         selectPreferencesModal.setDesiredNumberOfClasses(desiredClasses);

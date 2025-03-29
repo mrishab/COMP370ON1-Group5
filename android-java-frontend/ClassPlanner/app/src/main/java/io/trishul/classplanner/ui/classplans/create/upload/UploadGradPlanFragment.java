@@ -64,6 +64,12 @@ public class UploadGradPlanFragment extends Fragment {
         return root;
     }
 
+    @Override
+    public void onHiddenChanged(boolean isHidden) {
+        super.onHiddenChanged(isHidden);
+        activateNextButtonIfReady();
+    }
+
     private void activateNextButtonIfReady() {
         nextButton.setEnabled(uploadGradPlanModel.getGradPlanUri().getValue() != null);
     }

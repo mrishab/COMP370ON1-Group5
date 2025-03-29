@@ -7,6 +7,8 @@ import android.widget.Button;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import io.trishul.classplanner.ui.classplans.create.CreateNewClassPlanFragmentContainer;
 
@@ -26,7 +28,7 @@ public class CreateNewClassPlanActivity extends AppCompatActivity {
         }
 
         fragmentContainer = new CreateNewClassPlanFragmentContainer();
-        setCurrentFragment();
+        setAllFragments(); // Add all fragments at start
 
         Button backButton = findViewById(R.id.button_create_class_plan_back);
         Button nextButton = findViewById(R.id.button_create_class_plan_next);
@@ -49,13 +51,16 @@ public class CreateNewClassPlanActivity extends AppCompatActivity {
     }
 
     private void onFragmentChange(int increment, Button nextButton) {
-        updateCurrentStep(increment);
-        setCurrentFragment();
+        int nextStep = getNthStep(increment);
+        showFragment(nextStep);
+        currentStep = nextStep;
         updateNextButtonText(nextButton);
     }
 
     private void updateNextButtonText(Button nextButton) {
-        nextButton.setText(CreateNewClassPlanFragmentContainer.isLastStep(currentStep) ? R.string.button_text_submit : R.string.button_text_create_new_class_plan_next_button);
+        nextButton.setText(CreateNewClassPlanFragmentContainer.isLastStep(currentStep) 
+            ? R.string.button_text_submit 
+            : R.string.button_text_create_new_class_plan_next_button);
     }
 
     private void showExitConfirmationDialog() {
@@ -79,7 +84,6 @@ public class CreateNewClassPlanActivity extends AppCompatActivity {
                 .setTitle(R.string.submit_confirmation_title)
                 .setMessage(R.string.submit_confirmation_message)
                 .setPositiveButton(R.string.submit_confirmation_positive, (dialog, which) -> {
-                    // TODO: Add submission logic here
                     Intent intent = new Intent(this, MainActivity.class);
                     startActivity(intent);
                     finish();
@@ -94,28 +98,52 @@ public class CreateNewClassPlanActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (currentStep > 0) {
-            // If not on the first step, just go back to previous step
-            updateCurrentStep(-1);
-            setCurrentFragment();
+            onFragmentChange(-1, findViewById(R.id.button_create_class_plan_next));
         } else {
-            // If on the first step, show exit confirmation dialog
             showExitConfirmationDialog();
         }
     }
 
     private int getNthStep(int increment) {
-        return Math.min(CreateNewClassPlanFragmentContainer.MAX_STEPS - 1, Math.max(0, currentStep + increment));
+        return Math.min(CreateNewClassPlanFragmentContainer.MAX_STEPS - 1, 
+                        Math.max(0, currentStep + increment));
     }
 
-    private void updateCurrentStep(int increment) {
-        currentStep = getNthStep(increment);
+    /**
+     * **Step 1: Add all fragments initially and hide them**
+     */
+    private void setAllFragments() {
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+
+        for (int i = 0; i < CreateNewClassPlanFragmentContainer.MAX_STEPS; i++) {
+            Fragment fragment = fragmentContainer.getFragment(i);
+            transaction.add(R.id.fragment_container_create_new_class_plan, fragment, "Step" + i);
+            if (i != currentStep) {
+                transaction.hide(fragment);
+            }
+        }
+        transaction.commit();
     }
 
-    private void setCurrentFragment() {
-        Fragment fragment = fragmentContainer.getFragment(currentStep);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container_create_new_class_plan, fragment)
-                .commit();
+    /**
+     * **Step 2: Show the required fragment and hide the others**
+     */
+    private void showFragment(int step) {
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+
+        for (int i = 0; i < CreateNewClassPlanFragmentContainer.MAX_STEPS; i++) {
+            Fragment fragment = fm.findFragmentByTag("Step" + i);
+            if (fragment != null) {
+                if (i == step) {
+                    transaction.show(fragment);
+                } else {
+                    transaction.hide(fragment);
+                }
+            }
+        }
+        transaction.commit();
     }
 
     @Override

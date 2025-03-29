@@ -62,6 +62,7 @@
             android:layout_width="151dp"
             android:layout_height="wrap_content"
             android:text="@string/button_text_create_new_class_plan_next_button"
+            android:enabled="false"
             android:layout_marginStart="20dp"
             android:textAlignment="center" />
     </LinearLayout>
