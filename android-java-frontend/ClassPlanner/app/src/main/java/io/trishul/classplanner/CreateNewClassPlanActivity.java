@@ -33,9 +33,7 @@ public class CreateNewClassPlanActivity extends AppCompatActivity {
 
         backButton.setOnClickListener(v -> {
             if (currentStep > 0) {
-                updateCurrentStep(-1);
-                setCurrentFragment();
-                updateNextButtonText(nextButton);
+                onFragmentChange(-1, nextButton);
             } else {
                 showExitConfirmationDialog();
             }
@@ -45,11 +43,15 @@ public class CreateNewClassPlanActivity extends AppCompatActivity {
             if (CreateNewClassPlanFragmentContainer.isLastStep(currentStep)) {
                 showSubmitConfirmationDialog();
             } else {
-                updateCurrentStep(1);
-                setCurrentFragment();
-                updateNextButtonText(nextButton);
+                onFragmentChange(1, nextButton);
             }
         });
+    }
+
+    private void onFragmentChange(int increment, Button nextButton) {
+        updateCurrentStep(increment);
+        setCurrentFragment();
+        updateNextButtonText(nextButton);
     }
 
     private void updateNextButtonText(Button nextButton) {
