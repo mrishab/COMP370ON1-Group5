@@ -1,11 +1,12 @@
 package io.trishul.classplanner;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import io.trishul.classplanner.ui.courseplans.create.CreateNewCoursePlanFragmentContainer;
 
@@ -29,8 +30,14 @@ public class CreateNewCoursePlanActivity extends AppCompatActivity {
 
         Button backButton = findViewById(R.id.button_create_course_plan_back);
         backButton.setOnClickListener(v -> {
-            updateCurrentStep(-1);
-            setCurrentFragment();
+            if (currentStep > 0) {
+                // If not on the first step, just go back to previous step
+                updateCurrentStep(-1);
+                setCurrentFragment();
+            } else {
+                // If on the first step, show exit confirmation dialog
+                showExitConfirmationDialog();
+            }
         });
 
         Button nextButton = findViewById(R.id.button_create_course_plan_next);
@@ -39,6 +46,36 @@ public class CreateNewCoursePlanActivity extends AppCompatActivity {
             updateCurrentStep(1);
             setCurrentFragment();
         });
+    }
+
+    private void showExitConfirmationDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.exit_confirmation_title)
+                .setMessage(R.string.exit_confirmation_message)
+                .setPositiveButton(R.string.exit_confirmation_positive, (dialog, which) -> {
+                    // Navigate back to MainActivity
+                    Intent intent = new Intent(this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                })
+                .setNegativeButton(R.string.exit_confirmation_negative, (dialog, which) -> {
+                    // Dismiss the dialog (does nothing else)
+                    dialog.dismiss();
+                })
+                .setCancelable(true)
+                .show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (currentStep > 0) {
+            // If not on the first step, just go back to previous step
+            updateCurrentStep(-1);
+            setCurrentFragment();
+        } else {
+            // If on the first step, show exit confirmation dialog
+            showExitConfirmationDialog();
+        }
     }
 
     private int getNthStep(int increment) {

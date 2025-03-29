@@ -29,6 +29,13 @@
     </string>
     <string name="text_upload_grad_plan_selected_filename">No file selected</string>
     <string name="text_upload_grad_plan_selected_filetype_error">Invalid file type, only PDFs allowed</string>
+    
+    <!-- Exit Confirmation Dialog -->
+    <string name="exit_confirmation_title">Exit Course Plan Creation</string>
+    <string name="exit_confirmation_message">Are you sure you want to exit? Your progress will not be saved.</string>
+    <string name="exit_confirmation_positive">Confirm</string>
+    <string name="exit_confirmation_negative">Cancel</string>
+    
     <string name="hour_08_00">08:00</string>
     <string name="monday">Monday</string>
     <string name="tuesday">Tuesday</string>
