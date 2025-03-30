@@ -43,7 +43,6 @@ public class UploadGradPlanFragment extends Fragment {
         this.selectedFileNameTextView = binding.textUploadGradPlanFileName;
 
         activateNextButtonIfReady();
-        setSelectedFileName();
 
         filePicker = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == Activity.RESULT_OK) {

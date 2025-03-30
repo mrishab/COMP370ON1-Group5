@@ -32,17 +32,41 @@ public class SelectPreferencesFragment extends Fragment {
         View root = binding.getRoot();
 
         this.nextButton = getActivity().findViewById(R.id.button_create_class_plan_next);
+        activateNextButtonIfReady();
 
+        hydrateOnClickListeners(root);
+
+        return root;
+    }
+
+    private void hydrateOnClickListeners(View root) {
         Slider slider = root.findViewById(R.id.slider_input_desired_number_of_classes);
         TextView textDisplay = root.findViewById(R.id.text_display_desired_number_of_classes);
 
         slider.addOnChangeListener((s, value, fromUser) -> {
             textDisplay.setText(String.valueOf((int) value));
+            createNewClassPlanActivityModel.setDesiredNumberOfClasses((int) value);
         });
 
-        activateNextButtonIfReady();
+        
+        binding.burdenCapacityRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            RadioButton selectedBurden = binding.getRoot().findViewById(checkedId);
+            createNewClassPlanActivityModel.setBurdenCapacity(selectedBurden.getText().toString());
+        });
 
-        return root;
+        binding.classDistributionRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            RadioButton selectedDistribution = binding.getRoot().findViewById(checkedId);
+            createNewClassPlanActivityModel.setClassDistribution(selectedDistribution.getText().toString());
+        });
+        
+        // Setting default values in the model
+        int desiredClasses = Math.round(binding.sliderInputDesiredNumberOfClasses.getValue());
+        createNewClassPlanActivityModel.setDesiredNumberOfClasses(desiredClasses);
+        RadioButton selectedBurden = binding.getRoot().findViewById(binding.burdenCapacityRadioGroup.getCheckedRadioButtonId());
+        createNewClassPlanActivityModel.setBurdenCapacity(selectedBurden.getText().toString());
+        RadioButton selectedDistribution = binding.getRoot().findViewById(binding.classDistributionRadioGroup.getCheckedRadioButtonId());
+        createNewClassPlanActivityModel.setClassDistribution(selectedDistribution.getText().toString());
+
     }
 
     @Override
@@ -53,24 +77,6 @@ public class SelectPreferencesFragment extends Fragment {
 
     private void activateNextButtonIfReady() {
         nextButton.setEnabled(true);
-    }
-
-    // TODO: Save these preferences
-    private void savePreferences() {
-        int desiredClasses = Math.round(binding.sliderInputDesiredNumberOfClasses.getValue());
-        createNewClassPlanActivityModel.setDesiredNumberOfClasses(desiredClasses);
-
-        int selectedBurdenId = binding.burdenCapacityRadioGroup.getCheckedRadioButtonId();
-        if (selectedBurdenId != -1) {
-            RadioButton selectedBurden = binding.getRoot().findViewById(selectedBurdenId);
-            createNewClassPlanActivityModel.setBurdenCapacity(selectedBurden.getText().toString());
-        }
-
-        int selectedDistributionId = binding.classDistributionRadioGroup.getCheckedRadioButtonId();
-        if (selectedDistributionId != -1) {
-            RadioButton selectedDistribution = binding.getRoot().findViewById(selectedDistributionId);
-            createNewClassPlanActivityModel.setClassDistribution(selectedDistribution.getText().toString());
-        }
     }
 
     @Override
