@@ -20,7 +20,7 @@ import io.trishul.classplanner.ui.login.LoginActivity;
 
 public class ProfileFragment extends Fragment {
 
-    private TextView textNotifications;
+    private TextView textProfileInfo;
     private Button logoutButton;
 
     @Nullable
@@ -30,27 +30,26 @@ public class ProfileFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        textNotifications = view.findViewById(R.id.text_notifications);
+        textProfileInfo = view.findViewById(R.id.text_profile_info);
         logoutButton = view.findViewById(R.id.logoutButton);
 
         SharedPreferences prefs = requireContext().getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
-        String email = prefs.getString("userEmail", null);
+        String firstName = prefs.getString("firstName", "N/A");
+        String lastName = prefs.getString("lastName", "N/A");
+        String email = prefs.getString("userEmail", "N/A");
 
-        if (email != null) {
-            textNotifications.setText("Logged in as: " + email);
-        } else {
-            textNotifications.setText("Not logged in.");
-        }
+        String info = "Name: " + firstName + " " + lastName + "\nEmail: " + email;
+        textProfileInfo.setText(info);
 
         logoutButton.setOnClickListener(v -> {
             SharedPreferences.Editor editor = prefs.edit();
-            editor.remove("userEmail"); 
+            editor.clear(); 
             editor.apply();
 
             Toast.makeText(requireContext(), "Logged out", Toast.LENGTH_SHORT).show();
 
             Intent intent = new Intent(requireContext(), LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); 
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         });
 
