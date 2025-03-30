@@ -1,28 +1,46 @@
 package io.trishul.classplanner.api.models;
 
-import java.util.List;
+import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
+import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
+import java.io.Serializable;
 import java.util.Map;
 
-public class PlanCreationRequest {
-    private int gradPlanId;
-    private Map<String, List<Boolean>> availability;
+public class PlanCreationRequest implements Parcelable {
+    @SerializedName("gradPlanUri")
+    private Uri gradPlanUri;
+    @SerializedName("desiredNumberOfClasses")
+    private int desiredNumberOfClasses;
+    @SerializedName("burdenCapacity")
     private String burdenCapacity;
+    @SerializedName("classDistribution")
     private String classDistribution;
+    @SerializedName("availability")
+    private Map<String, boolean[]> availability;
 
-    public int getGradPlanId() {
-        return gradPlanId;
+    public PlanCreationRequest() {
+        // Default constructor
     }
 
-    public void setGradPlanId(int gradPlanId) {
-        this.gradPlanId = gradPlanId;
+    public Uri getGradPlanUri() {
+        return gradPlanUri;
     }
 
-    public Map<String, List<Boolean>> getAvailability() {
-        return availability;
+    public void setGradPlanUri(Uri gradPlanUri) {
+        this.gradPlanUri = gradPlanUri;
     }
 
-    public void setAvailability(Map<String, List<Boolean>> availability) {
-        this.availability = availability;
+    public int getDesiredNumberOfClasses() {
+        return desiredNumberOfClasses;
+    }
+
+    public void setDesiredNumberOfClasses(int desiredNumberOfClasses) {
+        this.desiredNumberOfClasses = desiredNumberOfClasses;
     }
 
     public String getBurdenCapacity() {
@@ -40,4 +58,45 @@ public class PlanCreationRequest {
     public void setClassDistribution(String classDistribution) {
         this.classDistribution = classDistribution;
     }
+
+    public Map<String, boolean[]> getAvailability() {
+        return availability;
+    }
+
+    public void setAvailability(Map<String, boolean[]> availability) {
+        this.availability = availability;
+    }
+
+    public String toJson() {
+        Gson gson = new Gson();
+        return gson.toJson(this);
+    }
+
+    public static PlanCreationRequest fromJson(String json) {
+        Gson gson = new Gson();
+        return gson.fromJson(json, PlanCreationRequest.class);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeString(this.toJson());
+    }
+
+    public static final Creator<PlanCreationRequest> CREATOR = new Creator<PlanCreationRequest>() {
+        @Override
+        public PlanCreationRequest createFromParcel(Parcel in) {
+            String json = in.readString();
+            return PlanCreationRequest.fromJson(json);
+        }
+
+        @Override
+        public PlanCreationRequest[] newArray(int size) {
+            return new PlanCreationRequest[size];
+        }
+    };
 }

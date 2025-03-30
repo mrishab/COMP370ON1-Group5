@@ -9,7 +9,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
+import io.trishul.classplanner.api.models.PlanCreationRequest;
+import io.trishul.classplanner.ui.classplans.create.CreateNewClassPlanActivityModel;
 import io.trishul.classplanner.ui.classplans.create.CreateNewClassPlanFragmentContainer;
 
 public class CreateNewClassPlanActivity extends AppCompatActivity {
@@ -17,11 +20,14 @@ public class CreateNewClassPlanActivity extends AppCompatActivity {
 
     private int currentStep = 0;
     private CreateNewClassPlanFragmentContainer fragmentContainer;
+    private CreateNewClassPlanActivityModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_new_class_plan);
+
+        viewModel = new ViewModelProvider(this).get(CreateNewClassPlanActivityModel.class);
 
         if (savedInstanceState != null) {
             currentStep = savedInstanceState.getInt(BUNDLE_CURRENT_STEP_KEY, 0);
@@ -84,7 +90,10 @@ public class CreateNewClassPlanActivity extends AppCompatActivity {
                 .setTitle(R.string.submit_confirmation_title)
                 .setMessage(R.string.submit_confirmation_message)
                 .setPositiveButton(R.string.submit_confirmation_positive, (dialog, which) -> {
-                    Intent intent = new Intent(this, MainActivity.class);
+                    // Create request and start the submit activity
+                    PlanCreationRequest request = createRequestFromViewModel();
+                    Intent intent = new Intent(this, SubmitCreateNewClassPlanActivity.class);
+                    intent.putExtra("request", request);
                     startActivity(intent);
                     finish();
                 })
@@ -93,6 +102,16 @@ public class CreateNewClassPlanActivity extends AppCompatActivity {
                 })
                 .setCancelable(true)
                 .show();
+    }
+
+    private PlanCreationRequest createRequestFromViewModel() {
+        PlanCreationRequest request = new PlanCreationRequest();
+        request.setGradPlanUri(viewModel.getGradPlanUri().getValue());
+        request.setDesiredNumberOfClasses(viewModel.getDesiredNumberOfClasses().getValue());
+        request.setBurdenCapacity(viewModel.getBurdenCapacity().getValue());
+        request.setClassDistribution(viewModel.getClassDistribution().getValue());
+        request.setAvailability(viewModel.getAvailability().getValue());
+        return request;
     }
 
     @Override

@@ -47,6 +47,11 @@ public class CreateNewClassPlanActivityModel extends ViewModel {
 
     // Availability logic
     public static final int NUM_OF_HOURS = 24;
+
+    public MutableLiveData<Map<String, boolean[]>> getAvailability() {
+        return availability;
+    }
+
     private final MutableLiveData<Map<String, boolean[]>> availability = new MutableLiveData<>(initAvailabilityMap());
 
     private static Map<String, boolean[]> initAvailabilityMap() {
