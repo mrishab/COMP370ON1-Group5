@@ -41,7 +41,7 @@ public class SubmitCreateNewClassPlanActivity extends AppCompatActivity {
                     viewButton.setEnabled(true);
                     viewButton.setOnClickListener(v -> {
                         Intent intent = new Intent(this, MainActivity.class);
-                        intent.putExtra("selectedTab", R.id.navigation_class_plans);
+                        intent.putExtra("selectedTab", R.id.navigation_grad_plans);
                         intent.putExtra("planId", response.getPlanId());
                         startActivity(intent);
                     });

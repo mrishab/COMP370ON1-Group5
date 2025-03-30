@@ -1,4 +1,4 @@
-package io.trishul.classplanner.ui.termplan;
+package io.trishul.classplanner.ui.gradplans;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,22 +8,22 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import io.trishul.classplanner.databinding.FragmentTermPlanBinding;
+import io.trishul.classplanner.databinding.FragmentGradPlansBinding;
 
-public class TermPlanFragment extends Fragment {
+public class GradPlansFragment extends Fragment {
 
-private FragmentTermPlanBinding binding;
+private FragmentGradPlansBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
-        TermPlanViewModel termPlanViewModel =
-                new ViewModelProvider(this).get(TermPlanViewModel.class);
+        GradPlansViewModel gradPlanViewModel =
+                new ViewModelProvider(this).get(GradPlansViewModel.class);
 
-    binding = FragmentTermPlanBinding.inflate(inflater, container, false);
+    binding = FragmentGradPlansBinding.inflate(inflater, container, false);
     View root = binding.getRoot();
 
         final TextView textView = binding.textDashboard;
-        termPlanViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        gradPlanViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 

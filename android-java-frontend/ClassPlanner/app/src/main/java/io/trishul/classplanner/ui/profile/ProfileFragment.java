@@ -18,14 +18,14 @@ private FragmentProfileBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
-        ProfileViewModel termPlanViewModel =
+        ProfileViewModel gradPlanViewModel =
                 new ViewModelProvider(this).get(ProfileViewModel.class);
 
     binding = FragmentProfileBinding.inflate(inflater, container, false);
     View root = binding.getRoot();
 
         final TextView textView = binding.textNotifications;
-        termPlanViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        gradPlanViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 

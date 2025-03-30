@@ -25,8 +25,8 @@ private ActivityMainBinding binding;
         // menu should be considered as top level destinations.
         // Marking them as top-level destinations hide the back button on fragments
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
+                R.id.navigation_grad_plans,
                 R.id.navigation_class_plans,
-                R.id.navigation_term_plans,
                 R.id.navigation_classes,
                 R.id.navigation_profile)
                 .build();

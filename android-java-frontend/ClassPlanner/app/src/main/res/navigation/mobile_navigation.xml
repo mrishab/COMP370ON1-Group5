@@ -3,19 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_class_plans">
+    app:startDestination="@+id/navigation_grad_plans">
+
+    <fragment
+        android:id="@+id/navigation_grad_plans"
+        android:name="io.trishul.classplanner.ui.gradplans.GradPlansFragment"
+        android:label="@string/title_class_plans"
+        tools:layout="@layout/fragment_grad_plans" />
 
     <fragment
         android:id="@+id/navigation_class_plans"
         android:name="io.trishul.classplanner.ui.classplans.ClassPlansFragment"
-        android:label="@string/title_grad_plans"
-        tools:layout="@layout/fragment_class_plans" />
-
-    <fragment
-        android:id="@+id/navigation_term_plans"
-        android:name="io.trishul.classplanner.ui.termplan.TermPlanFragment"
         android:label="@string/title_class_plans"
-        tools:layout="@layout/fragment_term_plan" />
+        tools:layout="@layout/fragment_grad_plans" />
 
     <fragment
         android:id="@+id/navigation_classes"

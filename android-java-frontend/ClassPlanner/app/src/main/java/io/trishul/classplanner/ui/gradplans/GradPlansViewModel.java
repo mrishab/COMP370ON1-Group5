@@ -1,14 +1,14 @@
-package io.trishul.classplanner.ui.termplan;
+package io.trishul.classplanner.ui.gradplans;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class TermPlanViewModel extends ViewModel {
+public class GradPlansViewModel extends ViewModel {
 
     private final MutableLiveData<String> mText;
 
-    public TermPlanViewModel() {
+    public GradPlansViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is dashboard fragment");
     }
