@@ -74,7 +74,10 @@
         android:layout_height="match_parent"
         android:layout_gravity="end"
         android:background="@android:color/white">
-        <!-- Add filter content here -->
+        <FrameLayout
+            android:id="@+id/filter_fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </FrameLayout>
 
 </androidx.drawerlayout.widget.DrawerLayout>

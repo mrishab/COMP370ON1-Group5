@@ -13,6 +13,17 @@ import io.trishul.classplanner.databinding.ActivityMainBinding;
 import android.view.Menu;
 import android.view.MenuItem;
 import androidx.core.view.GravityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import io.trishul.classplanner.ui.filters.FilterGradPlansFragment;
+import io.trishul.classplanner.ui.filters.FilterClassPlansFragment;
+import io.trishul.classplanner.ui.filters.FilterClassesFragment;
+import io.trishul.classplanner.ui.filters.FilterProfileFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -51,6 +62,8 @@ private ActivityMainBinding binding;
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupWithNavController(binding.navView, navController);
+
+        initializeFilterFragments(navController);
     }
 
     @Override
@@ -63,4 +76,39 @@ private ActivityMainBinding binding;
         return super.onOptionsItemSelected(item); // No menu items to handle
     }
 
+    private void initializeFilterFragments(NavController navController) {
+        Fragment filterGradPlansFragment = new FilterGradPlansFragment();
+        Fragment filterClassPlansFragment = new FilterClassPlansFragment();
+        Fragment filterClassesFragment = new FilterClassesFragment();
+        Fragment filterProfileFragment = new FilterProfileFragment();
+
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.add(R.id.filter_fragment_container, filterGradPlansFragment, "FilterGradPlans");
+        transaction.add(R.id.filter_fragment_container, filterClassPlansFragment, "FilterClassPlans");
+        transaction.add(R.id.filter_fragment_container, filterClassesFragment, "FilterClasses");
+        transaction.add(R.id.filter_fragment_container, filterProfileFragment, "FilterProfile");
+        transaction.addToBackStack(null);
+        transaction.commit();
+
+        Map<Integer, Fragment> fragmentMap = new HashMap<>();
+        fragmentMap.put(R.id.navigation_grad_plans, filterGradPlansFragment);
+        fragmentMap.put(R.id.navigation_class_plans, filterClassPlansFragment);
+        fragmentMap.put(R.id.navigation_classes, filterClassesFragment);
+        fragmentMap.put(R.id.navigation_profile, filterProfileFragment);
+
+        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+            Fragment selectedFragment = fragmentMap.get(destination.getId());
+            if (selectedFragment != null) {
+                for (Fragment fragment : fragmentMap.values()) {
+                    fragmentManager
+                            .beginTransaction()
+                            .hide(fragment)
+                            .commit();
+                }
+                fragmentManager.beginTransaction().show(selectedFragment).commit();
+            }
+        });
+    }
 }
