@@ -106,7 +106,7 @@ public class CreateNewClassPlanActivity extends AppCompatActivity {
 
     private PlanCreationRequest createRequestFromViewModel() {
         PlanCreationRequest request = new PlanCreationRequest();
-        request.setGradPlanUri(viewModel.getGradPlanUri().getValue());
+        request.setGradPlanId(1L); // TODO: Placeholder for gradPlanId
         request.setDesiredNumberOfClasses(viewModel.getDesiredNumberOfClasses().getValue());
         request.setBurdenCapacity(viewModel.getBurdenCapacity().getValue());
         request.setClassDistribution(viewModel.getClassDistribution().getValue());

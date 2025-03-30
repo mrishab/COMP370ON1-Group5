@@ -12,8 +12,8 @@ import java.io.Serializable;
 import java.util.Map;
 
 public class PlanCreationRequest implements Parcelable {
-    @SerializedName("gradPlanUri")
-    private Uri gradPlanUri;
+    @SerializedName("gradPlanId")
+    private Long gradPlanId;
     @SerializedName("desiredNumberOfClasses")
     private int desiredNumberOfClasses;
     @SerializedName("burdenCapacity")
@@ -27,12 +27,12 @@ public class PlanCreationRequest implements Parcelable {
         // Default constructor
     }
 
-    public Uri getGradPlanUri() {
-        return gradPlanUri;
+    public Long getGradPlanId() {
+        return gradPlanId;
     }
 
-    public void setGradPlanUri(Uri gradPlanUri) {
-        this.gradPlanUri = gradPlanUri;
+    public void setGradPlanId(Long gradPlanId) {
+        this.gradPlanId = gradPlanId;
     }
 
     public int getDesiredNumberOfClasses() {
