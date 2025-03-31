@@ -27,6 +27,8 @@
 
         <activity android:name=".ui.register.RegisterActivity" />
 
+        <activity android:name=".MainActivity" />
+
         <activity
             android:name=".CreateNewClassPlanActivity"
             android:theme="@style/Theme.ClassPlanner"

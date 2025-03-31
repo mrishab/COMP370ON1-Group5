@@ -57,8 +57,12 @@ private ActivityMainBinding binding;
                 R.id.navigation_grad_plans,
                 R.id.navigation_class_plans,
                 R.id.navigation_classes,
-                R.id.navigation_profile)
-                .build();
+                R.id.navigation_profile,
+                R.id.navigation_course_plans,
+                R.id.navigation_term_plans,
+                R.id.navigation_courses,
+                R.id.navigation_class_plan
+            ).build();
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupWithNavController(binding.navView, navController);
