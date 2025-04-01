@@ -22,10 +22,10 @@
                 android:orientation="vertical"
                 android:layout_margin="10dp">
                 <TextView
-                    android:id="@+id/text_label_desired_number_of_courses"
+                    android:id="@+id/text_label_desired_number_of_classes"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
-                    android:text="@string/desired_number_of_courses"
+                    android:text="@string/desired_number_of_classes"
                     android:layout_weight="3"
                     />
                 <LinearLayout
@@ -34,7 +34,7 @@
                     android:orientation="horizontal"
                     >
                     <com.google.android.material.slider.Slider
-                        android:id="@+id/slider_input_desired_number_of_courses"
+                        android:id="@+id/slider_input_desired_number_of_classes"
                         android:layout_width="0dp"
                         android:layout_weight="3"
                         android:layout_height="0dp"
@@ -42,15 +42,15 @@
                         android:valueTo="10"
                         android:stepSize="1"
                         android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"
-                        android:value="@string/text_input_desired_number_of_courses_default_value"
+                        android:value="@string/text_input_desired_number_of_classes_default_value"
                         />
                     <TextView
-                        android:id="@+id/text_display_desired_number_of_courses"
+                        android:id="@+id/text_display_desired_number_of_classes"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:gravity="center"
                         android:layout_height="wrap_content"
-                        android:text="@string/text_input_desired_number_of_courses_default_value"
+                        android:text="@string/text_input_desired_number_of_classes_default_value"
                         />
                 </LinearLayout>
 
