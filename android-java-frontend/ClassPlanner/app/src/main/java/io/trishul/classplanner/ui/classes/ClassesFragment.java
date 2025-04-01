@@ -1,31 +1,30 @@
-package io.trishul.classplanner.ui.profile;
+package io.trishul.classplanner.ui.classes;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import io.trishul.classplanner.databinding.FragmentProfileBinding;
+import io.trishul.classplanner.databinding.FragmentClassesBinding;
 
-public class ProfileFragment extends Fragment {
+public class ClassesFragment extends Fragment {
 
-private FragmentProfileBinding binding;
+private FragmentClassesBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
-        ProfileViewModel gradPlanViewModel =
-                new ViewModelProvider(this).get(ProfileViewModel.class);
+        ClassesViewModel classesViewModel =
+                new ViewModelProvider(this).get(ClassesViewModel.class);
 
-    binding = FragmentProfileBinding.inflate(inflater, container, false);
-    View root = binding.getRoot();
+        binding = FragmentClassesBinding.inflate(inflater, container, false);
+        View root = binding.getRoot();
 
         final TextView textView = binding.textNotifications;
-        gradPlanViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        classesViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 
