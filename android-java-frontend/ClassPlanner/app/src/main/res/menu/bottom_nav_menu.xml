@@ -2,26 +2,26 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_course_plans"
+        android:id="@+id/navigation_grad_plans"
         android:icon="@drawable/ic_home_black_24dp"
-        android:title="@string/title_course_plans"/>
+        android:title="@string/title_grad_plans" />
 
     <item
-        android:id="@+id/navigation_term_plans"
+        android:id="@+id/navigation_class_plans"
         android:icon="@drawable/ic_book_24dp"
-        android:title="@string/title_term_plans"/>
+        android:title="@string/title_class_plans" />
 
     <item
-        android:id="@+id/navigation_courses"
+        android:id="@+id/navigation_classes"
         android:icon="@drawable/ic_calendar_24dp"
-        android:title="@string/title_courses"/>
+        android:title="@string/title_classes" />
 
     <item
         android:id="@+id/navigation_profile"
         android:icon="@drawable/ic_profile_24dp"
-        android:title="@string/title_profile"/>
+        android:title="@string/title_profile" />
 
-     <item
+    <item
         android:id="@+id/navigation_class_plan"
         android:icon="@drawable/ic_book_24dp"
         android:title="Class Plan" />
