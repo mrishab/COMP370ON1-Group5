@@ -12,7 +12,6 @@
 
     <properties>
         <java.version>17</java.version>
-        <!-- spring-boot-starter-parent version is explicitly specified. Update it if this is updated -->
         <org.springframework.boot.version>3.4.1</org.springframework.boot.version>
         <m2e.apt.activation>jdt_apt</m2e.apt.activation>
         <aws.sdk.version>1.12.781</aws.sdk.version>
@@ -50,6 +49,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -134,10 +138,12 @@
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok-maven-plugin</artifactId>
             </plugin>
+            <!--
             <plugin>
                 <groupId>com.marvinformatics.formatter</groupId>
                 <artifactId>formatter-maven-plugin</artifactId>
             </plugin>
+            -->
         </plugins>
 
         <pluginManagement>
@@ -172,6 +178,7 @@
                     <artifactId>maven-resources-plugin</artifactId>
                     <version>${org.apache.maven.plugin.version}</version>
                 </plugin>
+                <!--
                 <plugin>
                     <groupId>com.marvinformatics.formatter</groupId>
                     <artifactId>formatter-maven-plugin</artifactId>
@@ -190,6 +197,7 @@
                         <removeUnusedImports>true</removeUnusedImports>
                     </configuration>
                 </plugin>
+                -->
                 <plugin>
                     <groupId>org.projectlombok</groupId>
                     <artifactId>lombok-maven-plugin</artifactId>
