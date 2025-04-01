@@ -3,35 +3,35 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_course_plans">
+    app:startDestination="@+id/navigation_grad_plans">
 
     <fragment
-        android:id="@+id/navigation_course_plans"
-        android:name="io.trishul.classplanner.ui.courseplans.CoursePlansFragment"
-        android:label="@string/title_course_plans"
-        tools:layout="@layout/fragment_course_plans" />
+        android:id="@+id/navigation_grad_plans"
+        android:name="io.trishul.classplanner.ui.gradplans.GradPlansFragment"
+        android:label="@string/title_class_plans"
+        tools:layout="@layout/fragment_grad_plans" />
 
     <fragment
-        android:id="@+id/navigation_term_plans"
-        android:name="io.trishul.classplanner.ui.termplan.TermPlanFragment"
-        android:label="@string/title_term_plans"
-        tools:layout="@layout/fragment_term_plan" />
+        android:id="@+id/navigation_class_plans"
+        android:name="io.trishul.classplanner.ui.classplans.ClassPlansFragment"
+        android:label="@string/title_class_plans"
+        tools:layout="@layout/fragment_grad_plans" />
 
     <fragment
-        android:id="@+id/navigation_courses"
-        android:name="io.trishul.classplanner.ui.courses.CoursesFragment"
-        android:label="@string/title_courses"
-        tools:layout="@layout/fragment_courses" />
+        android:id="@+id/navigation_classes"
+        android:name="io.trishul.classplanner.ui.classes.ClassesFragment"
+        android:label="@string/title_classes"
+        tools:layout="@layout/fragment_classes" />
 
     <fragment
         android:id="@+id/navigation_profile"
         android:name="io.trishul.classplanner.ui.profile.ProfileFragment"
         android:label="@string/title_profile"
-        tools:layout="@layout/fragment_courses" />
+        tools:layout="@layout/fragment_classes" />
 
     <fragment
         android:id="@+id/navigation_class_plan"
-        android:name="io.trishul.classplanner.ui.courseplans.ClassPlanFragment"
+        android:name="io.trishul.classplanner.ui.classplans.ClassPlanFragment"
         android:label="Class Plan"
         tools:layout="@layout/fragment_class_plan" />
 </navigation>
