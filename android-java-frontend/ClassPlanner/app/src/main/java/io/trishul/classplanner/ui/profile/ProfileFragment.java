@@ -34,8 +34,8 @@ public class ProfileFragment extends Fragment {
         logoutButton = view.findViewById(R.id.logoutButton);
 
         SharedPreferences prefs = requireContext().getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
-        String firstName = prefs.getString("firstName", "N/A");
-        String lastName = prefs.getString("lastName", "N/A");
+        String firstName = prefs.getString("userFirstName", "N/A");
+        String lastName = prefs.getString("userLastName", "N/A");
         String email = prefs.getString("userEmail", "N/A");
 
         String info = "Name: " + firstName + " " + lastName + "\nEmail: " + email;
@@ -43,7 +43,7 @@ public class ProfileFragment extends Fragment {
 
         logoutButton.setOnClickListener(v -> {
             SharedPreferences.Editor editor = prefs.edit();
-            editor.clear(); 
+            editor.clear();
             editor.apply();
 
             Toast.makeText(requireContext(), "Logged out", Toast.LENGTH_SHORT).show();
