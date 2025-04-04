@@ -22,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import io.trishul.classplanner.R;
 import io.trishul.classplanner.constants.EmailConstants;
 import io.trishul.classplanner.constants.PasswordConstants;
+import io.trishul.classplanner.network.ApiConfig;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -78,11 +79,7 @@ public class RegisterActivity extends AppCompatActivity {
                     return;
                 }
 
-                Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl("http://10.0.2.2:8080")
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
-
+                Retrofit retrofit = ApiConfig.getClient(RegisterActivity.this);
                 AuthApi authApi = retrofit.create(AuthApi.class);
                 RegisterRequest registerRequest = new RegisterRequest(firstName, lastName, email, password);
 

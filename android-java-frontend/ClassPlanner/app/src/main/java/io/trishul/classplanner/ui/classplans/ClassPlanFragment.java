@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import io.trishul.classplanner.R;
+import io.trishul.classplanner.network.ApiConfig;
 import io.trishul.classplanner.network.ClassPlanApi;
 import io.trishul.classplanner.network.ClassPlanRequest;
 import io.trishul.classplanner.network.ClassPlanResponse;
@@ -21,7 +22,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ClassPlanFragment extends Fragment {
 
@@ -48,11 +48,7 @@ public class ClassPlanFragment extends Fragment {
 
             ClassPlanRequest request = new ClassPlanRequest(major, year, terms);
 
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("http://10.0.2.2:8080")
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-
+            Retrofit retrofit = ApiConfig.getClient(requireContext());
             ClassPlanApi api = retrofit.create(ClassPlanApi.class);
 
             api.generateClassPlan(request).enqueue(new Callback<ClassPlanResponse>() {

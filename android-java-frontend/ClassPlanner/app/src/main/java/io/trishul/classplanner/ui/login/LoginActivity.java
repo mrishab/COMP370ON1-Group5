@@ -21,11 +21,11 @@ import io.trishul.classplanner.MainActivity;
 import io.trishul.classplanner.model.User;
 import io.trishul.classplanner.constants.EmailConstants;
 import io.trishul.classplanner.constants.PasswordConstants;
+import io.trishul.classplanner.network.ApiConfig;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends AppCompatActivity {
     public static final String APP_PREFS = "ClassPlannerPrefs";
@@ -133,11 +133,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void performLoginRequest(String email, String password) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:8080")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
+        Retrofit retrofit = ApiConfig.getClient(this);
         AuthApi authApi = retrofit.create(AuthApi.class);
         LoginRequest loginRequest = new LoginRequest(email, password);
 
