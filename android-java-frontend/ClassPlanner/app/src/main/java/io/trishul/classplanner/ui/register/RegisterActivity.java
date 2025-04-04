@@ -20,6 +20,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import androidx.appcompat.app.AppCompatActivity;
 import io.trishul.classplanner.R;
+import io.trishul.classplanner.constants.EmailConstants;
+import io.trishul.classplanner.constants.PasswordConstants;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -118,7 +120,7 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 String email = s.toString().trim();
-                isValidEmail = email.matches("^[A-Za-z0-9+_.-]+@student\\.ufv\\.ca$");
+                isValidEmail = email.matches(EmailConstants.EMAIL_PATTERN);
                 emailValidation.setTextColor(isValidEmail ? 
                     getResources().getColor(android.R.color.holo_green_dark) :
                     getResources().getColor(android.R.color.holo_red_dark));
@@ -146,10 +148,10 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void updatePasswordRequirements(String password) {
-        boolean hasLength = password.length() >= 8;
+        boolean hasLength = password.length() >= PasswordConstants.MIN_LENGTH;
         boolean hasUpper = !password.equals(password.toLowerCase());
-        boolean hasNumber = password.matches(".*\\d.*");
-        boolean hasSpecial = password.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?].*");
+        boolean hasNumber = password.matches(PasswordConstants.NUMBER_PATTERN);
+        boolean hasSpecial = password.matches(PasswordConstants.SPECIAL_CHARS_PATTERN);
 
         updateRequirement(passwordLength, hasLength);
         updateRequirement(passwordUppercase, hasUpper);

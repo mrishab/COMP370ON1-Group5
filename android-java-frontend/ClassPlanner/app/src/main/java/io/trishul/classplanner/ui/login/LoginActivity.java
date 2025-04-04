@@ -19,6 +19,8 @@ import io.trishul.classplanner.network.LoginRequest;
 import io.trishul.classplanner.ui.register.RegisterActivity;
 import io.trishul.classplanner.MainActivity;
 import io.trishul.classplanner.model.User;
+import io.trishul.classplanner.constants.EmailConstants;
+import io.trishul.classplanner.constants.PasswordConstants;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -76,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 String email = s.toString().trim();
-                isValidEmail = email.matches("^[A-Za-z0-9+_.-]+@student\\.ufv\\.ca$");
+                isValidEmail = email.matches(EmailConstants.EMAIL_PATTERN);
                 emailValidation.setTextColor(isValidEmail ? 
                     getResources().getColor(android.R.color.holo_green_dark) :
                     getResources().getColor(android.R.color.holo_red_dark));
@@ -121,7 +123,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private boolean isAdminLogin(String email, String password) {
-        return "admin@student.ufv.ca".equals(email) && "admin".equals(password);
+        return EmailConstants.ADMIN_EMAIL.equals(email) && 
+               PasswordConstants.ADMIN_PASSWORD.equals(password);
     }
 
     private void handleAdminLogin() {
