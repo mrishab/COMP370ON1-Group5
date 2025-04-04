@@ -64,7 +64,6 @@
     <string name="hour_22_00">22:00</string>
     <string name="header_logo">UFV Logo</string>
     <string name="availability_footer">Select the hours for which you\'re available to take classes in the next semester</string>
-    <string name="title_select_availability">Select your availability</string>
     <string name="desired_number_of_classes">Desired number of classes</string>
     <string name="text_subheading_burden_capacity">Burden Capacity</string>
     <string name="burden_capacity_high_radio_button_label">High</string>
