@@ -82,4 +82,24 @@
     <string name="button_submit_create_class_plan_retry">Retry</string>
     <string name="button_submit_create_class_plan_view">View Plan</string>
 
+    <!-- Login Activity -->
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+    <string name="button_login">Login</string>
+    <string name="text_goto_register">Don\'t have an account? Register</string>
+    
+    <!-- Register Activity -->
+    <string name="hint_first_name">First Name</string>
+    <string name="hint_last_name">Last Name</string>
+    <string name="text_password_validation">Must be a valid @student.ufv.ca email</string>
+    <string name="button_register">Register</string>
+    <string name="text_goto_login">Already have an account? Login</string>
+    
+    <!-- Profile Fragment -->
+    <string name="title_profile_heading">Profile</string>
+    <string name="button_logout">Logout</string>
+
+    <!-- Main Activity -->
+    <string name="toolbar_title_grad_plans">Grad Plans</string>
+    <string name="drawer_filter">Filter</string>
 </resources>
