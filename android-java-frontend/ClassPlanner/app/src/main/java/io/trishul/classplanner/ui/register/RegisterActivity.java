@@ -7,6 +7,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 import android.widget.TextView;
 import android.content.Intent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import io.trishul.classplanner.network.AuthApi;
 import io.trishul.classplanner.network.RegisterRequest;
 import io.trishul.classplanner.ui.login.LoginActivity;
@@ -26,6 +28,9 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText emailInput;
     private EditText passwordInput;
     private Button registerButton;
+    private TextView passwordLength, passwordUppercase, passwordNumber, passwordSpecial, emailValidation;
+    private boolean isValidEmail = false;
+    private boolean isValidPassword = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +42,16 @@ public class RegisterActivity extends AppCompatActivity {
         emailInput = findViewById(R.id.emailInput);
         passwordInput = findViewById(R.id.passwordInput);
         registerButton = findViewById(R.id.registerButton);
+
+        passwordLength = findViewById(R.id.passwordLength);
+        passwordUppercase = findViewById(R.id.passwordUppercase);
+        passwordNumber = findViewById(R.id.passwordNumber);
+        passwordSpecial = findViewById(R.id.passwordSpecial);
+        emailValidation = findViewById(R.id.emailValidation);
+
+        registerButton.setEnabled(false);
+
+        setupTextWatchers();
 
         TextView goToLogin = findViewById(R.id.goToLogin);
         goToLogin.setOnClickListener(new View.OnClickListener() {
@@ -90,5 +105,88 @@ public class RegisterActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    private void setupTextWatchers() {
+        emailInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String email = s.toString().trim();
+                isValidEmail = email.matches("^[A-Za-z0-9+_.-]+@student\\.ufv\\.ca$");
+                emailValidation.setTextColor(isValidEmail ? 
+                    getResources().getColor(android.R.color.holo_green_dark) :
+                    getResources().getColor(android.R.color.holo_red_dark));
+                updateRegisterButton();
+            }
+        });
+
+        passwordInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String password = s.toString();
+                updatePasswordRequirements(password);
+                updateRegisterButton();
+            }
+        });
+
+        firstNameInput.addTextChangedListener(new SimpleTextWatcher(() -> updateRegisterButton()));
+        lastNameInput.addTextChangedListener(new SimpleTextWatcher(() -> updateRegisterButton()));
+    }
+
+    private void updatePasswordRequirements(String password) {
+        boolean hasLength = password.length() >= 8;
+        boolean hasUpper = !password.equals(password.toLowerCase());
+        boolean hasNumber = password.matches(".*\\d.*");
+        boolean hasSpecial = password.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?].*");
+
+        updateRequirement(passwordLength, hasLength);
+        updateRequirement(passwordUppercase, hasUpper);
+        updateRequirement(passwordNumber, hasNumber);
+        updateRequirement(passwordSpecial, hasSpecial);
+
+        isValidPassword = hasLength && hasUpper && hasNumber && hasSpecial;
+    }
+
+    private void updateRequirement(TextView view, boolean isValid) {
+        view.setTextColor(isValid ? 
+            getResources().getColor(android.R.color.holo_green_dark) :
+            getResources().getColor(android.R.color.holo_red_dark));
+    }
+
+    private void updateRegisterButton() {
+        boolean isValidName = !firstNameInput.getText().toString().trim().isEmpty() 
+            && !lastNameInput.getText().toString().trim().isEmpty();
+        registerButton.setEnabled(isValidName && isValidEmail && isValidPassword);
+    }
+
+    private class SimpleTextWatcher implements TextWatcher {
+        private final Runnable action;
+
+        SimpleTextWatcher(Runnable action) {
+            this.action = action;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            action.run();
+        }
     }
 }

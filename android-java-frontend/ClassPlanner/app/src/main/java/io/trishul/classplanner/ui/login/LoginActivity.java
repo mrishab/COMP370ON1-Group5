@@ -22,21 +22,19 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends AppCompatActivity {
-
+    public static final String APP_PREFS = "ClassPlannerPrefs";
     private EditText emailInput;
     private EditText passwordInput;
     private Button loginButton;
+    private SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
-        String userEmail = prefs.getString("userEmail", null);
+        this.prefs = getSharedPreferences(APP_PREFS, MODE_PRIVATE);
+        String userEmail = prefs.getString(User.ATTR_NAME_EMAIL, null);
 
         if (userEmail != null) {
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
-            return;
+            openMainActivity();
         }
 
         super.onCreate(savedInstanceState);
@@ -58,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
 
             if (email.isEmpty() || password.isEmpty()) {
                 Toast.makeText(LoginActivity.this, "Please fill in both fields", Toast.LENGTH_SHORT).show();
-            return;
+                return;
             }
 
             Retrofit retrofit = new Retrofit.Builder()
@@ -77,15 +75,15 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(LoginActivity.this, "Welcome " + user.getFirstName(), Toast.LENGTH_SHORT).show();
 
                         SharedPreferences.Editor editor = prefs.edit();
-                        editor.putString("userEmail", user.getEmail());
-                        editor.putString("userFirstName", user.getFirstName());
-                        editor.putString("userLastName", user.getLastName());
+                        editor.putString(User.ATTR_NAME_EMAIL, user.getEmail());
+                        editor.putString(User.ATTR_NAME_FIRST_NAME, user.getFirstName());
+                        editor.putString(User.ATTR_NAME_LAST_NAME, user.getLastName());
                         editor.apply();
 
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        intent.putExtra("firstName", user.getFirstName());
-                        intent.putExtra("lastName", user.getLastName());
-                        intent.putExtra("email", user.getEmail());
+                        intent.putExtra(User.ATTR_NAME_FIRST_NAME, user.getFirstName());
+                        intent.putExtra(User.ATTR_NAME_LAST_NAME, user.getLastName());
+                        intent.putExtra(User.ATTR_NAME_EMAIL, user.getEmail());
                         startActivity(intent);
                         finish();
                     } else {
@@ -100,4 +98,19 @@ public class LoginActivity extends AppCompatActivity {
             });
         });
     }
+
+    private void setLoginSession(User user) {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(User.ATTR_NAME_EMAIL, user.getEmail());
+        editor.putString(User.ATTR_NAME_FIRST_NAME, user.getFirstName());
+        editor.putString(User.ATTR_NAME_LAST_NAME, user.getLastName());
+        editor.apply();
+    }
+
+    private void openMainActivity() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
 }
