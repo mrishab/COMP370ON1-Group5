@@ -100,6 +100,9 @@
     <string name="button_logout">Logout</string>
 
     <!-- Main Activity -->
-    <string name="toolbar_title_grad_plans">Grad Plans</string>
+    <string name="toolbar_title_grad_plans">Graduation Plans</string>
+    <string name="toolbar_title_class_plans">Class Plans</string>
+    <string name="toolbar_title_classes">Classes</string>
+    <string name="toolbar_title_profile">Profile</string>
     <string name="drawer_filter">Filter</string>
 </resources>

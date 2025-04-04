@@ -83,7 +83,6 @@ private ActivityMainBinding binding;
         Fragment filterClassesFragment = new FilterClassesFragment();
         Fragment filterProfileFragment = new FilterProfileFragment();
 
-
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(R.id.filter_fragment_container, filterGradPlansFragment, "FilterGradPlans");
@@ -99,7 +98,21 @@ private ActivityMainBinding binding;
         fragmentMap.put(R.id.navigation_classes, filterClassesFragment);
         fragmentMap.put(R.id.navigation_profile, filterProfileFragment);
 
+        Map<Integer, Integer> titleMap = new HashMap<>();
+        titleMap.put(R.id.navigation_grad_plans, R.string.toolbar_title_grad_plans);
+        titleMap.put(R.id.navigation_class_plans, R.string.toolbar_title_class_plans);
+        titleMap.put(R.id.navigation_classes, R.string.toolbar_title_classes);
+        titleMap.put(R.id.navigation_profile, R.string.toolbar_title_profile);
+
+        Toolbar toolbar = findViewById(R.id.top_bar);
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+            // Update toolbar title
+            Integer titleId = titleMap.get(destination.getId());
+            if (titleId != null) {
+                toolbar.setTitle(getString(titleId));
+            }
+            
+            // Handle filter fragment visibility
             Fragment selectedFragment = fragmentMap.get(destination.getId());
             if (selectedFragment != null) {
                 for (Fragment fragment : fragmentMap.values()) {
