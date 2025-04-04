@@ -36,25 +36,42 @@ public class ProfileFragment extends Fragment {
         textProfileInfo = view.findViewById(R.id.text_profile_info);
         logoutButton = view.findViewById(R.id.logoutButton);
 
+        displayUserProfile();
+        setupLogoutButton();
+
+        return view;
+    }
+
+    private void displayUserProfile() {
         SharedPreferences prefs = requireContext().getSharedPreferences("ClassPlannerPrefs", Context.MODE_PRIVATE);
         String firstName = prefs.getString("userFirstName", "N/A");
         String lastName = prefs.getString("userLastName", "N/A");
         String email = prefs.getString("userEmail", "N/A");
 
-        String info = "Name: " + firstName + " " + lastName + "\nEmail: " + email;
-        textProfileInfo.setText(info);
+        StringBuilder profileInfo = new StringBuilder();
+        profileInfo.append("Name\n")
+                  .append(firstName)
+                  .append(" ")
+                  .append(lastName)
+                  .append("\n\n")
+                  .append("Email\n")
+                  .append(email)
+                  .append("\n\n")
+                  .append("Student Status\n")
+                  .append("Active");
 
+        textProfileInfo.setText(profileInfo.toString());
+    }
+
+    private void setupLogoutButton() {
         logoutButton.setOnClickListener(v -> {
             sessionManager.clearSession();
-            Toast.makeText(requireContext(), "Logged out", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), "Successfully logged out", Toast.LENGTH_SHORT).show();
             
-            // Properly navigate to login activity
             Intent intent = new Intent(requireContext(), LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
-            requireActivity().finish(); // Ensure the current activity is finished
+            requireActivity().finish();
         });
-
-        return view;
     }
 }
