@@ -22,6 +22,7 @@ import io.trishul.classplanner.model.User;
 import io.trishul.classplanner.constants.EmailConstants;
 import io.trishul.classplanner.constants.PasswordConstants;
 import io.trishul.classplanner.network.ApiConfig;
+import io.trishul.classplanner.network.ApiClientManager;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -133,8 +134,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void performLoginRequest(String email, String password) {
-        Retrofit retrofit = ApiConfig.getClient(this);
-        AuthApi authApi = retrofit.create(AuthApi.class);
+        AuthApi authApi = ApiClientManager.getInstance(this).getAuthApi();
         LoginRequest loginRequest = new LoginRequest(email, password);
 
         authApi.login(loginRequest).enqueue(new Callback<User>() {

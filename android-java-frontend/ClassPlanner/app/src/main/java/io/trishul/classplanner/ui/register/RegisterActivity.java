@@ -16,13 +16,11 @@ import io.trishul.classplanner.model.User;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 import androidx.appcompat.app.AppCompatActivity;
 import io.trishul.classplanner.R;
 import io.trishul.classplanner.constants.EmailConstants;
 import io.trishul.classplanner.constants.PasswordConstants;
-import io.trishul.classplanner.network.ApiConfig;
+import io.trishul.classplanner.network.ApiClientManager;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -79,8 +77,7 @@ public class RegisterActivity extends AppCompatActivity {
                     return;
                 }
 
-                Retrofit retrofit = ApiConfig.getClient(RegisterActivity.this);
-                AuthApi authApi = retrofit.create(AuthApi.class);
+                AuthApi authApi = ApiClientManager.getInstance(RegisterActivity.this).getAuthApi();
                 RegisterRequest registerRequest = new RegisterRequest(firstName, lastName, email, password);
 
                 authApi.register(registerRequest).enqueue(new Callback<User>() {

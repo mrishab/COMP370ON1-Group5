@@ -14,14 +14,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import io.trishul.classplanner.R;
-import io.trishul.classplanner.network.ApiConfig;
+import io.trishul.classplanner.network.ApiClientManager;
 import io.trishul.classplanner.network.ClassPlanApi;
 import io.trishul.classplanner.network.ClassPlanRequest;
 import io.trishul.classplanner.network.ClassPlanResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class ClassPlanFragment extends Fragment {
 
@@ -48,8 +47,7 @@ public class ClassPlanFragment extends Fragment {
 
             ClassPlanRequest request = new ClassPlanRequest(major, year, terms);
 
-            Retrofit retrofit = ApiConfig.getClient(requireContext());
-            ClassPlanApi api = retrofit.create(ClassPlanApi.class);
+            ClassPlanApi api = ApiClientManager.getInstance(requireContext()).getClassPlanApi();
 
             api.generateClassPlan(request).enqueue(new Callback<ClassPlanResponse>() {
                 @Override
