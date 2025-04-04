@@ -20,12 +20,13 @@ import androidx.fragment.app.FragmentTransaction;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.trishul.classplanner.ui.base.BaseActivity;
 import io.trishul.classplanner.ui.filters.FilterGradPlansFragment;
 import io.trishul.classplanner.ui.filters.FilterClassPlansFragment;
 import io.trishul.classplanner.ui.filters.FilterClassesFragment;
 import io.trishul.classplanner.ui.filters.FilterProfileFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
 private ActivityMainBinding binding;
 

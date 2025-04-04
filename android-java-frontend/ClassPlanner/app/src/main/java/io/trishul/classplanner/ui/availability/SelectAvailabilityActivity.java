@@ -2,11 +2,11 @@ package io.trishul.classplanner.ui.availability;
 
 import android.os.Bundle;
 import android.view.View;
-import androidx.appcompat.app.AppCompatActivity;
 
 import io.trishul.classplanner.R;
+import io.trishul.classplanner.ui.base.BaseActivity;
 
-public class SelectAvailabilityActivity extends AppCompatActivity {
+public class SelectAvailabilityActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

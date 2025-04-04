@@ -11,6 +11,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import io.trishul.classplanner.network.AuthApi;
 import io.trishul.classplanner.network.RegisterRequest;
+import io.trishul.classplanner.ui.base.BaseActivity;
 import io.trishul.classplanner.ui.login.LoginActivity;
 import io.trishul.classplanner.model.User;
 import retrofit2.Call;
@@ -22,7 +23,7 @@ import io.trishul.classplanner.constants.EmailConstants;
 import io.trishul.classplanner.constants.PasswordConstants;
 import io.trishul.classplanner.network.ApiClientManager;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends BaseActivity {
 
     private EditText firstNameInput;
     private EditText lastNameInput;

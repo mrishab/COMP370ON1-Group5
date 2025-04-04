@@ -5,17 +5,17 @@ import android.os.Bundle;
 import android.widget.Button;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import io.trishul.classplanner.api.models.PlanCreationRequest;
+import io.trishul.classplanner.ui.base.BaseActivity;
 import io.trishul.classplanner.ui.classplans.create.CreateNewClassPlanActivityModel;
 import io.trishul.classplanner.ui.classplans.create.CreateNewClassPlanFragmentContainer;
 
-public class CreateNewClassPlanActivity extends AppCompatActivity {
+public class CreateNewClassPlanActivity extends BaseActivity {
     private static final String BUNDLE_CURRENT_STEP_KEY = "currentStep";
 
     private int currentStep = 0;

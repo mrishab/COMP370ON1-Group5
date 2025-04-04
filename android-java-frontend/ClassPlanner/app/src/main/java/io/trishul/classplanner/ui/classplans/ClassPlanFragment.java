@@ -16,8 +16,9 @@ import androidx.fragment.app.Fragment;
 import io.trishul.classplanner.R;
 import io.trishul.classplanner.network.ApiClientManager;
 import io.trishul.classplanner.network.ClassPlanApi;
-import io.trishul.classplanner.network.ClassPlanRequest;
-import io.trishul.classplanner.network.ClassPlanResponse;
+import io.trishul.classplanner.api.models.PlanCreationRequest;
+import io.trishul.classplanner.api.models.PlanCreationResponse;
+import io.trishul.classplanner.api.models.ClassDetail;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -45,19 +46,32 @@ public class ClassPlanFragment extends Fragment {
             int year = Integer.parseInt(yearInput.getText().toString().trim());
             int terms = Integer.parseInt(termsInput.getText().toString().trim());
 
-            ClassPlanRequest request = new ClassPlanRequest(major, year, terms);
+            PlanCreationRequest request = new PlanCreationRequest();
+            request.setGradPlanId(1L); // TODO: Replace with actual grad plan ID
+            request.setDesiredNumberOfClasses(terms);
+            request.setBurdenCapacity("MEDIUM"); // Default value
+            request.setClassDistribution("CONCENTRATED"); // Default value
 
             ClassPlanApi api = ApiClientManager.getInstance(requireContext()).getClassPlanApi();
 
-            api.generateClassPlan(request).enqueue(new Callback<ClassPlanResponse>() {
+            api.createClassPlan(request).enqueue(new Callback<PlanCreationResponse>() {
                 @Override
-                public void onResponse(Call<ClassPlanResponse> call, Response<ClassPlanResponse> response) {
+                public void onResponse(Call<PlanCreationResponse> call, Response<PlanCreationResponse> response) {
                     if (response.isSuccessful() && response.body() != null) {
-                        ClassPlanResponse plan = response.body();
-                        StringBuilder result = new StringBuilder("Plan: " + plan.getPlanName() + "\nCourses:\n");
-                        for (String course : plan.getCourses()) {
-                            result.append("- ").append(course).append("\n");
+                        PlanCreationResponse plan = response.body();
+                        StringBuilder result = new StringBuilder();
+                        result.append("Plan ID: ").append(plan.getPlanId()).append("\n\n");
+                        
+                        if (plan.getClasses() != null) {
+                            result.append("Classes:\n");
+                            for (ClassDetail classDetail : plan.getClasses()) {
+                                result.append("- ").append(classDetail.getCourse())
+                                      .append(" ").append(classDetail.getCourseNumber())
+                                      .append("\n  ").append(classDetail.getDescription())
+                                      .append("\n");
+                            }
                         }
+                        
                         resultView.setText(result.toString());
                     } else {
                         Toast.makeText(getContext(), "Failed: " + response.code(), Toast.LENGTH_SHORT).show();
@@ -65,7 +79,7 @@ public class ClassPlanFragment extends Fragment {
                 }
 
                 @Override
-                public void onFailure(Call<ClassPlanResponse> call, Throwable t) {
+                public void onFailure(Call<PlanCreationResponse> call, Throwable t) {
                     Toast.makeText(getContext(), "Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
                 }
             });

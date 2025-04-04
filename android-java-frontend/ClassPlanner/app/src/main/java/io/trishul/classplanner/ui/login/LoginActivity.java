@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import io.trishul.classplanner.R;
 import io.trishul.classplanner.network.AuthApi;
 import io.trishul.classplanner.network.LoginRequest;
+import io.trishul.classplanner.ui.base.BaseActivity;
 import io.trishul.classplanner.ui.register.RegisterActivity;
 import io.trishul.classplanner.MainActivity;
 import io.trishul.classplanner.model.User;
@@ -23,12 +24,13 @@ import io.trishul.classplanner.constants.EmailConstants;
 import io.trishul.classplanner.constants.PasswordConstants;
 import io.trishul.classplanner.network.ApiConfig;
 import io.trishul.classplanner.network.ApiClientManager;
+import io.trishul.classplanner.utils.SessionManager;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
     public static final String APP_PREFS = "ClassPlannerPrefs";
     private EditText emailInput;
     private EditText passwordInput;
@@ -37,13 +39,13 @@ public class LoginActivity extends AppCompatActivity {
     private SharedPreferences prefs;
     private boolean isValidEmail = false;
     private boolean isValidPassword = false;
+    private SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        this.prefs = getSharedPreferences(APP_PREFS, MODE_PRIVATE);
-        String userEmail = prefs.getString(User.ATTR_NAME_EMAIL, null);
+        sessionManager = new SessionManager(this);
 
-        if (userEmail != null) {
+        if (sessionManager.isLoggedIn()) {
             openMainActivity();
         }
 
@@ -183,11 +185,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void setLoginSession(User user) {
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(User.ATTR_NAME_EMAIL, user.getEmail());
-        editor.putString(User.ATTR_NAME_FIRST_NAME, user.getFirstName());
-        editor.putString(User.ATTR_NAME_LAST_NAME, user.getLastName());
-        editor.apply();
+        sessionManager.setLoginSession(user);
     }
 
     private void openMainActivity() {

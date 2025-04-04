@@ -8,13 +8,18 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import io.trishul.classplanner.api.BackendClient;
 import io.trishul.classplanner.api.models.PlanCreationRequest;
 import io.trishul.classplanner.api.models.PlanCreationResponse;
 
 import java.util.concurrent.CompletableFuture;
 
-public class SubmitCreateNewClassPlanActivity extends AppCompatActivity {
+import io.trishul.classplanner.network.ApiClientManager;
+import io.trishul.classplanner.ui.base.BaseActivity;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class SubmitCreateNewClassPlanActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,27 +38,36 @@ public class SubmitCreateNewClassPlanActivity extends AppCompatActivity {
             viewButton.setEnabled(false);
             progressBar.setVisibility(ProgressBar.VISIBLE);
 
-            BackendClient.getInstance().createClassPlan(request).thenAccept(response -> {
-                progressBar.setVisibility(ProgressBar.GONE);
-                retryButton.setEnabled(true);
+            ApiClientManager.getInstance(this)
+                .getClassPlanApi()
+                .createClassPlan(request)
+                .enqueue(new Callback<PlanCreationResponse>() {
+                    @Override
+                    public void onResponse(Call<PlanCreationResponse> call, Response<PlanCreationResponse> response) {
+                        progressBar.setVisibility(ProgressBar.GONE);
+                        retryButton.setEnabled(true);
 
-                if (response.isSuccess()) {
-                    viewButton.setEnabled(true);
-                    viewButton.setOnClickListener(v -> {
-                        Intent intent = new Intent(this, MainActivity.class);
-                        intent.putExtra("selectedTab", R.id.navigation_grad_plans);
-                        intent.putExtra("planId", response.getPlanId());
-                        startActivity(intent);
-                    });
-                } else {
-                    Toast.makeText(this, response.getMessage(), Toast.LENGTH_LONG).show();
-                }
-            }).exceptionally(e -> {
-                progressBar.setVisibility(ProgressBar.GONE);
-                retryButton.setEnabled(true);
-                Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                return null;
-            });
+                        if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
+                            viewButton.setEnabled(true);
+                            viewButton.setOnClickListener(v -> {
+                                Intent intent = new Intent(SubmitCreateNewClassPlanActivity.this, MainActivity.class);
+                                intent.putExtra("selectedTab", R.id.navigation_grad_plans);
+                                intent.putExtra("planId", response.body().getPlanId());
+                                startActivity(intent);
+                            });
+                        } else {
+                            String message = response.body() != null ? response.body().getMessage() : "Unknown error";
+                            Toast.makeText(SubmitCreateNewClassPlanActivity.this, message, Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<PlanCreationResponse> call, Throwable t) {
+                        progressBar.setVisibility(ProgressBar.GONE);
+                        retryButton.setEnabled(true);
+                        Toast.makeText(SubmitCreateNewClassPlanActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                });
         };
 
         // Initial API call
