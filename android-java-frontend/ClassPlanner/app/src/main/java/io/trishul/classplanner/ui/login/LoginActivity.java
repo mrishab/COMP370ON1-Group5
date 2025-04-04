@@ -8,7 +8,11 @@ import android.widget.Toast;
 import android.widget.TextView;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.text.Editable;
+import android.text.TextWatcher;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import io.trishul.classplanner.R;
 import io.trishul.classplanner.network.AuthApi;
 import io.trishul.classplanner.network.LoginRequest;
@@ -26,7 +30,10 @@ public class LoginActivity extends AppCompatActivity {
     private EditText emailInput;
     private EditText passwordInput;
     private Button loginButton;
+    private TextView emailValidation;
     private SharedPreferences prefs;
+    private boolean isValidEmail = false;
+    private boolean isValidPassword = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +50,11 @@ public class LoginActivity extends AppCompatActivity {
         emailInput = findViewById(R.id.emailInput);
         passwordInput = findViewById(R.id.passwordInput);
         loginButton = findViewById(R.id.loginButton);
+        emailValidation = findViewById(R.id.emailValidation);
+
+        loginButton.setEnabled(false);
+
+        setupTextWatchers();
 
         TextView goToRegister = findViewById(R.id.goToRegister);
         goToRegister.setOnClickListener(view -> {
@@ -55,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
             String password = passwordInput.getText().toString().trim();
 
             if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(LoginActivity.this, "Please fill in both fields", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -74,11 +86,7 @@ public class LoginActivity extends AppCompatActivity {
                         User user = response.body();
                         Toast.makeText(LoginActivity.this, "Welcome " + user.getFirstName(), Toast.LENGTH_SHORT).show();
 
-                        SharedPreferences.Editor editor = prefs.edit();
-                        editor.putString(User.ATTR_NAME_EMAIL, user.getEmail());
-                        editor.putString(User.ATTR_NAME_FIRST_NAME, user.getFirstName());
-                        editor.putString(User.ATTR_NAME_LAST_NAME, user.getLastName());
-                        editor.apply();
+                        setLoginSession(user);
 
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         intent.putExtra(User.ATTR_NAME_FIRST_NAME, user.getFirstName());
@@ -99,6 +107,44 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    private void setupTextWatchers() {
+        emailInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String email = s.toString().trim();
+                isValidEmail = email.matches("^[A-Za-z0-9+_.-]+@student\\.ufv\\.ca$");
+                emailValidation.setTextColor(isValidEmail ? 
+                    getResources().getColor(android.R.color.holo_green_dark) :
+                    getResources().getColor(android.R.color.holo_red_dark));
+                updateLoginButton();
+            }
+        });
+
+        passwordInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                isValidPassword = s.length() > 0;
+                updateLoginButton();
+            }
+        });
+    }
+
+    private void updateLoginButton() {
+        loginButton.setEnabled(isValidEmail && isValidPassword);
+    }
+
     private void setLoginSession(User user) {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(User.ATTR_NAME_EMAIL, user.getEmail());
@@ -112,5 +158,4 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
-
 }
