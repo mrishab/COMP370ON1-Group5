@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+    android:orientation="horizontal"
+    android:gravity="center"
+    android:background="#00713D">
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:cropToPadding="false"
+        android:contentDescription="@string/header_logo"
+        android:layout_marginTop="24dp"
+        android:src="@mipmap/img_ufv"/>
+</LinearLayout>
