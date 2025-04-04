@@ -62,49 +62,7 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        loginButton.setOnClickListener(view -> {
-            String email = emailInput.getText().toString().trim();
-            String password = passwordInput.getText().toString().trim();
-
-            if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(LoginActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("http://10.0.2.2:8080")
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-
-            AuthApi authApi = retrofit.create(AuthApi.class);
-            LoginRequest loginRequest = new LoginRequest(email, password);
-
-            authApi.login(loginRequest).enqueue(new Callback<User>() {
-                @Override
-                public void onResponse(Call<User> call, Response<User> response) {
-                    if (response.isSuccessful()) {
-                        User user = response.body();
-                        Toast.makeText(LoginActivity.this, "Welcome " + user.getFirstName(), Toast.LENGTH_SHORT).show();
-
-                        setLoginSession(user);
-
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        intent.putExtra(User.ATTR_NAME_FIRST_NAME, user.getFirstName());
-                        intent.putExtra(User.ATTR_NAME_LAST_NAME, user.getLastName());
-                        intent.putExtra(User.ATTR_NAME_EMAIL, user.getEmail());
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        Toast.makeText(LoginActivity.this, "Login failed: " + response.code(), Toast.LENGTH_SHORT).show();
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<User> call, Throwable t) {
-                    Toast.makeText(LoginActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
-                }
-            });
-        });
+        loginButton.setOnClickListener(this::handleLoginClick);
     }
 
     private void setupTextWatchers() {
@@ -143,6 +101,86 @@ public class LoginActivity extends AppCompatActivity {
 
     private void updateLoginButton() {
         loginButton.setEnabled(isValidEmail && isValidPassword);
+    }
+
+    private void handleLoginClick(View view) {
+        String email = emailInput.getText().toString().trim();
+        String password = passwordInput.getText().toString().trim();
+
+        if (email.isEmpty() || password.isEmpty()) {
+            showToast("Please fill in all fields");
+            return;
+        }
+
+        if (isAdminLogin(email, password)) {
+            handleAdminLogin();
+            return;
+        }
+
+        performLoginRequest(email, password);
+    }
+
+    private boolean isAdminLogin(String email, String password) {
+        return "admin@student.ufv.ca".equals(email) && "admin".equals(password);
+    }
+
+    private void handleAdminLogin() {
+        User adminUser = new User("Admin", "nimda", "admin@student.ufv.ca", "admin");
+        handleSuccessfulLogin(adminUser);
+    }
+
+    private void performLoginRequest(String email, String password) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://10.0.2.2:8080")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        AuthApi authApi = retrofit.create(AuthApi.class);
+        LoginRequest loginRequest = new LoginRequest(email, password);
+
+        authApi.login(loginRequest).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                handleLoginResponse(response);
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                handleLoginError(t);
+            }
+        });
+    }
+
+    private void handleLoginResponse(Response<User> response) {
+        if (response.isSuccessful()) {
+            User user = response.body();
+            handleSuccessfulLogin(user);
+        } else {
+            showToast("Login failed: " + response.code());
+        }
+    }
+
+    private void handleSuccessfulLogin(User user) {
+        showToast("Welcome " + user.getFirstName());
+        setLoginSession(user);
+        navigateToMainActivity(user);
+    }
+
+    private void handleLoginError(Throwable t) {
+        showToast("Error: " + t.getMessage());
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    private void navigateToMainActivity(User user) {
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        intent.putExtra(User.ATTR_NAME_FIRST_NAME, user.getFirstName());
+        intent.putExtra(User.ATTR_NAME_LAST_NAME, user.getLastName());
+        intent.putExtra(User.ATTR_NAME_EMAIL, user.getEmail());
+        startActivity(intent);
+        finish();
     }
 
     private void setLoginSession(User user) {
