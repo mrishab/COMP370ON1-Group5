@@ -28,7 +28,8 @@ import io.trishul.classplanner.ui.filters.FilterProfileFragment;
 
 public class MainActivity extends BaseActivity {
 
-private ActivityMainBinding binding;
+    public static final String EXTRA_DEFAULT_TAB = "defaultTab";
+    private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +64,12 @@ private ActivityMainBinding binding;
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupWithNavController(binding.navView, navController);
+
+        // Handle default tab selection from intent
+        if (getIntent() != null && getIntent().hasExtra(EXTRA_DEFAULT_TAB)) {
+            int defaultTabId = getIntent().getIntExtra(EXTRA_DEFAULT_TAB, R.id.navigation_grad_plans);
+            navController.navigate(defaultTabId);
+        }
 
         initializeFilterFragments(navController);
     }
