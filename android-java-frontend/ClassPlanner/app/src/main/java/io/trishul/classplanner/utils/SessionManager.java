@@ -35,6 +35,10 @@ public class SessionManager {
         editor.apply();
     }
 
+    public String getUserInfo(String key, String defaultValue) {
+        return prefs.getString(key, defaultValue);
+    }
+
     public void enforceLogin() {
         if (!isLoggedIn()) {
             Intent intent = new Intent(context, LoginActivity.class);
