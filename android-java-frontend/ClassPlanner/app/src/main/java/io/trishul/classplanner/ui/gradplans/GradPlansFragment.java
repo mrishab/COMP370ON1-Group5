@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -57,13 +58,19 @@ private void fetchGradPlans() {
                 
                 if (response.isSuccessful() && response.body() != null) {
                     recyclerView.setAdapter(new GradPlansAdapter(response.body().getGradPlans()));
+                } else {
+                    Toast.makeText(requireContext(), 
+                        "Failed to load graduation plans: " + response.code(), 
+                        Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<GradPlansResponse> call, Throwable t) {
                 swipeRefreshLayout.setRefreshing(false);
-                // Handle error
+                Toast.makeText(requireContext(), 
+                    "Error loading graduation plans: " + t.getMessage(),
+                    Toast.LENGTH_LONG).show();
             }
         });
 }
