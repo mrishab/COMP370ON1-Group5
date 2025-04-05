@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="degree_options">
+        <item>Accounting — certificate</item>
+        <item>Activity Assistant certificate — certificate (Continuing Education)</item>
+        <item>Adult Basic Education</item>
+        <item>Adult Education — bachelor\'s degree</item>
+        <item>Advanced Medical Office Assistant — certificate (Continuing Education)</item>
+        <item>Agricultural Science, Horticulture major — bachelor\'s degree</item>
+        <item>Agriculture Management — Bachelor of Business Administration</item>
+        <item>Agriculture Technology — diploma</item>
+        <item>AI and Machine Learning — post-baccalaureate diploma</item>
+        <item>Anthropology – Bachelor of Arts</item>
+        <item>Applied Business Technology — certificate</item>
+        <item>Applied Ethical and Political Philosophy — Bachelor of Arts</item>
+        <item>Applied Geographic Information Systems – associate certificate</item>
+        <item>Architectural Drafting Technician — certificate</item>
+        <item>Art History — Bachelor of Arts or Bachelor of Fine Arts</item>
+        <item>Arts — Associate of Arts degree</item>
+        <item>Arts — Bachelor of Arts</item>
+        <item>Automation and Robotics Technician — diploma</item>
+        <item>Automotive Service — certificate</item>
+        <item>Aviation — Bachelor of Business Administration degree</item>
+        <item>Aviation — diploma</item>
+        <item>Berry Production Essentials — certificate</item>
+        <item>Biology — Bachelor of Science</item>
+        <item>Bookkeeping for Small Business — certificate (Continuing Education)</item>
+        <item>Building Services Worker program</item>
+        <item>Business Administration — bachelor\'s degree</item>
+        <item>Business administration — certificate</item>
+        <item>Business Administration — diploma</item>
+        <item>Business Administration — minor</item>
+        <item>Business Analytics — post-baccalaureate diploma</item>
+        <item>Cabinetmaking (Joinery) — certificate</item>
+        <item>Carpentry — certificate</item>
+        <item>Certified Dental Assistant — certificate</item>
+        <item>Chemistry — Bachelor of Science</item>
+        <item>Child and Youth Care — Bachelor of Arts</item>
+        <item>Child Life and Community Health — graduate certificate</item>
+        <item>Civic Governance and Innovation — certificate (Continuing Education)</item>
+        <item>Coding Skills — associate certificate</item>
+        <item>Collision Repair and Refinish — certificate</item>
+        <item>Communications — Bachelor of Arts</item>
+        <item>Computer Information Systems — bachelor\'s degree</item>
+        <item>Computer Information Systems — certificate</item>
+        <item>Computer Information Systems — diploma</item>
+        <item>Computing Science — Bachelor of Science</item>
+        <item>Creative Writing — Bachelor of Arts</item>
+        <item>Creative Writing — Bachelor of Fine Arts</item>
+        <item>Criminal Justice — Bachelor of Arts</item>
+        <item>Criminal Justice — diploma</item>
+        <item>Culinary Arts — certificate</item>
+        <item>Current Agricultural Practices Essentials — certificate</item>
+        <item>Cybersecurity — post-baccalaureate diploma</item>
+        <item>Data Analysis — post-baccalaureate certificate</item>
+        <item>Dental Office Receptionist — certificate (Continuing Education)</item>
+        <item>Diaspora Studies — certificate</item>
+        <item>Digital Communication and Promotion — post-baccalaureate diploma</item>
+        <item>Digital Manufacturing — diploma</item>
+        <item>Early Childhood Education — certificate</item>
+        <item>Early Childhood Education — diploma</item>
+        <item>Early Modern Studies certificate</item>
+        <item>Economics — Bachelor of Arts</item>
+        <item>Education — bachelor\'s degree</item>
+        <item>Educational Leadership and Mentorship — Master of Education</item>
+        <item>Electrician — certificate</item>
+        <item>Electronics technician — certificate</item>
+        <item>Engineering Common Core certificate</item>
+        <item>Engineering Physics — diploma in Mechatronics</item>
+        <item>English Language Studies</item>
+        <item>English — Bachelor of Arts</item>
+        <item>Environmental Studies (Natural Sciences) — bachelor\'s degree</item>
+        <item>Environmental Studies — bachelor\'s degree</item>
+        <item>Essentials of journalism — associate certificate</item>
+        <item>Explore Trades Sampler</item>
+        <item>Field Vegetable Production Essentials — certificate</item>
+        <item>Fine Arts — Bachelor of Fine Arts</item>
+        <item>Floral Design — certificate</item>
+        <item>French — Bachelor of Arts</item>
+        <item>General Studies — diploma</item>
+        <item>Geographic Information Systems — certificate</item>
+        <item>Geography — Bachelor of Arts</item>
+        <item>Global Development Studies — Bachelor of Arts</item>
+        <item>Graphic and Digital Design — Bachelor of Fine Arts</item>
+        <item>Graphic and Digital Design — diploma</item>
+        <item>Graphic Design — minor</item>
+        <item>Halq\'eméylem, Intermediate Proficiency — certificate</item>
+        <item>Halq\'eméylem — graduate certificate</item>
+        <item>Halq\'eméylem — graduate diploma</item>
+        <item>Health Care Assistant — certificate</item>
+        <item>Heavy Mechanical Trades Foundation — certificate</item>
+        <item>History — Bachelor of Arts</item>
+        <item>Horticulture Crop Production and Protection — certificate</item>
+        <item>Human Resources Management — certificate (Continuing Education)</item>
+        <item>Inclusive Education Assistant – certificate</item>
+        <item>India-Canada Studies — certificate</item>
+        <item>Indigenous Academic Success Cohort</item>
+        <item>Indigenous Maps, Films, Rights and Land Claims — associate certificate</item>
+        <item>Indigenous Studies — Bachelor of Arts degree</item>
+        <item>Indigenous Studies — certificate</item>
+        <item>Integrated Learning Design — associate certificate</item>
+        <item>Integrated Pest Management Essentials — certificate</item>
+        <item>Integrated Studies — bachelor\'s degree</item>
+        <item>International and Development Studies — Associate of Arts</item>
+        <item>International Business — post-baccalaureate diploma</item>
+        <item>Kinesiology — bachelor\'s degree</item>
+        <item>Language Proficiency — certificate</item>
+        <item>Latin American Studies — Bachelor of Arts</item>
+        <item>Legal Administrative Assistant — certificate (Continuing Education)</item>
+        <item>Liberal Arts — diploma</item>
+        <item>Library Information and Technology — diploma</item>
+        <item>Library Technician — post-diploma certificate</item>
+        <item>Livestock Production — certificate</item>
+        <item>LPN access to Nursing — Bachelor of Science</item>
+        <item>Management Skills — certificate (Continuing Education)</item>
+        <item>Marketing and Sales — certificate</item>
+        <item>Mathematics &amp; Statistics — Bachelor of Science</item>
+        <item>Media and Communication Studies — Associate of Arts</item>
+        <item>Media and Communication Studies — Bachelor of Arts</item>
+        <item>Media and Communication Studies — Bachelor of Fine Arts</item>
+        <item>Media Arts — bachelor\'s degree</item>
+        <item>Media Literacy — associate certificate</item>
+        <item>Medical Office Assistant — certificate (Continuing Education)</item>
+        <item>Migration and Citizenship — graduate certificate</item>
+        <item>Migration and Citizenship — graduate diploma</item>
+        <item>Milker Technician — certificate</item>
+        <item>Nursing Unit Clerk — certificate (Continuing Education)</item>
+        <item>Nursing — Bachelor of Science</item>
+        <item>Paralegal — certificate (Continuing Education)</item>
+        <item>Paralegal — diploma (Continuing Education)</item>
+        <item>Peace and Conflict Studies — Bachelor of Arts</item>
+        <item>Philosophy — Bachelor of Arts</item>
+        <item>Physical Geography — Bachelor of Science</item>
+        <item>Physics — Bachelor of Science</item>
+        <item>Plumbing and Piping — certificate</item>
+        <item>Political Science — Bachelor of Arts</item>
+        <item>Power and Place: Stó:lō Téméxw Responsibility, Reflection and (Re)Storying Associate Certificate</item>
+        <item>Practical Nursing — diploma</item>
+        <item>Professional Communications Essentials — associate certificate</item>
+        <item>Professional Sales — minor</item>
+        <item>Program Evaluation — graduate certificate</item>
+        <item>Psychology — Bachelor of Arts</item>
+        <item>Public Relations — certificate (Continuing Education)</item>
+        <item>Records Management — certificate (Continuing Education)</item>
+        <item>Regional and Community Planning — bachelor\'s degree</item>
+        <item>Science — Associate of Science</item>
+        <item>Science — Bachelor of Science</item>
+        <item>Social Service Worker, Indigenous Focus — diploma</item>
+        <item>Social Work — Bachelor of Social Work</item>
+        <item>Social Work — master\'s degree</item>
+        <item>Sociology — Bachelor of Arts</item>
+        <item>Software Engineering — post-baccalaureate diploma</item>
+        <item>Stó:lō Studies — certificate</item>
+        <item>Teaching English as a Second Language — certificate</item>
+        <item>Theatre — Bachelor of Arts</item>
+        <item>Theatre — Bachelor of Fine Arts</item>
+        <item>Theatre — diploma</item>
+        <item>Trades Management — Bachelor of Business Administration</item>
+        <item>Veterinary Administrative Assistant — certificate (Continuing Education)</item>
+        <item>Visual Arts — Bachelor of Fine Arts</item>
+        <item>Visual Arts — diploma</item>
+        <item>Welding — certificate</item>
+        <item>Workplace Education — certificate</item>
+        <item>Workplace TASK — Employment training for adults with disabilities</item>
+    </string-array>
+    
+    <array name="credits_slider_values">
+        <item>0.0</item>
+        <item>120.0</item>
+    </array>
+    
+    <array name="cgpa_slider_values">
+        <item>0.0</item>
+        <item>4.33</item>
+    </array>
+    
+    <array name="year_slider_values">
+        <item>2020.0</item>
+        <item>2030.0</item>
+    </array>
+</resources>
