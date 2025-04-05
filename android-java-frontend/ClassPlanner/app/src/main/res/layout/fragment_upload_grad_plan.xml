@@ -1,56 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.classplans.create.upload.UploadGradPlanFragment"
-    >
+    android:layout_height="match_parent">
 
-    <ImageButton
-        android:id="@+id/img_button_upload_grad_plan"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="125dp"
-        android:background="@android:drawable/list_selector_background"
-        android:scaleType="fitCenter"
-        android:src="@drawable/ic_file_upload_24dp"
-        android:contentDescription="@string/img_button_upload_grad_plan_content_description"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-    <TextView
-        android:id="@+id/button_text_upload_grad_plan"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:gravity="center">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/upload_area"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_margin="8dp"
+                app:cardElevation="4dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="?attr/colorPrimary">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/ic_file_upload_24dp"
+                        app:tint="?attr/colorPrimary"/>
+
+                    <TextView
+                        android:id="@+id/tv_file_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Select a PDF file"
+                        android:textAppearance="?attr/textAppearanceBody1"/>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/text_upload_grad_plan_instructions"
+                android:textAppearance="?attr/textAppearanceBody2"/>
+
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/progress_indicator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:visibility="gone"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/error_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textColor="?attr/colorError"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fab_upload"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/button_text_upload_grad_plan"
-        android:layout_marginTop="5dp"
-        app:layout_constraintEnd_toEndOf="@+id/img_button_upload_grad_plan"
-        app:layout_constraintStart_toStartOf="@+id/img_button_upload_grad_plan"
-        app:layout_constraintTop_toBottomOf="@+id/img_button_upload_grad_plan" />
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:text="Upload"
+        app:icon="@drawable/ic_file_upload_24dp"/>
 
-    <TextView
-        android:id="@+id/text_upload_grad_plan_file_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="@string/text_upload_grad_plan_selected_filename"
-        app:layout_constraintEnd_toEndOf="@+id/button_text_upload_grad_plan"
-        app:layout_constraintStart_toStartOf="@+id/button_text_upload_grad_plan"
-
-
-        app:layout_constraintTop_toBottomOf="@+id/button_text_upload_grad_plan" />
-
-    <TextView
-        android:id="@+id/text_upload_grad_plan_instructions"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:text="@string/text_upload_grad_plan_instructions"
-        android:layout_marginTop="40dp"
-        app:layout_constraintEnd_toEndOf="@+id/text_upload_grad_plan_file_name"
-        app:layout_constraintStart_toStartOf="@+id/text_upload_grad_plan_file_name"
-        app:layout_constraintTop_toBottomOf="@+id/text_upload_grad_plan_file_name" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

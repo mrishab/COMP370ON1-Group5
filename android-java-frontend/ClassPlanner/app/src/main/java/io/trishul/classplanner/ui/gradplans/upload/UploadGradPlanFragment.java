@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,20 +13,18 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.google.android.material.card.MaterialCardView;
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
-import io.trishul.classplanner.databinding.FragmentUploadGradPlanNewBinding;
+import io.trishul.classplanner.databinding.FragmentUploadGradPlanBinding;
 
 public class UploadGradPlanFragment extends Fragment {
-    private FragmentUploadGradPlanNewBinding binding;
+    private FragmentUploadGradPlanBinding binding;
     private UploadGradPlanViewModel viewModel;
     private ActivityResultLauncher<Intent> filePicker;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentUploadGradPlanNewBinding.inflate(inflater, container, false);
+        binding = FragmentUploadGradPlanBinding.inflate(inflater, container, false);
         viewModel = new ViewModelProvider(requireActivity()).get(UploadGradPlanViewModel.class);
         
         setupFilePicker();
