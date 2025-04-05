@@ -1,5 +1,7 @@
 package io.trishul.classplanner.ui.classplans;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,8 @@ import io.trishul.classplanner.databinding.FragmentClassPlansBinding;
 import io.trishul.classplanner.api.models.ClassPlanFilterRequest;
 import io.trishul.classplanner.network.ApiClientManager;
 import io.trishul.classplanner.network.ClassPlansResponse;
+import io.trishul.classplanner.model.User;
+import io.trishul.classplanner.utils.SessionManager;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,7 +46,6 @@ public class ClassPlansFragment extends Fragment {
         swipeRefreshLayout.setRefreshing(true);
         swipeRefreshLayout.setOnRefreshListener(this::fetchClassPlans);
 
-        // Observe filter changes from activity ViewModel
         activityViewModel.getCurrentFilter().observe(getViewLifecycleOwner(), filter -> {
             if (activityViewModel.getFiltersApplied().getValue() == Boolean.TRUE) {
                 fetchClassPlans();
@@ -57,7 +60,23 @@ public class ClassPlansFragment extends Fragment {
         recyclerView.setVisibility(View.GONE);
         ClassPlanFilterRequest filter = activityViewModel.getCurrentFilter().getValue();
 
-        // Convert lists to comma-separated strings for API
+        SessionManager sessionManager = new SessionManager(requireContext());
+        User user = new User();
+        user.setFirstName(sessionManager.getUserInfo(User.ATTR_NAME_FIRST_NAME, ""));
+        user.setLastName(sessionManager.getUserInfo(User.ATTR_NAME_LAST_NAME, ""));
+        user.setEmail(sessionManager.getUserInfo(User.ATTR_NAME_EMAIL, ""));
+
+        String idStr = sessionManager.getUserInfo(User.ATTR_NAME_ID, null);
+        user.setId(idStr != null ? Long.parseLong(idStr) : null);
+
+        if (user.getId() == null) {
+            Toast.makeText(requireContext(), "User not logged in", Toast.LENGTH_SHORT).show();
+            swipeRefreshLayout.setRefreshing(false);
+            return;
+        }
+
+        String userId = String.valueOf(user.getId());
+
         String gradPlanIds = filter.getGradPlanIds() != null ? 
             String.join(",", filter.getGradPlanIds().stream().map(String::valueOf).toArray(String[]::new)) : null;
         String terms = filter.getTerms() != null ? String.join(",", filter.getTerms()) : null;
@@ -67,6 +86,7 @@ public class ClassPlansFragment extends Fragment {
         ApiClientManager.getInstance(requireContext())
             .getClassPlanApi()
             .getClassPlans(
+                userId,
                 gradPlanIds,
                 filter.getProgramName(),
                 filter.getDescription(),

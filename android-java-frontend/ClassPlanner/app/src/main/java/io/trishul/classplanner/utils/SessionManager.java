@@ -19,6 +19,7 @@ public class SessionManager {
 
     public void setLoginSession(User user) {
         SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(User.ATTR_NAME_ID, String.valueOf(user.getId()));
         editor.putString(User.ATTR_NAME_EMAIL, user.getEmail());
         editor.putString(User.ATTR_NAME_FIRST_NAME, user.getFirstName());
         editor.putString(User.ATTR_NAME_LAST_NAME, user.getLastName());

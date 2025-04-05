@@ -1,9 +1,10 @@
-package io.trishul.classplanner.network;
+    package io.trishul.classplanner.network;
 
 import io.trishul.classplanner.api.models.PlanCreationRequest;
 import io.trishul.classplanner.api.models.PlanCreationResponse;
 import io.trishul.classplanner.api.models.GradPlansResponse;
 import retrofit2.Call;
+import retrofit2.http.Header;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 import retrofit2.http.GET;
@@ -31,6 +32,7 @@ public interface ClassPlanApi {
 
     @GET("/api/v1/class-plans")
     Call<ClassPlansResponse> getClassPlans(
+        @Header("X-USER-ID") String userId,
         @Query("gradPlanIds") String gradPlanIds,
         @Query("programName") String programName,
         @Query("description") String description,

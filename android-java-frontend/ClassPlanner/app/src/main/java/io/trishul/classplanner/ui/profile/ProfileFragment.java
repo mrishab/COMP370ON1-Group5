@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import io.trishul.classplanner.R;
+import io.trishul.classplanner.model.User;
 import io.trishul.classplanner.ui.login.LoginActivity;
 import io.trishul.classplanner.utils.SessionManager;
 
@@ -43,11 +44,10 @@ public class ProfileFragment extends Fragment {
     }
 
     private void displayUserProfile() {
-        SharedPreferences prefs = requireContext().getSharedPreferences("ClassPlannerPrefs", Context.MODE_PRIVATE);
-        String firstName = prefs.getString("userFirstName", "N/A");
-        String lastName = prefs.getString("userLastName", "N/A");
-        String email = prefs.getString("userEmail", "N/A");
-
+        String firstName = sessionManager.getUserInfo(User.ATTR_NAME_FIRST_NAME, "N/A");
+        String lastName = sessionManager.getUserInfo(User.ATTR_NAME_LAST_NAME, "N/A");
+        String email = sessionManager.getUserInfo(User.ATTR_NAME_EMAIL, "N/A");
+    
         StringBuilder profileInfo = new StringBuilder();
         profileInfo.append("Name\n")
                   .append(firstName)
@@ -59,9 +59,9 @@ public class ProfileFragment extends Fragment {
                   .append("\n\n")
                   .append("Student Status\n")
                   .append("Active");
-
+    
         textProfileInfo.setText(profileInfo.toString());
-    }
+    }    
 
     private void setupLogoutButton() {
         logoutButton.setOnClickListener(v -> {
