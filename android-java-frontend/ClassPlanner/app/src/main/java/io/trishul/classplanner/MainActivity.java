@@ -9,6 +9,9 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+
+import io.trishul.classplanner.api.models.ClassPlanFilterRequest;
+import io.trishul.classplanner.api.models.GradPlanFilterRequest;
 import io.trishul.classplanner.databinding.ActivityMainBinding;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,15 +19,20 @@ import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
+import android.content.Intent;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 import io.trishul.classplanner.ui.base.BaseActivity;
+import io.trishul.classplanner.ui.classplans.ClassPlansViewModel;
 import io.trishul.classplanner.ui.filters.FilterGradPlansFragment;
 import io.trishul.classplanner.ui.filters.FilterClassPlansFragment;
 import io.trishul.classplanner.ui.filters.FilterClassesFragment;
 import io.trishul.classplanner.ui.filters.FilterProfileFragment;
+import io.trishul.classplanner.ui.gradplans.GradPlansViewModel;
 
 public class MainActivity extends BaseActivity {
 
@@ -65,10 +73,14 @@ public class MainActivity extends BaseActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
-        // Handle default tab selection from intent
-        if (getIntent() != null && getIntent().hasExtra(EXTRA_DEFAULT_TAB)) {
-            int defaultTabId = getIntent().getIntExtra(EXTRA_DEFAULT_TAB, R.id.navigation_grad_plans);
-            navController.navigate(defaultTabId);
+        // Handle default tab selection and filters from intent
+        if (getIntent() != null) {
+            Intent intent = getIntent();
+            if (intent.hasExtra(EXTRA_DEFAULT_TAB)) {
+                int defaultTabId = intent.getIntExtra(EXTRA_DEFAULT_TAB, R.id.navigation_grad_plans);
+                navController.navigate(defaultTabId);
+                updateFiltersFromIntent(defaultTabId, intent);
+            }
         }
 
         initializeFilterFragments(navController);
@@ -131,5 +143,42 @@ public class MainActivity extends BaseActivity {
                 fragmentManager.beginTransaction().show(selectedFragment).commit();
             }
         });
+    }
+
+    private void updateFiltersFromIntent(int tabId, Intent intent) {
+        if (tabId == R.id.navigation_grad_plans) {
+            GradPlansViewModel viewModel = new ViewModelProvider(this).get(GradPlansViewModel.class);
+            GradPlanFilterRequest filter = viewModel.getCurrentFilter().getValue();
+            
+            if (intent.hasExtra("minCreditsRequired")) 
+                filter.setMinCreditsRequired(intent.getIntExtra("minCreditsRequired", 0));
+            if (intent.hasExtra("maxCreditsRequired"))
+                filter.setMaxCreditsRequired(intent.getIntExtra("maxCreditsRequired", 0));
+            if (intent.hasExtra("degree"))
+                filter.setDegree(intent.getStringExtra("degree"));
+            if (intent.hasExtra("major"))
+                filter.setMajor(intent.getStringExtra("major"));
+            if (intent.hasExtra("terms"))
+                filter.setTerms(Arrays.asList(intent.getStringArrayExtra("terms")));
+            
+            viewModel.setCurrentFilter(filter);
+            viewModel.setFiltersApplied(true);
+            
+        } else if (tabId == R.id.navigation_class_plans) {
+            ClassPlansViewModel viewModel = new ViewModelProvider(this).get(ClassPlansViewModel.class);
+            ClassPlanFilterRequest filter = viewModel.getCurrentFilter().getValue();
+            
+            if (intent.hasExtra("minCourses"))
+                filter.setMinCourses(intent.getIntExtra("minCourses", 0));
+            if (intent.hasExtra("maxCourses"))
+                filter.setMaxCourses(intent.getIntExtra("maxCourses", 0));
+            if (intent.hasExtra("burdenCapacity"))
+                filter.setBurdenCapacity(Arrays.asList(intent.getStringArrayExtra("burdenCapacity")));
+            if (intent.hasExtra("classDistribution"))
+                filter.setClassDistribution(Arrays.asList(intent.getStringArrayExtra("classDistribution")));
+            
+            viewModel.setCurrentFilter(filter);
+            viewModel.setFiltersApplied(true);
+        }
     }
 }
