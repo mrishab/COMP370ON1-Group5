@@ -8,3 +8,7 @@ CREATE TABLE _USER (
     EMAIL VARCHAR(255) UNIQUE NOT NULL,
     PASSWORD VARCHAR(255) NOT NULL
 );
+
+-- Create default unauthenticated user
+INSERT INTO _USER (FIRST_NAME, LAST_NAME, EMAIL, PASSWORD)
+VALUES ('Unauthenticated', 'User', 'test@test.com', 'NONE');
