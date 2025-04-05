@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import io.trishul.classplanner.R;
 import io.trishul.classplanner.databinding.FragmentClassPlansBinding;
 import io.trishul.classplanner.api.models.ClassPlanFilterRequest;
 import io.trishul.classplanner.network.ApiClientManager;
@@ -110,7 +111,7 @@ public class ClassPlansFragment extends Fragment {
                         recyclerView.setAdapter(new ClassPlansAdapter(response.body().getClassPlans()));
                     } else {
                         Toast.makeText(requireContext(), 
-                            "Failed to load class plans: " + response.code(), 
+                            getString(R.string.error_load_class_plans, response.code()),
                             Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -119,7 +120,7 @@ public class ClassPlansFragment extends Fragment {
                 public void onFailure(Call<ClassPlansResponse> call, Throwable t) {
                     swipeRefreshLayout.setRefreshing(false);
                     Toast.makeText(requireContext(), 
-                        "Error loading class plans: " + t.getMessage(),
+                        getString(R.string.error_load_class_plans_network, t.getMessage()),
                         Toast.LENGTH_LONG).show();
                 }
             });

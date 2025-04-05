@@ -86,13 +86,30 @@
     <string name="hint_password">Password</string>
     <string name="button_login">Login</string>
     <string name="text_goto_register">Don\'t have an account? Register</string>
-    
+    <string name="text_goto_login">Already have an account? Login</string>
+
     <!-- Register Activity -->
     <string name="hint_first_name">First Name</string>
     <string name="hint_last_name">Last Name</string>
     <string name="text_password_validation">Must be a valid @student.ufv.ca email</string>
     <string name="button_register">Register</string>
-    <string name="text_goto_login">Already have an account? Login</string>
+
+    <!-- Error Messages -->
+    <string name="error_fill_all_fields">Please fill in all fields</string>
+    <string name="error_registration_failed">Registration failed: %1$d</string>
+    <string name="error_generic">Error: %1$s</string>
+    <string name="error_login_failed">Login failed: %1$d</string>
+    <string name="error_load_grad_plans">Failed to load graduation plans: %1$d</string>
+    <string name="error_load_grad_plans_network">Error loading graduation plans: %1$s</string>
+    <string name="error_load_class_plans">Failed to load class plans: %1$d</string>
+    <string name="error_load_class_plans_network">Error loading class plans: %1$s</string>
+    <string name="error_create_plan">Failed to create plan: %1$s</string>
+    <string name="error_create_plan_network">Error creating plan: %1$s</string>
+
+    <!-- Success Messages -->
+    <string name="success_registration">Welcome %1$s</string>
+    <string name="success_login">Welcome %1$s</string>
+    <string name="success_logout">Successfully logged out</string>
     
     <!-- Profile Fragment -->
     <string name="title_profile_heading">Profile</string>

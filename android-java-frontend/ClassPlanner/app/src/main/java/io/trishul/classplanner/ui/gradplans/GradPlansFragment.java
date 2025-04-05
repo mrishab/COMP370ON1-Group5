@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import io.trishul.classplanner.R;
 import io.trishul.classplanner.databinding.FragmentGradPlansBinding;
 import io.trishul.classplanner.api.models.GradPlansResponse;
 import io.trishul.classplanner.api.models.GradPlanFilterRequest;
@@ -89,7 +90,7 @@ public class GradPlansFragment extends Fragment {
                         recyclerView.setAdapter(new GradPlansAdapter(response.body().getGradPlans()));
                     } else {
                         Toast.makeText(requireContext(), 
-                            "Failed to load graduation plans: " + response.code(), 
+                            getString(R.string.error_load_grad_plans, response.code()), 
                             Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -98,7 +99,7 @@ public class GradPlansFragment extends Fragment {
                 public void onFailure(Call<GradPlansResponse> call, Throwable t) {
                     swipeRefreshLayout.setRefreshing(false);
                     Toast.makeText(requireContext(), 
-                        "Error loading graduation plans: " + t.getMessage(),
+                        getString(R.string.error_load_grad_plans_network, t.getMessage()),
                         Toast.LENGTH_LONG).show();
                 }
             });

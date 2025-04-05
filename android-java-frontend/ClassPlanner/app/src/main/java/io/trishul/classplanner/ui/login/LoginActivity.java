@@ -157,18 +157,18 @@ public class LoginActivity extends BaseActivity {
             User user = response.body();
             handleSuccessfulLogin(user);
         } else {
-            showToast("Login failed: " + response.code());
+            showToast(getString(R.string.error_login_failed, response.code()));
         }
     }
 
     private void handleSuccessfulLogin(User user) {
-        showToast("Welcome " + user.getFirstName());
+        showToast(getString(R.string.success_login, user.getFirstName()));
         setLoginSession(user);
         navigateToMainActivity(user);
     }
 
     private void handleLoginError(Throwable t) {
-        showToast("Error: " + t.getMessage());
+        showToast(getString(R.string.error_generic, t.getMessage()));
     }
 
     private void showToast(String message) {

@@ -74,7 +74,7 @@ public class RegisterActivity extends BaseActivity {
                 String password = passwordInput.getText().toString().trim();
 
                 if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty()) {
-                    Toast.makeText(RegisterActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, R.string.error_fill_all_fields, Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -86,18 +86,24 @@ public class RegisterActivity extends BaseActivity {
                     public void onResponse(Call<User> call, Response<User> response) {
                         if (response.isSuccessful()) {
                             User user = response.body();
-                            Toast.makeText(RegisterActivity.this, "Welcome " + user.getFirstName(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this, 
+                                getString(R.string.success_registration, user.getFirstName()), 
+                                Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                             startActivity(intent);
                             finish();
                         } else {
-                            Toast.makeText(RegisterActivity.this, "Registration failed: " + response.code(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this, 
+                                getString(R.string.error_registration_failed, response.code()), 
+                                Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<User> call, Throwable t) {
-                        Toast.makeText(RegisterActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(RegisterActivity.this, 
+                            getString(R.string.error_generic, t.getMessage()), 
+                            Toast.LENGTH_LONG).show();
                     }
                 });
             }

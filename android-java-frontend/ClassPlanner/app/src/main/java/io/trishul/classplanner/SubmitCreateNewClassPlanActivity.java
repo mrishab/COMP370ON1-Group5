@@ -58,7 +58,7 @@ public class SubmitCreateNewClassPlanActivity extends BaseActivity {
                         } else {
                             String message = response.body() != null ? response.body().getMessage() : "Unknown error occurred";
                             Toast.makeText(SubmitCreateNewClassPlanActivity.this, 
-                                "Failed to create plan: " + message, 
+                                getString(R.string.error_create_plan, message), 
                                 Toast.LENGTH_LONG).show();
                         }
                     }
@@ -68,7 +68,7 @@ public class SubmitCreateNewClassPlanActivity extends BaseActivity {
                         progressBar.setVisibility(ProgressBar.GONE);
                         retryButton.setEnabled(true);
                         Toast.makeText(SubmitCreateNewClassPlanActivity.this, 
-                            "Error creating plan: " + t.getMessage(), 
+                            getString(R.string.error_create_plan_network, t.getMessage()), 
                             Toast.LENGTH_LONG).show();
                     }
                 });

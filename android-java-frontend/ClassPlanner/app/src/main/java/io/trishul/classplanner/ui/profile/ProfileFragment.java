@@ -66,7 +66,7 @@ public class ProfileFragment extends Fragment {
     private void setupLogoutButton() {
         logoutButton.setOnClickListener(v -> {
             sessionManager.clearSession();
-            Toast.makeText(requireContext(), "Successfully logged out", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), R.string.success_logout, Toast.LENGTH_SHORT).show();
             
             Intent intent = new Intent(requireContext(), LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
