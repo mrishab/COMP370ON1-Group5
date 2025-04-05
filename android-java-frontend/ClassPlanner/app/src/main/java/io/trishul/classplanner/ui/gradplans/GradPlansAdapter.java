@@ -17,6 +17,10 @@ public class GradPlansAdapter extends RecyclerView.Adapter<GradPlansAdapter.View
         this.gradPlans = gradPlans;
     }
 
+    protected List<GradPlan> getGradPlans() {
+        return gradPlans;
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -38,7 +42,7 @@ public class GradPlansAdapter extends RecyclerView.Adapter<GradPlansAdapter.View
         return gradPlans.size();
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView programName, credits, gpa, createdAt;
 
         ViewHolder(View itemView) {

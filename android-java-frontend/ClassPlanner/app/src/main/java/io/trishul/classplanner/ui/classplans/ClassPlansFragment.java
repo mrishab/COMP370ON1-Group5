@@ -1,7 +1,6 @@
 package io.trishul.classplanner.ui.classplans;
 
-import android.content.Context;
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,13 +13,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import io.trishul.classplanner.CreateNewClassPlanActivity;
 import io.trishul.classplanner.R;
 import io.trishul.classplanner.databinding.FragmentClassPlansBinding;
 import io.trishul.classplanner.api.models.ClassPlanFilterRequest;
 import io.trishul.classplanner.network.ApiClientManager;
 import io.trishul.classplanner.network.ClassPlansResponse;
-import io.trishul.classplanner.model.User;
-import io.trishul.classplanner.utils.SessionManager;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -47,6 +45,12 @@ public class ClassPlansFragment extends Fragment {
         swipeRefreshLayout.setRefreshing(true);
         swipeRefreshLayout.setOnRefreshListener(this::fetchClassPlans);
 
+        binding.fabAddClassPlan.setOnClickListener(view -> {
+            Intent intent = new Intent(getActivity(), CreateNewClassPlanActivity.class);
+            startActivity(intent);
+        });
+
+        // Observe filter changes from activity ViewModel
         activityViewModel.getCurrentFilter().observe(getViewLifecycleOwner(), filter -> {
             if (activityViewModel.getFiltersApplied().getValue() == Boolean.TRUE) {
                 fetchClassPlans();

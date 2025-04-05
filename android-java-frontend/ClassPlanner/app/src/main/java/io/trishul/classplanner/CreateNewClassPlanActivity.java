@@ -106,7 +106,7 @@ public class CreateNewClassPlanActivity extends BaseActivity {
 
     private PlanCreationRequest createRequestFromViewModel() {
         PlanCreationRequest request = new PlanCreationRequest();
-        request.setGradPlanId(1L); // TODO: Placeholder for gradPlanId
+        request.setGradPlanId(viewModel.getSelectedGradPlanId().getValue());
         request.setDesiredNumberOfClasses(viewModel.getDesiredNumberOfClasses().getValue());
         request.setBurdenCapacity(viewModel.getBurdenCapacity().getValue());
         request.setClassDistribution(viewModel.getClassDistribution().getValue());

@@ -10,6 +10,7 @@ import java.util.Map;
 public class CreateNewClassPlanActivityModel extends ViewModel {
     // Grad plan URI logic
     private final MutableLiveData<Uri> gradPlanUri = new MutableLiveData<>();
+    private final MutableLiveData<Long> selectedGradPlanId = new MutableLiveData<>();
 
     public void setGradPlanUri(Uri uri) {
         gradPlanUri.setValue(uri);
@@ -17,6 +18,14 @@ public class CreateNewClassPlanActivityModel extends ViewModel {
 
     public MutableLiveData<Uri> getGradPlanUri() {
         return gradPlanUri;
+    }
+
+    public MutableLiveData<Long> getSelectedGradPlanId() {
+        return selectedGradPlanId;
+    }
+
+    public void setSelectedGradPlanId(Long id) {
+        selectedGradPlanId.setValue(id);
     }
 
     // Preferences logic
