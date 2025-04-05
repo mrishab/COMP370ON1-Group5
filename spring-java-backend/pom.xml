@@ -178,7 +178,6 @@
                     <artifactId>maven-resources-plugin</artifactId>
                     <version>${org.apache.maven.plugin.version}</version>
                 </plugin>
-                <!--
                 <plugin>
                     <groupId>com.marvinformatics.formatter</groupId>
                     <artifactId>formatter-maven-plugin</artifactId>
@@ -197,7 +196,6 @@
                         <removeUnusedImports>true</removeUnusedImports>
                     </configuration>
                 </plugin>
-                -->
                 <plugin>
                     <groupId>org.projectlombok</groupId>
                     <artifactId>lombok-maven-plugin</artifactId>

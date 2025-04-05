@@ -9,6 +9,8 @@ services:
     ports:
       # Debug port
       - 8000:8000
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
     depends_on:
       - classplanner_postgres
 
