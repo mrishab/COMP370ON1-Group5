@@ -38,6 +38,4 @@
         android:contentDescription="Add grad plan"
         app:srcCompat="@drawable/ic_add" />
 
-    <include layout="@layout/bottom_sheet_grad_plan_options"/>
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
