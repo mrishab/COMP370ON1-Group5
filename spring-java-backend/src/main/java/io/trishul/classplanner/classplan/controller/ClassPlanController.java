@@ -1,4 +1,4 @@
-package io.trishul.classplanner.classplan;
+package io.trishul.classplanner.classplan.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.trishul.classplanner.classplan.model.ClassPlan;
+import io.trishul.classplanner.classplan.repository.ClassPlanRepository;
+import io.trishul.classplanner.config.UserContext;lanResponse;
 import io.trishul.classplanner.config.UserContext;
 import io.trishul.classplanner.model.ClassPlan;
-import io.trishul.classplanner.repository.ClassPlanRepository;
 
 @RestController
 @RequestMapping("/api/v1/classplans")

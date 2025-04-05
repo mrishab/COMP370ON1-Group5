@@ -1,7 +1,8 @@
-package io.trishul.classplanner.model;
+package io.trishul.classplanner.classplan.model;
 
 import java.util.List;
 
+import io.trishul.classplanner.classdetail.model.ClassEntry;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;

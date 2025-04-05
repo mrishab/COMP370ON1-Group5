@@ -1,4 +1,4 @@
-package io.trishul.classplanner.controller;
+package io.trishul.classplanner.user.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.trishul.classplanner.user.User;
-import io.trishul.classplanner.user.UserRepository;
+import io.trishul.classplanner.user.UserR
+import io.trishul.classplanner.user.repository.UserRepository;
 
 @RestController
 @RequestMapping("/api/v1/users")

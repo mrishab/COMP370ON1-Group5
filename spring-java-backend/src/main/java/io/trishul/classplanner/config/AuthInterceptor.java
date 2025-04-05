@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import io.trishul.classplanner.service.InMemoryStorageService;
-import io.trishul.classplanner.user.User;
+import io.trishul.classplanner.user.model.User;
+import io.trishul.classplanner.user.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class AuthInterceptor implements HandlerInterceptor {
 
     @Autowired
-    private InMemoryStorageService storageService;
+    private UserRepository userRepository;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -27,7 +27,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             String[] values = credentials.split(":", 2);
 
             if (values.length == 2) {
-                User user = storageService.getUserByEmailAndPassword(values[0], values[1]);
+                User user = userRepository.findByEmailAndPassword(values[0], values[1]);
                 if (user != null) {
                     UserContext.setCurrentUser(String.valueOf(user.getId()));
                     return true;

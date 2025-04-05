@@ -1,4 +1,4 @@
-package io.trishul.classplanner.user;
+package io.trishul.classplanner.user.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

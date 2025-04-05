@@ -1,10 +1,10 @@
-package io.trishul.classplanner.model;
+package io.trishul.classplanner.classdetail.model;
+
+import java.util.Map;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.Map;
 
 @Data
 @NoArgsConstructor

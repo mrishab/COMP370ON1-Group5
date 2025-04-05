@@ -1,4 +1,4 @@
-package io.trishul.classplanner.model;
+package io.trishul.classplanner.classdetail.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package io.trishul.classplanner.classplan;
+package io.trishul.classplanner.classplan.dto;
 
 import lombok.Data;
 

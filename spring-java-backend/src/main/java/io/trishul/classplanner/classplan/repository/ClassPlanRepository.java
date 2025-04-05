@@ -1,11 +1,11 @@
-package io.trishul.classplanner.repository;
+package io.trishul.classplanner.classplan.repository;
 
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import io.trishul.classplanner.model.ClassPlan;
+import io.trishul.classplanner.classplan.model.ClassPlan;
 
 @Repository
 public interface ClassPlanRepository extends JpaRepository<ClassPlan, Long> {

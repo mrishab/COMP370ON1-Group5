@@ -1,4 +1,4 @@
-package io.trishul.classplanner.user;
+package io.trishul.classplanner.user.dto;
 
 import lombok.Getter;
 import lombok.Setter;

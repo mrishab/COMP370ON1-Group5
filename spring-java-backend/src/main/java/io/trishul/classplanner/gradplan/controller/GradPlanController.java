@@ -1,4 +1,4 @@
-package io.trishul.classplanner.controller;
+package io.trishul.classplanner.gradplan.controller;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.trishul.classplanner.config.UserContext;
+import io.trishul.classplanner.gradplan.repository.GradPlanRepository;
 import io.trishul.classplanner.model.GradPlan;
-import io.trishul.classplanner.repository.GradPlanRepository;
 
 @RestController
 @RequestMapping("/api/v1/gradplans")

@@ -1,4 +1,4 @@
-package io.trishul.classplanner.model;
+package io.trishul.classplanner.gradplan.model;
 
 import java.time.LocalDateTime;
 
