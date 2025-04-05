@@ -40,12 +40,12 @@ public class ClassPlanController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public List<ClassPlan> getPlans(@RequestParam(required = false) List<Long> ids) {
         return storage.getClassPlans(UserContext.getCurrentUser(), ids);
     }
 
-    @PostMapping("/create")
+    @PostMapping
     public ClassPlan createPlan(@RequestBody ClassPlan plan) {
         plan.setUserId(UserContext.getCurrentUser());
         return storage.saveClassPlan(plan);
