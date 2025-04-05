@@ -214,7 +214,46 @@ public class FilterClassPlansFragment extends Fragment {
         TextInputEditText descriptionInput = root.findViewById(R.id.et_description);
         descriptionInput.addTextChangedListener(textWatcher);
         
-        // Add listeners for sliders and chip groups
-        // ... similar to GradPlansFragment implementation ...
+        RangeSlider coursesSlider = root.findViewById(R.id.slider_courses);
+        coursesSlider.addOnChangeListener((slider, value, fromUser) -> {
+            if (lastAppliedFilter != null) {
+                applyButton.setEnabled(true);
+            }
+        });
+
+        RangeSlider creditsSlider = root.findViewById(R.id.slider_credits);
+        creditsSlider.addOnChangeListener((slider, value, fromUser) -> {
+            if (lastAppliedFilter != null) {
+                applyButton.setEnabled(true);
+            }
+        });
+
+        RangeSlider yearSlider = root.findViewById(R.id.slider_year);
+        yearSlider.addOnChangeListener((slider, value, fromUser) -> {
+            if (lastAppliedFilter != null) {
+                applyButton.setEnabled(true);
+            }
+        });
+
+        ChipGroup termGroup = root.findViewById(R.id.chip_group_term);
+        termGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            if (lastAppliedFilter != null) {
+                applyButton.setEnabled(true);
+            }
+        });
+
+        ChipGroup burdenGroup = root.findViewById(R.id.chip_group_burden);
+        burdenGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            if (lastAppliedFilter != null) {
+                applyButton.setEnabled(true);
+            }
+        });
+
+        ChipGroup distributionGroup = root.findViewById(R.id.chip_group_distribution);
+        distributionGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            if (lastAppliedFilter != null) {
+                applyButton.setEnabled(true);
+            }
+        });
     }
 }

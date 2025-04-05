@@ -1,16 +1,18 @@
 package io.trishul.classplanner.network;
 
+import com.google.gson.annotations.SerializedName;
 import java.util.List;
+import io.trishul.classplanner.api.models.ClassPlan;
 
 public class ClassPlansResponse {
-    private String planName;
-    private List<String> courses;
+    @SerializedName("classPlans")
+    private List<ClassPlan> classPlans;
 
-    public String getPlanName() {
-        return planName;
+    public List<ClassPlan> getClassPlans() {
+        return classPlans;
     }
 
-    public List<String> getCourses() {
-        return courses;
+    public void setClassPlans(List<ClassPlan> classPlans) {
+        this.classPlans = classPlans;
     }
 }
