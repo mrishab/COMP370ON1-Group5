@@ -28,4 +28,20 @@ public interface ClassPlanApi {
         @Query("yearStart") Integer yearStart,
         @Query("yearEnd") Integer yearEnd
     );
+
+    @GET("/api/v1/class-plans")
+    Call<ClassPlansResponse> getClassPlans(
+        @Query("gradPlanIds") String gradPlanIds,
+        @Query("programName") String programName,
+        @Query("description") String description,
+        @Query("minCourses") Integer minCourses,
+        @Query("maxCourses") Integer maxCourses,
+        @Query("minCredits") Integer minCredits,
+        @Query("maxCredits") Integer maxCredits,
+        @Query("terms") String terms,
+        @Query("yearStart") Integer yearStart,
+        @Query("yearEnd") Integer yearEnd,
+        @Query("burdenCapacity") String burdenCapacity,
+        @Query("classDistribution") String classDistribution
+    );
 }

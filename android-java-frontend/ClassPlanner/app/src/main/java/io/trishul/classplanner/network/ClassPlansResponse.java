@@ -2,7 +2,7 @@ package io.trishul.classplanner.network;
 
 import java.util.List;
 
-public class ClassPlanResponse {
+public class ClassPlansResponse {
     private String planName;
     private List<String> courses;
 
