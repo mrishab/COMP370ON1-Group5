@@ -1,5 +1,6 @@
 package io.trishul.classplanner.ui.gradplans;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +13,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import io.trishul.classplanner.R;
+import io.trishul.classplanner.UploadGradPlanActivity;
 import io.trishul.classplanner.databinding.FragmentGradPlansBinding;
 import io.trishul.classplanner.api.models.GradPlansResponse;
 import io.trishul.classplanner.api.models.GradPlanFilterRequest;
@@ -29,6 +34,7 @@ public class GradPlansFragment extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
     private GradPlansViewModel gradPlanViewModel;
     private GradPlansViewModel activityViewModel;
+    private BottomSheetBehavior bottomSheetBehavior;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
@@ -50,6 +56,18 @@ public class GradPlansFragment extends Fragment {
             if (activityViewModel.getFiltersApplied().getValue() == Boolean.TRUE) {
                 fetchGradPlans();
             }
+        });
+
+        View bottomSheet = root.findViewById(R.id.bottom_sheet);
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+
+        FloatingActionButton fab = root.findViewById(R.id.fab_add_grad_plan);
+        fab.setOnClickListener(v -> bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED));
+
+        root.findViewById(R.id.btn_upload_grad_plan).setOnClickListener(v -> {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+            startActivity(new Intent(requireContext(), UploadGradPlanActivity.class));
         });
 
         fetchGradPlans();

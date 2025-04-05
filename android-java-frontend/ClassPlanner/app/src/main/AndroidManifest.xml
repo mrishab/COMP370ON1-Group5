@@ -40,5 +40,10 @@
             android:theme="@style/Theme.ClassPlanner"
             android:windowSoftInputMode="adjustResize"
             android:launchMode="singleTask" />
+
+        <activity 
+            android:name=".UploadGradPlanActivity"
+            android:theme="@style/Theme.ClassPlanner"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 </manifest>
