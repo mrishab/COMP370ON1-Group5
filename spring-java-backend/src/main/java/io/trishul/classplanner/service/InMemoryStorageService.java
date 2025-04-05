@@ -1,14 +1,16 @@
 package io.trishul.classplanner.service;
 
-import io.trishul.classplanner.model.*;
-import io.trishul.classplanner.user.User;
-import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+
+import io.trishul.classplanner.model.ClassPlan;
+import io.trishul.classplanner.model.GradPlan;
+import io.trishul.classplanner.user.User;
 
 @Service
 public class InMemoryStorageService {
