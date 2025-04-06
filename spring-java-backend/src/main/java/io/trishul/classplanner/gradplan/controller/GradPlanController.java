@@ -47,4 +47,11 @@ public class GradPlanController {
         gradPlanRepository.deleteByIdAndUserId(id, UserContext.getCurrentUser());
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping
+    @Transactional
+    public ResponseEntity<?> deletePlans(@RequestBody List<Long> ids) {
+        gradPlanRepository.softDelete(ids);
+        return ResponseEntity.noContent().build();
+    }
 }

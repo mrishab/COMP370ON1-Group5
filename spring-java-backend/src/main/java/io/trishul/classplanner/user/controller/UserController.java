@@ -11,9 +11,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 import io.trishul.classplanner.user.UserR
 import io.trishul.classplanner.user.repository.UserRepository;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -30,8 +33,13 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<User> login(@RequestBody User loginRequest) {
-        User user = userRepository.findByEmailAndPassword(loginRequest.getEmail(), loginRequest.getPassword());
-        return user != null ? ResponseEntity.ok(user) : ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        User user = userRepository.findByEmailAndPasswordAndArchivedFalse(
+            loginRequest.getEmail(), 
+            loginRequest.getPassword()
+        );
+        return user != null ? 
+            ResponseEntity.ok(user) : 
+            ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
     @GetMapping("/{id}")
@@ -50,5 +58,12 @@ public class UserController {
                 return ResponseEntity.ok(userRepository.save(updated));
             })
             .orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping
+    @Transactional
+    public ResponseEntity<?> deleteUsers(@RequestBody List<Long> ids) {
+        userRepository.softDelete(ids);
+        return ResponseEntity.noContent().build();
     }
 }

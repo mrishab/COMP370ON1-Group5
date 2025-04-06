@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.trishul.classplanner.classplan.dto.ClassPlanRequest;
+import io.trishul.classplanner.classplan.dto.ClassPlanResponse;
 import io.trishul.classplanner.classplan.model.ClassPlan;
 import io.trishul.classplanner.classplan.repository.ClassPlanRepository;
-import io.trishul.classplanner.config.UserContext;lanResponse;
 import io.trishul.classplanner.config.UserContext;
-import io.trishul.classplanner.model.ClassPlan;
 
 @RestController
 @RequestMapping("/api/v1/classplans")
@@ -28,20 +28,6 @@ public class ClassPlanController {
 
     @Autowired
     private ClassPlanRepository classPlanRepository;
-
-    @PostMapping
-    public ResponseEntity<ClassPlanResponse> generateClassPlan(@RequestBody ClassPlanRequest request) {
-        List<String> courses = new ArrayList<>();
-        courses.add("COMP 101");
-        courses.add("COMP 102");
-        courses.add("MATH 201");
-
-        ClassPlanResponse response = new ClassPlanResponse();
-        response.setPlanName(request.getMajor() + " Year " + request.getYear());
-        response.setCourses(courses);
-
-        return ResponseEntity.ok(response);
-    }
 
     @GetMapping
     public List<ClassPlan> getPlans(@RequestParam(required = false) List<Long> ids) {
@@ -74,6 +60,13 @@ public class ClassPlanController {
     @Transactional
     public ResponseEntity<?> deletePlan(@PathVariable Long id) {
         classPlanRepository.deleteByIdAndUserId(id, UserContext.getCurrentUser());
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping
+    @Transactional
+    public ResponseEntity<?> deletePlans(@RequestBody List<Long> ids) {
+        classPlanRepository.softDelete(ids);
         return ResponseEntity.noContent().build();
     }
 }
