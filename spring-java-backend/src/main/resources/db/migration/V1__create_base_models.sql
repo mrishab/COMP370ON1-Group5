@@ -19,11 +19,23 @@ VALUES ('Unauthenticated', 'User', 'test@test.com', 'NONE');
 CREATE SEQUENCE grad_plan_sequence START 1;
 CREATE TABLE grad_plan (
     id BIGINT PRIMARY KEY DEFAULT nextval('grad_plan_sequence'),
-    user_id VARCHAR(255) NOT NULL,
     file_name VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP NOT NULL,
-    updated_at TIMESTAMP NOT NULL,
-    archived BOOLEAN DEFAULT FALSE
+    content BYTEA NOT NULL,
+    mime_type VARCHAR(255) NOT NULL,
+    program_name VARCHAR(255) NOT NULL,
+    major_name VARCHAR(255) NOT NULL,
+    credits_completed BIGINT NOT NULL,
+    credits_required BIGINT NOT NULL,
+    cgpa DOUBLE PRECISION,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    audited_at TIMESTAMP,
+    calendar_term_semester VARCHAR(255) NOT NULL,
+    calendar_term_year INTEGER NOT NULL,
+    program_level VARCHAR(255) NOT NULL,
+    user_id BIGINT NOT NULL,
+    archived BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (user_id) REFERENCES _user(id)
 );
 
 CREATE SEQUENCE class_plan_sequence START 1;
