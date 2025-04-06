@@ -5,7 +5,6 @@ import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import io.trishul.classplanner.user.dto.LoginRequest;
-import io.trishul.classplanner.user.dto.RegisterRequest;
 import io.trishul.classplanner.user.model.User;
 import io.trishul.classplanner.user.repository.UserRepository;
 
@@ -13,17 +12,7 @@ import io.trishul.classplanner.user.repository.UserRepository;
 public class AuthenticationService {
     @Autowired
     private UserRepository userRepository;
-    
-    public User register(RegisterRequest request) {
-        User newUser = User.builder()
-            .firstName(request.getFirstName())
-            .lastName(request.getLastName())
-            .email(request.getEmail())
-            .password(request.getPassword())
-            .build();
-        return userRepository.save(newUser);
-    }
-    
+
     public User login(LoginRequest request) {
         User probe = new User();
         probe.setEmail(request.getEmail());
