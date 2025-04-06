@@ -136,3 +136,29 @@ INSERT INTO burden_capacity (key, input) VALUES
     ('HARD', 'hard'),
     ('MEDIUM', 'medium'),
     ('LOW', 'low');
+
+CREATE SEQUENCE availability_sequence START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE availability_day_sequence START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE availability_hour_sequence START WITH 1 INCREMENT BY 1;
+
+CREATE TABLE availability (
+    id BIGINT PRIMARY KEY,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL,
+    archived BOOLEAN
+);
+
+CREATE TABLE availability_day (
+    id BIGINT PRIMARY KEY,
+    availability_id BIGINT NOT NULL,
+    day VARCHAR(255) NOT NULL,
+    FOREIGN KEY (availability_id) REFERENCES availability(id)
+);
+
+CREATE TABLE availability_hour (
+    id BIGINT PRIMARY KEY,
+    availability_day_id BIGINT NOT NULL,
+    hour_of_the_day INTEGER NOT NULL,
+    is_available BOOLEAN NOT NULL,
+    FOREIGN KEY (availability_day_id) REFERENCES availability_day(id)
+);
