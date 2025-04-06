@@ -41,14 +41,17 @@ CREATE TABLE grad_plan (
 CREATE SEQUENCE class_plan_sequence START 1;
 CREATE TABLE class_plan (
     id BIGINT PRIMARY KEY DEFAULT nextval('class_plan_sequence'),
-    user_id VARCHAR(255) NOT NULL,
-    grad_plan_id BIGINT,
-    workload VARCHAR(255),
-    class_distribution VARCHAR(255),
+    description VARCHAR(255),
+    grad_plan_id BIGINT NOT NULL,
     classes JSONB,
+    availability JSONB,
+    class_distribution JSONB,
+    burden_capacity JSONB,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     archived BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (grad_plan_id) REFERENCES grad_plan(id)
 );
 
 CREATE INDEX idx_grad_plan_user_id ON grad_plan(user_id);
-CREATE INDEX idx_class_plan_user_id ON class_plan(user_id);
+CREATE INDEX idx_class_plan_grad_plan_id ON class_plan(grad_plan_id);
