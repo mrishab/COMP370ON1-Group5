@@ -2,6 +2,7 @@ package io.trishul.classplanner.gradplan.model;
 
 import java.time.LocalDateTime;
 
+import io.trishul.classplanner.user.model.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,7 +21,7 @@ public class GradPlan {
     @SequenceGenerator(name = "grad_plan_generator", sequenceName = "grad_plan_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "grad_plan_generator")
     private Long id;
-    private String userId;
+    private User user;
     private String fileName;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

@@ -3,6 +3,7 @@ package io.trishul.classplanner.classplan.model;
 import java.util.List;
 
 import io.trishul.classplanner.classdetail.model.ClassEntry;
+import io.trishul.classplanner.gradplan.model.GradPlan;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
@@ -23,8 +24,7 @@ public class ClassPlan {
     @SequenceGenerator(name = "class_plan_generator", sequenceName = "class_plan_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "class_plan_generator")
     private Long id;
-    private String userId;
-    private Long gradPlanId;
+    private GradPlan gradPlan;
     private String workload;
     private String classDistribution;
     

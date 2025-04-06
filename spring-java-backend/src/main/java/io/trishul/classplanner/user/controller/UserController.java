@@ -52,10 +52,10 @@ public class UserController {
 
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<User> updateUser(@PathVariable String id, @RequestBody User updated) {
-        return userRepository.findById(Long.parseLong(id))
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User updated) {
+        return userRepository.findById(id)
             .map(existing -> {
-                updated.setId(Long.parseLong(id));
+                updated.setId(id);
                 return ResponseEntity.ok(userRepository.save(updated));
             })
             .orElse(ResponseEntity.notFound().build());
