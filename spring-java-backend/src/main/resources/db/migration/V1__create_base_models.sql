@@ -121,3 +121,18 @@ CREATE TABLE class_distribution (
 INSERT INTO class_distribution (key, input) VALUES
 ('CONCENTRATED', 'concentrated'),
 ('SPARSE', 'sparse');
+
+CREATE TABLE burden_capacity (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    key VARCHAR(255) NOT NULL,
+    input VARCHAR(255) NOT NULL,
+    archived BOOLEAN,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Insert enum values
+INSERT INTO burden_capacity (key, input) VALUES
+    ('HARD', 'hard'),
+    ('MEDIUM', 'medium'),
+    ('LOW', 'low');
