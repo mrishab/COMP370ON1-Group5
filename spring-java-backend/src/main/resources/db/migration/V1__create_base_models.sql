@@ -81,3 +81,17 @@ CREATE TABLE course_class_class_schedules (
 );
 
 CREATE INDEX idx_course_class_course_id ON course_class(course_id);
+
+-- Course table
+CREATE SEQUENCE course_sequence START 1;
+CREATE TABLE course (
+    id BIGINT PRIMARY KEY DEFAULT nextval('course_sequence'),
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    course_code VARCHAR(255) NOT NULL,
+    credits VARCHAR(255) NOT NULL,
+    course_number VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    archived BOOLEAN DEFAULT FALSE
+);
