@@ -107,3 +107,17 @@ CREATE TABLE class_schedule (
     updated_at TIMESTAMP NOT NULL,
     archived BOOLEAN
 );
+
+CREATE TABLE class_distribution (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    key VARCHAR(255) NOT NULL UNIQUE,
+    input VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    archived BOOLEAN
+);
+
+-- Insert initial enum values
+INSERT INTO class_distribution (key, input) VALUES
+('CONCENTRATED', 'concentrated'),
+('SPARSE', 'sparse');
