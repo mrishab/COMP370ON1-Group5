@@ -55,3 +55,29 @@ CREATE TABLE class_plan (
 
 CREATE INDEX idx_grad_plan_user_id ON grad_plan(user_id);
 CREATE INDEX idx_class_plan_grad_plan_id ON class_plan(grad_plan_id);
+
+-- Course class and schedules
+CREATE SEQUENCE class_sequence START 1;
+CREATE TABLE course_class (
+    id BIGINT PRIMARY KEY DEFAULT nextval('class_sequence'),
+    section VARCHAR(255) NOT NULL,
+    instructor VARCHAR(255) NOT NULL,
+    crn VARCHAR(255) NOT NULL,
+    room VARCHAR(255) NOT NULL,
+    method VARCHAR(255) NOT NULL,
+    course_id BIGINT NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    archived BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (course_id) REFERENCES course(id)
+);
+
+CREATE TABLE course_class_class_schedules (
+    course_class_id BIGINT NOT NULL,
+    day_of_week VARCHAR(255),
+    start_time VARCHAR(255),
+    end_time VARCHAR(255),
+    FOREIGN KEY (course_class_id) REFERENCES course_class(id)
+);
+
+CREATE INDEX idx_course_class_course_id ON course_class(course_id);
