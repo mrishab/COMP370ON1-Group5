@@ -95,3 +95,15 @@ CREATE TABLE course (
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     archived BOOLEAN DEFAULT FALSE
 );
+
+CREATE SEQUENCE class_schedule_sequence START WITH 1 INCREMENT BY 1;
+
+CREATE TABLE class_schedule (
+    id BIGINT PRIMARY KEY,
+    day VARCHAR(255) NOT NULL,
+    start_time VARCHAR(255) NOT NULL,
+    end_time VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL,
+    archived BOOLEAN
+);
