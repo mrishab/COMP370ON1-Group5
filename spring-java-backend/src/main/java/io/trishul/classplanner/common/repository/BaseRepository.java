@@ -11,5 +11,5 @@ import org.springframework.data.repository.NoRepositoryBean;
 public interface BaseRepository<T, ID> extends JpaRepository<T, ID> {
     @Modifying
     @Query("UPDATE #{#entityName} e SET e.archived = true WHERE e.id IN :ids")
-    void softDelete(Iterable<ID> ids);
+    Long softDelete(Iterable<ID> ids);
 }

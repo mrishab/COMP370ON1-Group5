@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.data.domain.Example;
 
-import io.trishul.classplanner.user.UserR
+import io.trishul.classplanner.user.User;
 import io.trishul.classplanner.user.repository.UserRepository;
 
 import java.util.List;
@@ -33,13 +34,14 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<User> login(@RequestBody User loginRequest) {
-        User user = userRepository.findByEmailAndPasswordAndArchivedFalse(
-            loginRequest.getEmail(), 
-            loginRequest.getPassword()
-        );
-        return user != null ? 
-            ResponseEntity.ok(user) : 
-            ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        User probe = new User();
+        probe.setEmail(loginRequest.getEmail());
+        probe.setPassword(loginRequest.getPassword());
+        probe.setArchived(false);
+        
+        return userRepository.findOne(Example.of(probe))
+            .map(ResponseEntity::ok)
+            .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
     }
 
     @GetMapping("/{id}")
@@ -63,7 +65,9 @@ public class UserController {
     @DeleteMapping
     @Transactional
     public ResponseEntity<?> deleteUsers(@RequestBody List<Long> ids) {
-        userRepository.softDelete(ids);
+        List<User> toDelete = userRepository.findAllById(ids);
+        toDelete.forEach(user -> user.setArchived(true));
+        userRepository.saveAll(toDelete);
         return ResponseEntity.noContent().build();
     }
 }

@@ -3,8 +3,10 @@ package io.trishul.classplanner.gradplan.controller;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,7 +30,9 @@ public class GradPlanController {
 
     @GetMapping
     public List<GradPlan> getPlans() {
-        return gradPlanRepository.findByUserId(UserContext.getCurrentUser());
+        GradPlan probe = new GradPlan();
+        probe.setUserId(UserContext.getCurrentUser());
+        return gradPlanRepository.findAll(Example.of(probe));
     }
 
     @PostMapping
@@ -44,14 +48,26 @@ public class GradPlanController {
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        gradPlanRepository.deleteByIdAndUserId(id, UserContext.getCurrentUser());
+        GradPlan probe = new GradPlan();
+        probe.setId(id);
+        probe.setUserId(UserContext.getCurrentUser());
+        
+        gradPlanRepository.findOne(Example.of(probe))
+            .ifPresent(plan -> gradPlanRepository.delete(plan));
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping
     @Transactional
     public ResponseEntity<?> deletePlans(@RequestBody List<Long> ids) {
-        gradPlanRepository.softDelete(ids);
+        GradPlan probe = new GradPlan();
+        probe.setUserId(UserContext.getCurrentUser());
+        
+        List<GradPlan> toDelete = gradPlanRepository.findAll(Example.of(probe))
+            .stream()
+            .filter(plan -> ids.contains(plan.getId()))
+            .collect(Collectors.toList());
+        gradPlanRepository.deleteAll(toDelete);
         return ResponseEntity.noContent().build();
     }
 }
