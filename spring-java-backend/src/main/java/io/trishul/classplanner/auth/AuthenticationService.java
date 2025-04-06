@@ -31,12 +31,4 @@ public class AuthenticationService {
         return userRepository.findOne(Example.of(probe))
             .orElse(null);
     }
-
-    public User authenticate(String email, String password) {
-        User probe = new User();
-        probe.setEmail(email);
-        probe.setPassword(password);
-        return userRepository.findOne(Example.of(probe))
-            .orElse(null);
-    }
 }

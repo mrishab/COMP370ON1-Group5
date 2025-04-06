@@ -3,6 +3,7 @@ package io.trishul.classplanner.gradplan.model;
 import java.time.LocalDateTime;
 
 import io.trishul.classplanner.user.model.User;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,4 +26,7 @@ public class GradPlan {
     private String fileName;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    @Column(name = "archived", nullable = true)
+    private boolean archived;
 }

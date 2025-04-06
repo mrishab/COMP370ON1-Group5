@@ -8,6 +8,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import io.trishul.classplanner.auth.AuthenticationService;
 import io.trishul.classplanner.auth.SessionManager;
+import io.trishul.classplanner.user.dto.LoginRequest;
 import io.trishul.classplanner.user.model.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -31,9 +32,9 @@ public class AuthInterceptor implements HandlerInterceptor {
             String[] values = credentials.split(":", 2);
 
             if (values.length == 2) {
-                User user = authService.login(values[0], values[1]);
+                User user = authService.login(new LoginRequest(values[0], values[1]));
                 if (user != null) {
-                    sessionManager.startSession(String.valueOf(user.getId()));
+                    sessionManager.startSession(user.getId());
                     return true;
                 }
             }

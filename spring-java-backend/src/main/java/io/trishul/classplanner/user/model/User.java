@@ -31,4 +31,6 @@ public class User {
   private String email;
   @Column(name = "password", nullable = false)
   private String password;
+  @Column(name = "archived", nullable = true)
+  private boolean archived;
 }

@@ -31,4 +31,7 @@ public class ClassPlan {
     @ElementCollection
     @Column(columnDefinition = "json")
     private List<ClassEntry> classes;
+
+    @Column(name = "archived", nullable = true)
+    private boolean archived;
 }
