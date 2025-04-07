@@ -1,0 +1,97 @@
+@startuml ClassPlanner Deployment Diagram
+
+' Styling
+skinparam monochrome true
+skinparam linetype ortho
+skinparam padding 5
+skinparam componentStyle uml2
+
+' External Users
+node "Mobile Users" {
+    component "Android App" as androidApp {
+        component "Class Planner UI" as ui
+        component "REST Client" as client
+    }
+}
+
+frame "AWS Infrastructure" {
+    ' VPC boundary
+    frame "VPC" {
+        ' Load Balancer
+        node "Application Load Balancer" as alb {
+            component "HTTPS Listener" as https
+            component "HTTP Listener" as http
+            component "WAF/Firewall Rules" as waf
+        }
+
+        ' ECS Clusters
+        frame "Availability Zone 1" as az1 {
+            node "ECS Cluster" as ecs1 {
+                node "Docker Compose Stack" as compose1 {
+                    node "classplanner_app" as app1 {
+                        component "Spring Boot App" as spring1
+                    }
+                    node "nginx-proxy" as nginx1 {
+                        component "TLS Termination" as tls1
+                    }
+                    node "certbot" as cert1
+                }
+            }
+        }
+
+        frame "Availability Zone 2" as az2 {
+            node "ECS Cluster" as ecs2 {
+                node "Docker Compose Stack" as compose2 {
+                    node "classplanner_app" as app2 {
+                        component "Spring Boot App" as spring2
+                    }
+                    node "nginx-proxy" as nginx2 {
+                        component "TLS Termination" as tls2
+                    }
+                    node "certbot" as cert2
+                }
+            }
+        }
+
+        ' RDS Database
+        frame "RDS Multi-AZ" {
+            database "Primary RDS PostgreSQL" as rds1 {
+                storage "Encrypted Storage (KMS)" as kms1
+            }
+            database "Standby RDS PostgreSQL" as rds2 {
+                storage "Encrypted Storage (KMS)" as kms2
+            }
+        }
+    }
+}
+
+' Network Connections
+client --> https : "HTTPS/443"
+https --> waf : "Validate Request"
+waf --> nginx1 : "Internal HTTPS"
+waf --> nginx2 : "Internal HTTPS"
+nginx1 --> spring1 : "HTTP/8080"
+nginx2 --> spring2 : "HTTP/8080"
+spring1 --> rds1 : "Encrypted Connection"
+spring2 --> rds1 : "Encrypted Connection"
+rds1 <--> rds2 : "Sync Replication"
+
+note right of androidApp
+  - Native Android Application
+  - Secure REST API Client
+  - JWT Authentication
+end note
+
+note right of alb
+  - HTTPS Only
+  - WAF Protection
+  - Private Subnet
+end note
+
+note right of rds1
+  - Encrypted at rest
+  - Multi-AZ deployment
+  - Automated backups
+end note
+
+@enduml

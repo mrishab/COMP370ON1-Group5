@@ -1,0 +1,62 @@
+@startuml ClassPlanner Component Diagram
+
+skinparam componentStyle uml2
+skinparam linetype ortho
+
+!define RECTANGLE class
+
+[OpenAI API] as OpenAI <<external>>
+[UFV Timetable API] as UFV <<external>>
+database "PostgreSQL" as DB <<database>>
+
+package "Android Frontend" {
+    [Login UI] as LoginUI
+    [GradPlan UI] as GradPlanUI
+    [ClassPlan UI] as ClassPlanUI
+}
+
+package "Backend Services" {
+    [Authentication Service] as Auth
+    [User Management] as UserMgmt
+    [Course Management] as CourseMgmt
+    [Grad Plan Service] as GradPlan
+    [Class Plan Service] as ClassPlan
+    [Timetable Service] as Timetable
+    [AI Service] as AI
+}
+
+' Interfaces
+interface "REST API" as AuthAPI
+interface "REST API" as UserAPI
+interface "REST API" as CourseAPI
+interface "REST API" as PlanAPI
+interface "Internal API" as TimetableAPI
+
+' Frontend to Backend
+LoginUI -down-> AuthAPI
+GradPlanUI -down-> PlanAPI
+ClassPlanUI -down-> PlanAPI
+
+' Service Interfaces
+Auth -up- AuthAPI
+UserMgmt -up- UserAPI
+CourseMgmt -up- CourseAPI
+ClassPlan -up- PlanAPI
+Timetable -up- TimetableAPI
+
+' Internal Communications
+Auth --> UserMgmt
+ClassPlan --> AI
+AI --> OpenAI
+Timetable --> UFV
+ClassPlan --> Timetable
+GradPlan --> ClassPlan
+
+' Database Connections
+UserMgmt --> DB
+CourseMgmt --> DB
+GradPlan --> DB
+ClassPlan --> DB
+Timetable --> DB
+
+@enduml

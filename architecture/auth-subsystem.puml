@@ -1,0 +1,96 @@
+@startuml Authentication & Planning Subsystem
+
+' Authentication packages (existing)
+package "Android Frontend" {
+  [LoginActivity] as LA
+  [RegisterActivity] as RA
+  [SessionManager\n(Android)] as SM_A
+  [AuthApi] as API
+  [GradPlanActivity] as GPA
+  [CreateClassPlanActivity] as CPA
+  
+  note right of SM_A
+    Manages user session using
+    SharedPreferences
+  end note
+}
+
+package "Spring Backend" {
+  package "Auth Layer" {
+    [UserController] as UC
+    [AuthenticationService] as AS
+    [SessionManager\n(Spring)] as SM_S 
+    [AuthInterceptor] as AI
+  }
+  
+  package "Planning Layer" {
+    [GradPlanController] as GPC
+    [ClassPlanController] as CPC
+    [TimetableService] as TS
+    [SpringAIService] as SAIS
+  }
+
+  package "Background Jobs" {
+    [TimetableSyncJob] as TSJ
+    note right
+      Regularly fetches and updates
+      UFV timetable data
+    end note
+  }
+}
+
+package "External Services" {
+  [UFV Timetable API] as UTA
+  [OpenAI API] as OAI
+}
+
+database "Database" {
+  package "Auth Store" {
+    [UserRepository] as UR
+  }
+  
+  package "Planning Store" {
+    [GradPlanRepository] as GPR
+    [ClassPlanRepository] as CPR
+    [TimetableRepository] as TR
+    [CourseRepository] as CR
+    [ClassScheduleRepository] as CSR
+  }
+}
+
+' Frontend flows
+LA --> API : login request
+RA --> API : register request
+LA --> SM_A : store session
+RA ..> LA : redirect after registration
+GPA --> GPC : grad plan operations
+CPA --> CPC : create plan request
+
+' Backend flows
+API --> UC : HTTP requests
+UC --> AS : authenticate
+AS --> UR : query user
+AI --> AS : validate requests
+AI --> SM_S : manage session
+
+' Planning flows
+TSJ --> UTA : fetch timetable updates
+TSJ --> TR : store timetable data
+CPC --> SAIS : generate plan
+SAIS --> OAI : AI completion request
+SAIS --> TR : fetch latest timetable
+CPC --> CPR : persist plan
+GPC --> GPR : persist grad plan
+
+' Database relationships
+TR --> CSR : schedule details
+TR --> CR : course details
+CPR --> GPR : plan association
+
+' Interceptor flow
+note right of AI
+  Intercepts all /api/** requests
+  except login & register
+end note
+
+@enduml

@@ -1,0 +1,75 @@
+@startuml ClassPlanner Architecture
+
+skinparam packageStyle rectangle
+skinparam linetype ortho
+left to right direction
+
+package "io.trishul.classplanner" {
+    ' Top Level - Activities
+    package "activities" {
+        class MainActivity
+        class BaseActivity
+    }
+
+    ' UI Layer
+    package "ui" {
+        package "login" {
+            class LoginActivity
+        }
+
+        package "gradplans" {
+            package "upload" {
+                class UploadGradPlanFragment
+                class UploadGradPlanViewModel
+            }
+            class GradPlansFragment
+            class GradPlansViewModel
+            class GradPlansAdapter
+        }
+
+        package "classplans" {
+            package "create" {
+                package "gradplan" {
+                    class SelectGradPlanFragment
+                }
+                class CreateNewClassPlanActivityModel
+            }
+            class ClassPlansFragment
+            class ClassPlansAdapter
+            class ClassPlansViewModel
+        }
+
+        package "filters" {
+            class FilterGradPlansFragment
+            class FilterClassPlansFragment
+            class FilterClassesFragment
+            class FilterProfileFragment
+        }
+    }
+
+    ' Network Layer
+    package "network" {
+        class ApiClientManager
+    }
+
+    ' Data Layer
+    package "api.models" {
+        class GradPlan
+        class ClassPlan
+        class GradPlansRequest
+        class GradPlansResponse
+        class ClassDetail
+        class ClassInfo
+    }
+}
+
+' Dependencies
+activities ..> ui
+ui.gradplans ..> api.models
+ui.classplans ..> api.models
+ui.filters ..> api.models
+ui ..> network
+network ..> api.models
+MainActivity ..> BaseActivity
+
+@enduml

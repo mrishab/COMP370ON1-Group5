@@ -1,0 +1,99 @@
+@startuml ClassPlanner Package Diagram
+
+left to right direction
+skinparam packageStyle rectangle
+skinparam linetype ortho
+
+package "Spring Framework" as SF {
+    [Spring Boot]
+    [Spring Data JPA]
+    [Spring Web]
+}
+
+package "io.trishul.classplanner" as root {
+    package "Infrastructure Layer" as infra {
+        package "config" {
+            [AuthInterceptor]
+            [WebConfig]
+        }
+        
+        package "common" {
+            [BaseRepository]
+        }
+        
+        package "auth" {
+            [AuthenticationService]
+            [SessionManager]
+        }
+    }
+
+    package "Domain Layer" as domain {
+        package "user" {
+            package "user.controller" {
+                [UserController]
+                package "user.controller.dto" {
+                    [UserDTO]
+                }
+            }
+            package "user.model" {
+                [User]
+            }
+            package "user.repository" {
+                [UserRepository]
+            }
+        }
+
+        package "Core Domain" as core {
+            package "course" {
+                package "course.controller"
+                package "course.model"
+                package "course.repository"
+            }
+
+            package "gradplan" {
+                package "gradplan.controller"
+                package "gradplan.model"
+                package "gradplan.repository"
+                package "gradplan.service" {
+                    [GradPlanAIService]
+                }
+            }
+        }
+
+        package "Planning Domain" as planning {
+            package "classplan" {
+                package "classplan.controller"
+                package "classplan.model"
+                package "classplan.repository"
+                package "classplan.dto"
+            }
+
+            package "availability" {
+                package "availability.controller"
+                package "availability.model"
+                package "availability.repository"
+            }
+
+            package "classschedule" {
+                package "classschedule.controller"
+                package "classschedule.model"
+                package "classschedule.repository"
+            }
+        }
+    }
+}
+
+' Relationships
+user ..> auth
+auth ..> config
+classplan ..> common
+course ..> common
+gradplan ..> common
+availability ..> common
+classschedule ..> common
+
+config ..> [Spring Web]
+[BaseRepository] ..> [Spring Data JPA]
+root ..> [Spring Boot]
+
+@enduml
