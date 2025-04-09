@@ -8,7 +8,7 @@ import io.trishul.classplanner.availability.controller.dto.GetAvailabilityDTO;
 import io.trishul.classplanner.availability.controller.dto.PostAvailabilityDTO;
 import io.trishul.classplanner.availability.controller.dto.PutAvailabilityDTO;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {AvailabilityDayMapper.class})
 public interface AvailabilityMapper {
     GetAvailabilityDTO toDTO(Availability availability);
     

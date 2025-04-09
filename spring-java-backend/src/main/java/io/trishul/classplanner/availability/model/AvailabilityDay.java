@@ -3,7 +3,6 @@ package io.trishul.classplanner.availability.model;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,7 +29,4 @@ public class AvailabilityDay {
 
     @OneToMany(mappedBy = "availabilityDay", cascade = CascadeType.ALL)
     private List<AvailabilityHour> hours;
-
-    @Column(nullable = true)
-    private boolean archived;
 }

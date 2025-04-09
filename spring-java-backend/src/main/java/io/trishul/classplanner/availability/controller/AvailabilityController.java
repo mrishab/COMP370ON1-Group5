@@ -7,7 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import io.trishul.classplanner.availability.controller.dto.GetAvailabilityDTO;
 import io.trishul.classplanner.availability.controller.dto.PostAvailabilityDTO;
@@ -29,7 +36,6 @@ public class AvailabilityController {
     @GetMapping
     public ResponseEntity<List<GetAvailabilityDTO>> getAllAvailabilities() {
         List<GetAvailabilityDTO> availabilities = availabilityRepository.findAll().stream()
-                .filter(availability -> !availability.isArchived())
                 .map(availabilityMapper::toDTO)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(availabilities);
@@ -38,7 +44,6 @@ public class AvailabilityController {
     @GetMapping("/{id}")
     public ResponseEntity<GetAvailabilityDTO> getAvailability(@PathVariable Long id) {
         return availabilityRepository.findById(id)
-                .filter(availability -> !availability.isArchived())
                 .map(availabilityMapper::toDTO)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -56,7 +61,6 @@ public class AvailabilityController {
     @Transactional
     public ResponseEntity<GetAvailabilityDTO> updateAvailability(@PathVariable Long id, @RequestBody PutAvailabilityDTO availabilityDTO) {
         return availabilityRepository.findById(id)
-                .filter(availability -> !availability.isArchived())
                 .map(availability -> {
                     Availability updated = availabilityMapper.toEntity(availabilityDTO);
                     updated.setId(availability.getId());
@@ -69,13 +73,7 @@ public class AvailabilityController {
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity<Void> deleteAvailability(@PathVariable Long id) {
-        return availabilityRepository.findById(id)
-                .filter(availability -> !availability.isArchived())
-                .map(availability -> {
-                    availability.setArchived(true);
-                    availabilityRepository.save(availability);
-                    return ResponseEntity.noContent().<Void>build();
-                })
-                .orElse(ResponseEntity.notFound().build());
+        availabilityRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }

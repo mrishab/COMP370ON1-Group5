@@ -22,9 +22,9 @@ public class AvailabilityHour {
     @JoinColumn(name = "availability_day_id", nullable = false)
     private AvailabilityDay availabilityDay;
 
+    @Column(nullable = false)
     private int hourOfTheDay;
-    private boolean isAvailable;
 
-    @Column(nullable = true)
-    private boolean archived;
+    @Column(nullable = false)
+    private boolean isAvailable;
 }

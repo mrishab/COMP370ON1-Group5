@@ -14,14 +14,12 @@ public class GetAvailabilityDTO {
 
     @Data
     public static class GetAvailabilityDayDTO {
-        private Long id;
         private String day;
         private List<GetAvailabilityHourDTO> hours;
     }
 
     @Data
     public static class GetAvailabilityHourDTO {
-        private Long id;
         private int hourOfTheDay;
         private boolean isAvailable;
     }
