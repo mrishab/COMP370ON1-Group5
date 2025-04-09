@@ -1,10 +1,12 @@
 package io.trishul.classplanner.gradplan.controller;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,7 +16,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import io.trishul.classplanner.auth.SessionManager;
 import io.trishul.classplanner.gradplan.controller.dto.GetGradPlanDTO;
@@ -23,6 +27,7 @@ import io.trishul.classplanner.gradplan.controller.dto.PutGradPlanDTO;
 import io.trishul.classplanner.gradplan.controller.dto.mapper.GradPlanMapper;
 import io.trishul.classplanner.gradplan.model.GradPlan;
 import io.trishul.classplanner.gradplan.repository.GradPlanRepository;
+import io.trishul.classplanner.gradplan.service.PDFProcessingService;
 import io.trishul.classplanner.user.model.User;
 
 @RestController
@@ -36,6 +41,9 @@ public class GradPlanController {
 
     @Autowired
     private SessionManager sessionManager;
+
+    @Autowired
+    private PDFProcessingService pdfProcessingService;
 
     @GetMapping
     public List<GetGradPlanDTO> getPlans() {
@@ -60,11 +68,17 @@ public class GradPlanController {
             .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping
+    @PostMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     @Transactional
-    public GetGradPlanDTO createPlan(@RequestBody PostGradPlanDTO dto) {
+    public GetGradPlanDTO createPlan(
+            @RequestPart("data") PostGradPlanDTO dto,
+            @RequestPart("file") MultipartFile file) throws IOException {
         GradPlan plan = mapper.toEntity(dto);
         plan.setUser(User.builder().id(sessionManager.getCurrentUserId()).build());
+        
+        String base64Content = pdfProcessingService.convertPDFToBase64Image(file);
+        plan.setPdfContentBase64(base64Content);
+        
         return mapper.toGetDTO(repository.save(plan));
     }
 

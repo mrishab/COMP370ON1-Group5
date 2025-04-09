@@ -20,8 +20,7 @@ CREATE SEQUENCE grad_plan_sequence START 1;
 CREATE TABLE grad_plan (
     id BIGINT PRIMARY KEY DEFAULT nextval('grad_plan_sequence'),
     file_name VARCHAR(255) NOT NULL,
-    content BYTEA NOT NULL,
-    mime_type VARCHAR(255) NOT NULL,
+    pdf_content_base64 TEXT
     program_name VARCHAR(255) NOT NULL,
     major_name VARCHAR(255) NOT NULL,
     credits_completed BIGINT NOT NULL,
