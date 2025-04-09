@@ -40,7 +40,9 @@ public class ClassPlanController {
     @GetMapping
     public List<GetClassPlanDTO> getPlans() {
         ClassPlan probe = new ClassPlan();
-        probe.setGradPlan(GradPlan.builder().id(sessionManager.getCurrentUserId()).build());
+        GradPlan gradPlan = new GradPlan();
+        gradPlan.setId(sessionManager.getCurrentUserId());
+        probe.setGradPlan(gradPlan);
 
         return repository.findAll(Example.of(probe))
                 .stream()
@@ -52,7 +54,9 @@ public class ClassPlanController {
     public ResponseEntity<GetClassPlanDTO> getPlan(@PathVariable Long id) {
         ClassPlan probe = new ClassPlan();
         probe.setId(id);
-        probe.setGradPlan(GradPlan.builder().id(sessionManager.getCurrentUserId()).build());
+        GradPlan gradPlan = new GradPlan();
+        gradPlan.setId(sessionManager.getCurrentUserId());
+        probe.setGradPlan(gradPlan);
 
         return repository.findOne(Example.of(probe))
                 .map(mapper::toGetDTO)
@@ -71,7 +75,9 @@ public class ClassPlanController {
     public ResponseEntity<GetClassPlanDTO> updatePlan(@PathVariable Long id, @RequestBody PutClassPlanDTO dto) {
         ClassPlan probe = new ClassPlan();
         probe.setId(id);
-        probe.setGradPlan(GradPlan.builder().id(sessionManager.getCurrentUserId()).build());
+        GradPlan gradPlan = new GradPlan();
+        gradPlan.setId(sessionManager.getCurrentUserId());
+        probe.setGradPlan(gradPlan);
 
         return repository.findOne(Example.of(probe))
                 .map(plan -> {
@@ -86,7 +92,9 @@ public class ClassPlanController {
     @Transactional
     public ResponseEntity<Void> deletePlans(@RequestBody List<Long> ids) {
         ClassPlan probe = new ClassPlan();
-        probe.setGradPlan(GradPlan.builder().id(sessionManager.getCurrentUserId()).build());
+        GradPlan gradPlan = new GradPlan();
+        gradPlan.setId(sessionManager.getCurrentUserId());
+        probe.setGradPlan(gradPlan);
 
         List<Long> toDelete = repository.findAll(Example.of(probe))
                 .stream()

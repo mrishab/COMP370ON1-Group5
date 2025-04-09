@@ -12,7 +12,6 @@ import io.trishul.classplanner.classdistribution.model.ClassDistribution;
 import io.trishul.classplanner.gradplan.model.GradPlan;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -22,6 +21,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import lombok.Data;
 
@@ -42,7 +42,8 @@ public class ClassPlan {
     @OneToMany(mappedBy = "classPlan", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ClassEntry> classes;
 
-    @Embedded
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "availability_id")
     private Availability availability;
 
     @Enumerated(EnumType.STRING)

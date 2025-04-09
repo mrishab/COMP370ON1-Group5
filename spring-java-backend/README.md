@@ -55,6 +55,9 @@ POSTGRES_PASSWORD=postgres
 # PG Admin
 PGADMIN_DEFAULT_EMAIL=hello@hello.com
 PGADMIN_DEFAULT_PASSWORD=pgadmin
+
+# OpenAI
+OPENAI_API_KEY=your_api_key_here
 ```
 
 ## Using Postman

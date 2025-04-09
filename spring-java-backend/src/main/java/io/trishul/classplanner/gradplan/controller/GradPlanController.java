@@ -56,7 +56,9 @@ public class GradPlanController {
     @GetMapping
     public List<GetGradPlanDTO> getPlans() {
         GradPlan probe = new GradPlan();
-        probe.setUser(User.builder().id(sessionManager.getCurrentUserId()).build());
+        User user = new User();
+        user.setId(sessionManager.getCurrentUserId());
+        probe.setUser(user);
 
         return repository.findAll(Example.of(probe))
             .stream()
@@ -68,7 +70,9 @@ public class GradPlanController {
     public ResponseEntity<GetGradPlanDTO> getPlan(@PathVariable Long id) {
         GradPlan probe = new GradPlan();
         probe.setId(id);
-        probe.setUser(User.builder().id(sessionManager.getCurrentUserId()).build());
+        User user = new User();
+        user.setId(sessionManager.getCurrentUserId());
+        probe.setUser(user);
 
         return repository.findOne(Example.of(probe))
             .map(mapper::toGetDTO)
@@ -82,7 +86,9 @@ public class GradPlanController {
             @RequestPart("data") PostGradPlanDTO dto,
             @RequestPart("file") MultipartFile file) throws IOException {
         GradPlan plan = mapper.toEntity(dto);
-        plan.setUser(User.builder().id(sessionManager.getCurrentUserId()).build());
+        User user = new User();
+        user.setId(sessionManager.getCurrentUserId());
+        plan.setUser(user);
         
         String base64Content = pdfProcessingService.convertPDFToBase64Image(file);
         plan.setPdfContentBase64(base64Content);
@@ -99,7 +105,9 @@ public class GradPlanController {
     public ResponseEntity<GetGradPlanDTO> updatePlan(@PathVariable Long id, @RequestBody PutGradPlanDTO dto) {
         GradPlan probe = new GradPlan();
         probe.setId(id);
-        probe.setUser(User.builder().id(sessionManager.getCurrentUserId()).build());
+        User user = new User();
+        user.setId(sessionManager.getCurrentUserId());
+        probe.setUser(user);
 
         return repository.findOne(Example.of(probe))
             .map(plan -> {
@@ -114,7 +122,9 @@ public class GradPlanController {
     @Transactional
     public ResponseEntity<Void> deletePlans(@RequestBody List<Long> ids) {
         GradPlan probe = new GradPlan();
-        probe.setUser(User.builder().id(sessionManager.getCurrentUserId()).build());
+        User user = new User();
+        user.setId(sessionManager.getCurrentUserId());
+        probe.setUser(user);
 
         List<Long> toDelete = repository.findAll(Example.of(probe))
             .stream()
