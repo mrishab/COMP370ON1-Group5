@@ -1,5 +1,6 @@
 package io.trishul.classplanner.classdetail.model;
 
+import io.trishul.classplanner.classplan.model.ClassPlan;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,4 +30,8 @@ public class ClassEntry {
     @ManyToOne
     @JoinColumn(name = "class_detail_id", nullable = false)
     private ClassDetail classDetail;
+
+    @ManyToOne
+    @JoinColumn(name = "class_plan_id", nullable = false)
+    private ClassPlan classPlan;
 }
