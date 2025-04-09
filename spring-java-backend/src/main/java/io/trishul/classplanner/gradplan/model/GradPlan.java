@@ -35,9 +35,6 @@ public class GradPlan {
     private String fileName;
 
     @Column(nullable = false)
-    private String mimeType;
-
-    @Column(nullable = false)
     private String programName;
 
     @Column(nullable = false)
@@ -49,6 +46,7 @@ public class GradPlan {
     @Column(nullable = false)
     private long creditsRequired;
 
+    @Column(nullable = false)
     private double cgpa;
 
     @CreationTimestamp
@@ -59,6 +57,7 @@ public class GradPlan {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
+    @Column(nullable = false)
     private LocalDateTime auditedAt;
 
     @Column(nullable = false)

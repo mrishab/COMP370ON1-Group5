@@ -11,7 +11,6 @@ import io.trishul.classplanner.gradplan.model.GradPlan;
 
 @Mapper(componentModel = "spring")
 public interface GradPlanMapper {
-    @Mapping(target = "userId", source = "user.id")
     GetGradPlanDTO toGetDTO(GradPlan gradPlan);
     
     @Mapping(target = "id", ignore = true)
@@ -20,6 +19,15 @@ public interface GradPlanMapper {
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "auditedAt", ignore = true)
     @Mapping(target = "archived", constant = "false")
+    @Mapping(target = "programName", ignore = true)
+    @Mapping(target = "majorName", ignore = true)
+    @Mapping(target = "creditsCompleted", ignore = true)
+    @Mapping(target = "creditsRequired", ignore = true)
+    @Mapping(target = "cgpa", ignore = true)
+    @Mapping(target = "calendarTermSemester", ignore = true)
+    @Mapping(target = "calendarTermYear", ignore = true)
+    @Mapping(target = "programLevel", ignore = true)
+    @Mapping(target = "pdfContentBase64", ignore = true)
     GradPlan toEntity(PostGradPlanDTO dto);
 
     @Mapping(target = "id", ignore = true)
@@ -27,6 +35,15 @@ public interface GradPlanMapper {
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "auditedAt", ignore = true)
-    @Mapping(target = "archived", ignore = true)
+    @Mapping(target = "archived", constant = "false")
+    @Mapping(target = "programName", ignore = true)
+    @Mapping(target = "majorName", ignore = true)
+    @Mapping(target = "creditsCompleted", ignore = true)
+    @Mapping(target = "creditsRequired", ignore = true)
+    @Mapping(target = "cgpa", ignore = true)
+    @Mapping(target = "calendarTermSemester", ignore = true)
+    @Mapping(target = "calendarTermYear", ignore = true)
+    @Mapping(target = "programLevel", ignore = true)
+    @Mapping(target = "pdfContentBase64", ignore = true)
     void updateEntity(@MappingTarget GradPlan gradPlan, PutGradPlanDTO dto);
 }
