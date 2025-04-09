@@ -1,15 +1,32 @@
 package io.trishul.classplanner.classdetail.model;
 
-import lombok.AllArgsConstructor;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Entity
 public class ClassEntry {
+    @Id
+    @SequenceGenerator(name = "class_entry_generator", sequenceName = "class_entry_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "class_entry_generator")
+    private Long id;
+
+    @Column(nullable = false)
     private String course;
+
+    @Column(nullable = false)
     private String courseNumber;
+
     private String description;
+
+    @ManyToOne
+    @JoinColumn(name = "class_detail_id", nullable = false)
     private ClassDetail classDetail;
 }
