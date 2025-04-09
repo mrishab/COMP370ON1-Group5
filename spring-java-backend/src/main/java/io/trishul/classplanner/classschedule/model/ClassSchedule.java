@@ -37,7 +37,4 @@ public class ClassSchedule {
     @UpdateTimestamp
     @Column(nullable = false)
     private LocalDateTime updatedAt;
-
-    @Column(nullable = true)
-    private boolean archived;
 }
