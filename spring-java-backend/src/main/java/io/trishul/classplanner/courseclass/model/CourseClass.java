@@ -6,6 +6,7 @@ import java.util.List;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import io.trishul.classplanner.classschedule.model.ClassSchedule;
 import io.trishul.classplanner.course.model.Course;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
