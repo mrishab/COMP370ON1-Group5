@@ -6,17 +6,22 @@ import java.util.List;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import io.trishul.classplanner.availability.model.Availability;
 import io.trishul.classplanner.classdetail.model.ClassEntry;
+import io.trishul.classplanner.classdistribution.model.ClassDistribution;
 import io.trishul.classplanner.gradplan.model.GradPlan;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import lombok.Data;
 
@@ -34,16 +39,18 @@ public class ClassPlan {
 
     private String description;
 
-    @ElementCollection
+    @OneToMany(mappedBy = "classPlan", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ClassEntry> classes;
 
     @Embedded
     private Availability availability;
 
-    @Embedded
+    @Enumerated(EnumType.STRING)
+    @Column(name = "class_distribution")
     private ClassDistribution classDistribution;
 
-    @Embedded
+    @Enumerated(EnumType.STRING)
+    @Column(name = "burden_capacity")
     private BurdenCapacity burdenCapacity;
 
     @CreationTimestamp
