@@ -27,6 +27,8 @@ import io.trishul.classplanner.gradplan.controller.dto.PutGradPlanDTO;
 import io.trishul.classplanner.gradplan.controller.dto.mapper.GradPlanMapper;
 import io.trishul.classplanner.gradplan.model.GradPlan;
 import io.trishul.classplanner.gradplan.repository.GradPlanRepository;
+import io.trishul.classplanner.gradplan.service.GradPlanAIResponseProcessor;
+import io.trishul.classplanner.gradplan.service.GradPlanAIService;
 import io.trishul.classplanner.gradplan.service.PDFProcessingService;
 import io.trishul.classplanner.user.model.User;
 
@@ -44,6 +46,12 @@ public class GradPlanController {
 
     @Autowired
     private PDFProcessingService pdfProcessingService;
+    
+    @Autowired
+    private GradPlanAIService aiService;
+    
+    @Autowired
+    private GradPlanAIResponseProcessor aiResponseProcessor;
 
     @GetMapping
     public List<GetGradPlanDTO> getPlans() {
@@ -78,6 +86,10 @@ public class GradPlanController {
         
         String base64Content = pdfProcessingService.convertPDFToBase64Image(file);
         plan.setPdfContentBase64(base64Content);
+
+        // Process with AI
+        String aiResponse = aiService.processImageContent(base64Content);
+        aiResponseProcessor.updateGradPlanFromAIResponse(plan, aiResponse);
         
         return mapper.toGetDTO(repository.save(plan));
     }
