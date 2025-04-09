@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.trishul.classplanner.course.model.Course;
 import io.trishul.classplanner.courseclass.controller.dto.GetCourseClassDTO;
 import io.trishul.classplanner.courseclass.controller.dto.PostCourseClassDTO;
 import io.trishul.classplanner.courseclass.controller.dto.PutCourseClassDTO;
 import io.trishul.classplanner.courseclass.controller.dto.mapper.CourseClassMapper;
 import io.trishul.classplanner.courseclass.model.CourseClass;
 import io.trishul.classplanner.courseclass.repository.CourseClassRepository;
-import io.trishul.classplanner.courseclass.model.Course;
 
 @RestController
 @RequestMapping("/api/v1/classes")

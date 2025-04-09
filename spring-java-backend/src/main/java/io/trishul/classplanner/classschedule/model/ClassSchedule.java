@@ -39,5 +39,5 @@ public class ClassSchedule {
     private LocalDateTime updatedAt;
 
     @Column(nullable = true)
-    private Boolean archived;
+    private boolean archived;
 }

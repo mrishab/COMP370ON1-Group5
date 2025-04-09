@@ -1,5 +1,6 @@
 package io.trishul.classplanner.availability.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,4 +24,7 @@ public class AvailabilityHour {
 
     private int hourOfTheDay;
     private boolean isAvailable;
+
+    @Column(nullable = true)
+    private boolean archived;
 }

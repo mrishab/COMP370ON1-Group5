@@ -6,5 +6,5 @@ import io.trishul.classplanner.classdistribution.model.ClassDistribution;
 import io.trishul.classplanner.common.repository.BaseRepository;
 
 @Repository
-public interface ClassDistributionRepository extends BaseRepository<String, ClassDistribution> {
+public interface ClassDistributionRepository extends BaseRepository<ClassDistribution, String> {
 }

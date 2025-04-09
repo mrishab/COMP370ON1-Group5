@@ -5,7 +5,6 @@ import lombok.Data;
 @Data
 public class PostGradPlanDTO {
     private String fileName;
-    private byte[] content;
     private String mimeType;
     private String programName;
     private String majorName;

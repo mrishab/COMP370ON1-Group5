@@ -32,7 +32,7 @@ public class ClassDistributionController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<GetClassDistributionDTO> getById(@PathVariable Long id) {
+    public ResponseEntity<GetClassDistributionDTO> getById(@PathVariable String id) {
         return repository.findById(id)
                 .map(mapper::toGetDTO)
                 .map(ResponseEntity::ok)
@@ -46,7 +46,7 @@ public class ClassDistributionController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<GetClassDistributionDTO> update(@PathVariable Long id, @RequestBody PutClassDistributionDTO dto) {
+    public ResponseEntity<GetClassDistributionDTO> update(@PathVariable String id, @RequestBody PutClassDistributionDTO dto) {
         Optional<ClassDistribution> optionalEntity = repository.findById(id);
         if (optionalEntity.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -57,7 +57,7 @@ public class ClassDistributionController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable String id) {
         Optional<ClassDistribution> optionalEntity = repository.findById(id);
         if (optionalEntity.isEmpty()) {
             return ResponseEntity.notFound().build();

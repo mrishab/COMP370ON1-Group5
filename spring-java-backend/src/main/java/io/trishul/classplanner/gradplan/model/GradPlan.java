@@ -12,7 +12,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import lombok.AllArgsConstructor;
@@ -33,10 +32,6 @@ public class GradPlan {
 
     @Column(nullable = false)
     private String fileName;
-
-    @Lob
-    @Column(nullable = false)
-    private byte[] content;
 
     @Column(nullable = false)
     private String mimeType;

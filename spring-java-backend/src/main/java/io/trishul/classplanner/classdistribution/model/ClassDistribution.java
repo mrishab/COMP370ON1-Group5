@@ -17,4 +17,7 @@ public class ClassDistribution {
 
     @Column(nullable = false)
     private String input;
+
+    @Column(nullable = true)
+    private boolean archived;
 }

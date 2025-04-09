@@ -25,7 +25,7 @@ public class BurdenCapacity {
     private String input;
 
     @Column(nullable = true)
-    private Boolean archived;
+    private boolean archived;
 
     @CreationTimestamp
     private Instant createdAt;
