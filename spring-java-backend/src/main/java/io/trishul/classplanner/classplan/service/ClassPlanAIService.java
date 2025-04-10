@@ -3,7 +3,6 @@ package io.trishul.classplanner.classplan.service;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
-
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.SystemMessage;
@@ -14,19 +13,18 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StreamUtils;
-
 import io.trishul.classplanner.availability.model.Availability;
 import io.trishul.classplanner.classplan.model.ClassPlan;
 
 @Service
 public class ClassPlanAIService {
-    @Autowired
-    private ChatClient chatClient;
+  @Autowired
+  private ChatClient chatClient;
 
-    @Value("classpath:timetable.txt")
-    private Resource timetableResource;
+  @Value("classpath:timetable.txt")
+  private Resource timetableResource;
 
-    public String generateClassPlan(ClassPlan classPlan, String gradPlanDetails) {
+  public String generateClassPlan(ClassPlan classPlan, String gradPlanDetails) {
         try {
             String timetable = StreamUtils.copyToString(timetableResource.getInputStream(), StandardCharsets.UTF_8);
             String availabilityString = formatAvailability(classPlan.getAvailability());
@@ -104,16 +102,14 @@ public class ClassPlanAIService {
         }
     }
 
-    private String formatAvailability(Availability availability) {
-        return availability.getDays().stream()
-            .map(day -> {
-                String dayKey = day.getDay().substring(0, 1); // Get first letter of day
-                String availableHours = day.getHours().stream()
-                    .filter(hour -> Boolean.TRUE.equals(hour.getIsAvailable()))
-                    .map(hour -> String.format("\"%02d:00\"", hour.getHourOfTheDay()))
-                    .collect(Collectors.joining(", "));
-                return String.format("\"%s\": [%s]", dayKey, availableHours);
-            })
-            .collect(Collectors.joining(",\n", "{\n", "\n}"));
-    }
+  private String formatAvailability(Availability availability) {
+    return availability.getDays().stream().map(day -> {
+      String dayKey = day.getDay().substring(0, 1); // Get first letter of day
+      String availableHours
+          = day.getHours().stream().filter(hour -> Boolean.TRUE.equals(hour.getIsAvailable()))
+              .map(hour -> String.format("\"%02d:00\"", hour.getHourOfTheDay()))
+              .collect(Collectors.joining(", "));
+      return String.format("\"%s\": [%s]", dayKey, availableHours);
+    }).collect(Collectors.joining(",\n", "{\n", "\n}"));
+  }
 }

@@ -17,25 +17,26 @@ import lombok.Data;
 @Data
 @Entity
 public class Course {
-    @Id
-    @SequenceGenerator(name = "course_generator", sequenceName = "course_sequence", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "course_generator")
-    private Long id;
+  @Id
+  @SequenceGenerator(name = "course_generator", sequenceName = "course_sequence",
+      allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "course_generator")
+  private Long id;
 
-    @Column(name = "_subject")
-    private String subject;
+  @Column(name = "_subject")
+  private String subject;
 
-    @Column
-    private Integer number;
+  @Column
+  private Integer number;
 
-    @Column
-    private String title;
+  @Column
+  private String title;
 
-    @ManyToOne(fetch=FetchType.EAGER)
-    @JoinColumn(name = "class_plan_id")
-    private ClassPlan classPlan;
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "class_plan_id")
+  private ClassPlan classPlan;
 
-    @OneToOne(cascade= CascadeType.ALL, orphanRemoval = true, fetch=FetchType.EAGER)
-    @JoinColumn(name = "class_detail_id")
-    private ClassDetail classDetail;
+  @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+  @JoinColumn(name = "class_detail_id")
+  private ClassDetail classDetail;
 }

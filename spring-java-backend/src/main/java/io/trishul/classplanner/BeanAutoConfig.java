@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class BeanAutoConfig {
 
-    @Bean
-    public ChatClient chatClient(ChatClient.Builder chatClientBuilder) {
-        return chatClientBuilder.build();
-    }
+  @Bean
+  public ChatClient chatClient(ChatClient.Builder chatClientBuilder) {
+    return chatClientBuilder.build();
+  }
 }

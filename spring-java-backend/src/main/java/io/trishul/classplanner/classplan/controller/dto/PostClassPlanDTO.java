@@ -7,9 +7,9 @@ import lombok.Data;
 
 @Data
 public class PostClassPlanDTO {
-    private Long gradPlanId;
-    private String description;
-    private PostAvailabilityDTO availability;
-    private ClassDistribution classDistribution;
-    private BurdenCapacity burdenCapacity;
+  private Long gradPlanId;
+  private String description;
+  private PostAvailabilityDTO availability;
+  private ClassDistribution classDistribution;
+  private BurdenCapacity burdenCapacity;
 }

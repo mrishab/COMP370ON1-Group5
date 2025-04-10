@@ -9,13 +9,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    @Autowired
-    private AuthInterceptor authInterceptor;
+  @Autowired
+  private AuthInterceptor authInterceptor;
 
-    @Override
-    public void addInterceptors(@NonNull InterceptorRegistry registry) {
-        registry.addInterceptor(authInterceptor)
-                .addPathPatterns("/api/**")
-                .excludePathPatterns("/api/v1/users/register", "/api/v1/users/login", "/api/v1/users/archived");
-    }
+  @Override
+  public void addInterceptors(@NonNull InterceptorRegistry registry) {
+    registry.addInterceptor(authInterceptor).addPathPatterns("/api/**").excludePathPatterns(
+        "/api/v1/users/register", "/api/v1/users/login", "/api/v1/users/archived");
+  }
 }

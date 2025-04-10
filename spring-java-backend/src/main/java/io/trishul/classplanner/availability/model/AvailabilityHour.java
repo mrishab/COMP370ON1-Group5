@@ -14,18 +14,19 @@ import lombok.Data;
 @Entity
 @Data
 public class AvailabilityHour {
-    @Id
-    @SequenceGenerator(name = "availability_hour_generator", sequenceName = "availability_hour_sequence", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "availability_hour_generator")
-    private Long id;
+  @Id
+  @SequenceGenerator(name = "availability_hour_generator",
+      sequenceName = "availability_hour_sequence", allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "availability_hour_generator")
+  private Long id;
 
-    @ManyToOne(fetch=FetchType.EAGER)
-    @JoinColumn(name = "availability_day_id")
-    private AvailabilityDay availabilityDay;
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "availability_day_id")
+  private AvailabilityDay availabilityDay;
 
-    @Column
-    private Integer hourOfTheDay;
+  @Column
+  private Integer hourOfTheDay;
 
-    @Column
-    private Boolean isAvailable;
+  @Column
+  private Boolean isAvailable;
 }

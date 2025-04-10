@@ -2,7 +2,6 @@ package io.trishul.classplanner.classplan.controller.dto;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
 import io.trishul.classplanner.availability.controller.dto.GetAvailabilityDTO;
 import io.trishul.classplanner.classdetail.dto.course.GetCourseDTO;
 import io.trishul.classplanner.classdistribution.model.ClassDistribution;
@@ -12,13 +11,13 @@ import lombok.Data;
 
 @Data
 public class GetClassPlanDTO {
-    private Long id;
-    private GetGradPlanDTO gradPlan;
-    private String description;
-    private List<GetCourseDTO> classes;
-    private GetAvailabilityDTO availability;
-    private ClassDistribution classDistribution;
-    private BurdenCapacity burdenCapacity;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+  private Long id;
+  private GetGradPlanDTO gradPlan;
+  private String description;
+  private List<GetCourseDTO> classes;
+  private GetAvailabilityDTO availability;
+  private ClassDistribution classDistribution;
+  private BurdenCapacity burdenCapacity;
+  private LocalDateTime createdAt;
+  private LocalDateTime updatedAt;
 }

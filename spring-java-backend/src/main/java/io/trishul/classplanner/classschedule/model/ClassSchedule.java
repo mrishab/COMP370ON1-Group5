@@ -15,21 +15,22 @@ import lombok.Data;
 @Entity
 @Data
 public class ClassSchedule {
-    @Id
-    @SequenceGenerator(name = "class_schedule_generator", sequenceName = "class_schedule_sequence", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "class_schedule_generator")
-    private Long id;
+  @Id
+  @SequenceGenerator(name = "class_schedule_generator", sequenceName = "class_schedule_sequence",
+      allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "class_schedule_generator")
+  private Long id;
 
-    @Column
-    private String day;
+  @Column
+  private String day;
 
-    @Column
-    private String startTime;
+  @Column
+  private String startTime;
 
-    @Column
-    private String endTime;
+  @Column
+  private String endTime;
 
-    @ManyToOne(fetch=FetchType.EAGER)
-    @JoinColumn(name = "class_detail_id")
-    private ClassDetail classDetail;
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "class_detail_id")
+  private ClassDetail classDetail;
 }

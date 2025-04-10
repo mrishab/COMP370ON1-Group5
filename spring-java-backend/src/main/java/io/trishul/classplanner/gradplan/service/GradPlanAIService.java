@@ -10,9 +10,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class GradPlanAIService {
-    @Autowired    
-    private ChatClient chatClient;
-    public String processImageContent(String base64Image) {
+  @Autowired
+  private ChatClient chatClient;
+
+  public String processImageContent(String base64Image) {
         Message userMessage = new UserMessage(String.format("""
           Analyze this graduation plan image and extract only the requested information in the exact JSON format specified.
           Image data: data:image/png;base64,%s

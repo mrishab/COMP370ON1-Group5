@@ -3,7 +3,6 @@ package io.trishul.classplanner.gradplan.controller;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.http.MediaType;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
 import io.trishul.classplanner.auth.SessionManager;
 import io.trishul.classplanner.gradplan.controller.dto.GetGradPlanDTO;
 import io.trishul.classplanner.gradplan.controller.dto.mapper.GradPlanMapper;
@@ -33,109 +31,102 @@ import io.trishul.classplanner.user.model.User;
 @RestController
 @RequestMapping("/api/v1/gradplans")
 public class GradPlanController {
-    @Autowired
-    private GradPlanRepository repository;
+  @Autowired
+  private GradPlanRepository repository;
 
-    @Autowired
-    private GradPlanMapper mapper;
+  @Autowired
+  private GradPlanMapper mapper;
 
-    @Autowired
-    private SessionManager sessionManager;
+  @Autowired
+  private SessionManager sessionManager;
 
-    @Autowired
-    private PDFProcessingService pdfProcessingService;
-    
-    @Autowired
-    private GradPlanAIService aiService;
-    
-    @Autowired
-    private GradPlanAIResponseProcessor aiResponseProcessor;
+  @Autowired
+  private PDFProcessingService pdfProcessingService;
 
-    @GetMapping
-    public List<GetGradPlanDTO> getPlans() {
-        GradPlan probe = new GradPlan();
-        User user = new User();
-        user.setId(sessionManager.getCurrentUserId());
-        probe.setUser(user);
+  @Autowired
+  private GradPlanAIService aiService;
 
-        return repository.findAll(Example.of(probe))
-            .stream()
-            .map(mapper::toGetDTO)
-            .collect(Collectors.toList());
-    }
+  @Autowired
+  private GradPlanAIResponseProcessor aiResponseProcessor;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<GetGradPlanDTO> getPlan(@PathVariable Long id) {
-        GradPlan probe = new GradPlan();
-        probe.setId(id);
-        User user = new User();
-        user.setId(sessionManager.getCurrentUserId());
-        probe.setUser(user);
+  @GetMapping
+  public List<GetGradPlanDTO> getPlans() {
+    GradPlan probe = new GradPlan();
+    User user = new User();
+    user.setId(sessionManager.getCurrentUserId());
+    probe.setUser(user);
 
-        return repository.findOne(Example.of(probe))
-            .map(mapper::toGetDTO)
-            .map(ResponseEntity::ok)
-            .orElse(ResponseEntity.notFound().build());
-    }
+    return repository.findAll(Example.of(probe)).stream().map(mapper::toGetDTO)
+        .collect(Collectors.toList());
+  }
 
-    @PostMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-    @Transactional
-    public GetGradPlanDTO createPlan(
-        @RequestPart("file-name") String fileName,
-        @RequestPart("file") MultipartFile file) throws IOException {
-        GradPlan plan = new GradPlan();
-        plan.setFileName(fileName);
+  @GetMapping("/{id}")
+  public ResponseEntity<GetGradPlanDTO> getPlan(@PathVariable Long id) {
+    GradPlan probe = new GradPlan();
+    probe.setId(id);
+    User user = new User();
+    user.setId(sessionManager.getCurrentUserId());
+    probe.setUser(user);
 
-        User user = new User();
-        user.setId(sessionManager.getCurrentUserId());
-        plan.setUser(user);
-        
-        String base64Content = pdfProcessingService.convertPDFToBase64Image(file);
-        plan.setPdfContentBase64(base64Content);
+    return repository.findOne(Example.of(probe)).map(mapper::toGetDTO).map(ResponseEntity::ok)
+        .orElse(ResponseEntity.notFound().build());
+  }
 
-        // Process with AI
-        String aiResponse = aiService.processImageContent(base64Content);
-        aiResponseProcessor.updateGradPlanFromAIResponse(plan, aiResponse);
-        
-        GradPlan persisted = repository.save(plan);
-        repository.flush();
-        return mapper.toGetDTO(persisted);
-    }
+  @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+  @Transactional
+  public GetGradPlanDTO createPlan(@RequestPart("file-name") String fileName,
+      @RequestPart("file") MultipartFile file) throws IOException {
+    GradPlan plan = new GradPlan();
+    plan.setFileName(fileName);
 
-    @DeleteMapping
-    @Transactional
-    public ResponseEntity<Void> deletePlans(@RequestParam List<Long> ids) {
-        GradPlan probe = new GradPlan();
-        User user = new User();
-        user.setId(sessionManager.getCurrentUserId());
-        probe.setUser(user);
+    User user = new User();
+    user.setId(sessionManager.getCurrentUserId());
+    plan.setUser(user);
 
-        repository.softDelete(ids, Example.of(probe));
-        return ResponseEntity.noContent().build();
-    }
+    String base64Content = pdfProcessingService.convertPDFToBase64Image(file);
+    plan.setPdfContentBase64(base64Content);
 
-    @GetMapping("/archived")
-    public List<GetGradPlanDTO> getArchivedPlans() {
-        GradPlan probe = new GradPlan();
-        User user = new User();
-        user.setId(sessionManager.getCurrentUserId());
-        probe.setUser(user);
+    // Process with AI
+    String aiResponse = aiService.processImageContent(base64Content);
+    aiResponseProcessor.updateGradPlanFromAIResponse(plan, aiResponse);
 
-        return repository.findAllArchived(Example.of(probe))
-            .stream()
-            .map(mapper::toGetDTO)
-            .collect(Collectors.toList());
-    }
+    GradPlan persisted = repository.save(plan);
+    repository.flush();
+    return mapper.toGetDTO(persisted);
+  }
 
-    @PutMapping("/archived")
-    @Transactional
-    public ResponseEntity<Void> activatePlans(@RequestParam List<Long> ids) {
-        GradPlan probe = new GradPlan();
-        User user = new User();
-        user.setId(sessionManager.getCurrentUserId());
-        probe.setUser(user);
+  @DeleteMapping
+  @Transactional
+  public ResponseEntity<Void> deletePlans(@RequestParam List<Long> ids) {
+    GradPlan probe = new GradPlan();
+    User user = new User();
+    user.setId(sessionManager.getCurrentUserId());
+    probe.setUser(user);
 
-        repository.restore(ids, Example.of(probe));
-        return ResponseEntity.noContent().build();
-    }
+    repository.softDelete(ids, Example.of(probe));
+    return ResponseEntity.noContent().build();
+  }
+
+  @GetMapping("/archived")
+  public List<GetGradPlanDTO> getArchivedPlans() {
+    GradPlan probe = new GradPlan();
+    User user = new User();
+    user.setId(sessionManager.getCurrentUserId());
+    probe.setUser(user);
+
+    return repository.findAllArchived(Example.of(probe)).stream().map(mapper::toGetDTO)
+        .collect(Collectors.toList());
+  }
+
+  @PutMapping("/archived")
+  @Transactional
+  public ResponseEntity<Void> activatePlans(@RequestParam List<Long> ids) {
+    GradPlan probe = new GradPlan();
+    User user = new User();
+    user.setId(sessionManager.getCurrentUserId());
+    probe.setUser(user);
+
+    repository.restore(ids, Example.of(probe));
+    return ResponseEntity.noContent().build();
+  }
 }
