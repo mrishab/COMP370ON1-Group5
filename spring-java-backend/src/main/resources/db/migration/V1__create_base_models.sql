@@ -71,6 +71,7 @@ CREATE TABLE class_plan (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     archived BOOLEAN DEFAULT FALSE,
+    desired_num_of_courses INTEGER,
     FOREIGN KEY (grad_plan_id) REFERENCES grad_plan(id),
     FOREIGN KEY (availability_id) REFERENCES availability(id)
 );
