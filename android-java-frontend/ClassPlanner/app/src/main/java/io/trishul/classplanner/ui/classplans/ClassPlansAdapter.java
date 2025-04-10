@@ -12,9 +12,18 @@ import io.trishul.classplanner.network.dtos.ClassPlanDTO;
 
 public class ClassPlansAdapter extends RecyclerView.Adapter<ClassPlansAdapter.ViewHolder> {
     private final List<ClassPlanDTO.Get> classPlans;
+    private OnItemClickListener listener;
+
+    public interface OnItemClickListener {
+        void onItemClick(ClassPlanDTO.Get classPlan);
+    }
 
     public ClassPlansAdapter(List<ClassPlanDTO.Get> classPlans) {
         this.classPlans = classPlans;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
     }
 
     @NonNull
@@ -28,16 +37,14 @@ public class ClassPlansAdapter extends RecyclerView.Adapter<ClassPlansAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ClassPlanDTO.Get classPlan = classPlans.get(position);
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onItemClick(classPlan);
+            }
+        });
         holder.programName.setText(classPlan.getGradPlan().getProgramName());
-//        holder.credits.setText(String.format("%d credits", getTotalCredits(classPlan)));
         holder.courses.setText(String.format("%d courses", classPlan.getClasses().size()));
     }
-
-//    private int getTotalCredits(ClassPlanDTO.Get classPlan) {
-//        return classPlan.getClasses().stream()
-//                .mapToInt(course -> course.getNumCredits())
-//                .sum();
-//    }
 
     @Override
     public int getItemCount() {

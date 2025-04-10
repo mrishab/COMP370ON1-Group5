@@ -104,9 +104,8 @@ public class GradPlansFragment extends Fragment {
                                 classPlansViewModel.setCurrentFilter(classPlanFilter);
                                 classPlansViewModel.setFiltersApplied(true);
 
-                                // Navigate to the classPlan tab
-                                NavController navController = ((MainActivity) requireActivity()).getNavController();
-                                navController.navigate(R.id.navigation_class_plans);
+                                MainActivity activity = (MainActivity) requireActivity();
+                                activity.findViewById(R.id.navigation_class_plans).performClick();
                             });
                             recyclerView.setAdapter(adapter);
                         }

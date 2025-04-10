@@ -14,11 +14,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import io.trishul.classplanner.CreateNewClassPlanActivity;
+import io.trishul.classplanner.MainActivity;
 import io.trishul.classplanner.R;
 import io.trishul.classplanner.databinding.FragmentClassPlansBinding;
 import io.trishul.classplanner.network.ApiClientManager;
 import io.trishul.classplanner.network.dtos.ClassPlanDTO;
 import io.trishul.classplanner.network.dtos.UserDTO;
+import io.trishul.classplanner.ui.classes.ClassesViewModel;
+import io.trishul.classplanner.ui.classes.ClassesFilterRequest;
 import io.trishul.classplanner.utils.SessionManager;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -106,7 +109,22 @@ public class ClassPlansFragment extends Fragment {
                     swipeRefreshLayout.setRefreshing(false);
                     
                     if (response.isSuccessful() && response.body() != null) {
-                        recyclerView.setAdapter(new ClassPlansAdapter(response.body()));
+                        ClassPlansAdapter adapter = new ClassPlansAdapter(response.body());
+                        adapter.setOnItemClickListener(classPlan -> {
+                            // Get the ClassesViewModel
+                            ClassesViewModel classesViewModel = new ViewModelProvider(requireActivity()).get(ClassesViewModel.class);
+                            
+                            // Create and set the filter
+                            ClassesFilterRequest filter = new ClassesFilterRequest();
+                            filter.setClassPlanId(classPlan.getId());
+                            classesViewModel.setCurrentFilter(filter);
+                            classesViewModel.setFiltersApplied(true);
+
+                            // Use the bottom navigation view to navigate
+                            MainActivity activity = (MainActivity) requireActivity();
+                            activity.findViewById(R.id.navigation_classes).performClick();
+                        });
+                        recyclerView.setAdapter(adapter);
                     } else {
                         Toast.makeText(requireContext(), 
                             getString(R.string.error_load_class_plans, response.code()),
