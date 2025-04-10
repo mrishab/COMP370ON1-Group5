@@ -81,13 +81,7 @@ public class GradPlanController {
 
   @GetMapping("/{id}")
   public ResponseEntity<GetGradPlanDTO> getPlan(@PathVariable Long id) {
-    GradPlan probe = new GradPlan();
-    probe.setId(id);
-    User user = new User();
-    user.setId(sessionManager.getCurrentUserId());
-    probe.setUser(user);
-
-    return repository.findOne(Example.of(probe)).map(mapper::toGetDTO).map(ResponseEntity::ok)
+    return repository.findById(id).map(mapper::toGetDTO).map(ResponseEntity::ok)
         .orElse(ResponseEntity.notFound().build());
   }
 

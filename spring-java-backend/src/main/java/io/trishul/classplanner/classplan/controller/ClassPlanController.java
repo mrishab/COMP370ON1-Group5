@@ -54,12 +54,15 @@ public class ClassPlanController {
   @GetMapping
   public List<GetClassPlanDTO> getPlans(@RequestParam(required = false) String description,
       @RequestParam(required = false) ClassDistribution classDistribution,
-      @RequestParam(required = false) BurdenCapacity burdenCapacity,
-      @RequestParam(required = false) Long gradPlanId) {
+      @RequestParam(required = false) BurdenCapacity burdenCapacity) {
+
+    User user = new User();
+    user.setId(sessionManager.getCurrentUserId());
 
     ClassPlan probe = new ClassPlan();
     GradPlan gradPlan = new GradPlan();
-    gradPlan.setId(gradPlanId != null ? gradPlanId : sessionManager.getCurrentUserId());
+
+    gradPlan.setUser(user);
     probe.setGradPlan(gradPlan);
     probe.setDescription(description);
     probe.setClassDistribution(classDistribution);
@@ -74,16 +77,8 @@ public class ClassPlanController {
 
   @GetMapping("/{id}")
   public ResponseEntity<GetClassPlanDTO> getPlan(@PathVariable Long id) {
-    ClassPlan probe = new ClassPlan();
-    probe.setId(id);
-    GradPlan gradPlan = new GradPlan();
-    gradPlan.setId(sessionManager.getCurrentUserId());
-    probe.setGradPlan(gradPlan);
-
-    ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreNullValues();
-
-    return repository.findOne(Example.of(probe, matcher)).map(mapper::toGetDTO)
-        .map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    return repository.findById(id).map(mapper::toGetDTO).map(ResponseEntity::ok)
+        .orElse(ResponseEntity.notFound().build());
   }
 
   @PostMapping
