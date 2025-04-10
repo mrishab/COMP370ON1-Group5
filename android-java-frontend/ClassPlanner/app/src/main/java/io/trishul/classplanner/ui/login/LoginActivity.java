@@ -7,36 +7,31 @@ import android.widget.EditText;
 import android.widget.Toast;
 import android.widget.TextView;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.text.Editable;
 import android.text.TextWatcher;
 
-import androidx.appcompat.app.AppCompatActivity;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import io.trishul.classplanner.R;
-import io.trishul.classplanner.network.AuthApi;
-import io.trishul.classplanner.network.LoginRequest;
+import io.trishul.classplanner.network.LoginApi;
+import io.trishul.classplanner.network.dtos.UserDTO;
 import io.trishul.classplanner.ui.base.BaseActivity;
 import io.trishul.classplanner.ui.register.RegisterActivity;
 import io.trishul.classplanner.MainActivity;
-import io.trishul.classplanner.model.User;
 import io.trishul.classplanner.constants.EmailConstants;
 import io.trishul.classplanner.constants.PasswordConstants;
-import io.trishul.classplanner.network.ApiConfig;
 import io.trishul.classplanner.network.ApiClientManager;
 import io.trishul.classplanner.utils.SessionManager;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class LoginActivity extends BaseActivity {
-    public static final String APP_PREFS = "ClassPlannerPrefs";
     private EditText emailInput;
     private EditText passwordInput;
     private Button loginButton;
     private TextView emailValidation;
-    private SharedPreferences prefs;
     private boolean isValidEmail = false;
     private boolean isValidPassword = false;
     private SessionManager sessionManager;
@@ -113,61 +108,50 @@ public class LoginActivity extends BaseActivity {
         String password = passwordInput.getText().toString().trim();
 
         if (email.isEmpty() || password.isEmpty()) {
-            showToast("Please fill in all fields");
+            showToast(getString(R.string.error_fill_all_fields));
             return;
         }
 
-        if (isAdminLogin(email, password)) {
-            handleAdminLogin();
-            return;
-        }
-
-        performLoginRequest(email, password);
+        performLogin(email, password);
     }
 
-    private boolean isAdminLogin(String email, String password) {
-        return EmailConstants.ADMIN_EMAIL.equals(email) && 
-               PasswordConstants.ADMIN_PASSWORD.equals(password);
-    }
+    private void performLogin(String email, String password) {
+        LoginApi authApi = ApiClientManager.getInstance(this).getLoginApi();
+        UserDTO.Login loginRequest = new UserDTO.Login();
+        loginRequest.setEmail(email);
+        loginRequest.setPassword(password);
 
-    private void handleAdminLogin() {
-        User adminUser = new User("Admin", "nimda", "admin@student.ufv.ca", "admin");
-        handleSuccessfulLogin(adminUser);
-    }
-
-    private void performLoginRequest(String email, String password) {
-        AuthApi authApi = ApiClientManager.getInstance(this).getAuthApi();
-        LoginRequest loginRequest = new LoginRequest(email, password);
-
-        authApi.login(loginRequest).enqueue(new Callback<User>() {
+        authApi.login(loginRequest).enqueue(new Callback<UserDTO.Get>() {
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                handleLoginResponse(response);
+            public void onResponse(Call<UserDTO.Get> call, Response<UserDTO.Get> response) {
+                handleLoginResponse(response, password);
             }
 
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
+            public void onFailure(Call<UserDTO.Get> call, Throwable t) {
+                t.printStackTrace();
                 handleLoginError(t);
             }
         });
     }
 
-    private void handleLoginResponse(Response<User> response) {
+    private void handleLoginResponse(Response<UserDTO.Get> response, String password) {
         if (response.isSuccessful()) {
-            User user = response.body();
-            handleSuccessfulLogin(user);
+            UserDTO.Get user = response.body();
+            handleSuccessfulLogin(user, password);
         } else {
             showToast(getString(R.string.error_login_failed, response.code()));
         }
     }
 
-    private void handleSuccessfulLogin(User user) {
+    private void handleSuccessfulLogin(UserDTO.Get user, String password) {
         showToast(getString(R.string.success_login, user.getFirstName()));
-        setLoginSession(user);
+        setLoginSession(user, password);
         navigateToMainActivity(user);
     }
 
     private void handleLoginError(Throwable t) {
+        t.printStackTrace();
         showToast(getString(R.string.error_generic, t.getMessage()));
     }
 
@@ -175,17 +159,17 @@ public class LoginActivity extends BaseActivity {
         Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
     }
 
-    private void navigateToMainActivity(User user) {
+    private void navigateToMainActivity(UserDTO.Get user) {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        intent.putExtra(User.ATTR_NAME_FIRST_NAME, user.getFirstName());
-        intent.putExtra(User.ATTR_NAME_LAST_NAME, user.getLastName());
-        intent.putExtra(User.ATTR_NAME_EMAIL, user.getEmail());
+        intent.putExtra(UserDTO.ATTR_FIRST_NAME, user.getFirstName());
+        intent.putExtra(UserDTO.ATTR_LAST_NAME, user.getLastName());
+        intent.putExtra(UserDTO.ATTR_EMAIL, user.getEmail());
         startActivity(intent);
         finish();
     }
 
-    private void setLoginSession(User user) {
-        sessionManager.setLoginSession(user);
+    private void setLoginSession(UserDTO.Get user, String password) {
+        sessionManager.setLoginSession(user, password);
     }
 
     private void openMainActivity() {

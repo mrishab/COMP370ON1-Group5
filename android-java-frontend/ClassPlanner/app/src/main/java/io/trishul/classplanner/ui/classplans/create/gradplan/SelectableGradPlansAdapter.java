@@ -2,6 +2,7 @@ package io.trishul.classplanner.ui.classplans.create.gradplan;
 
 import androidx.annotation.NonNull;
 
+import io.trishul.classplanner.network.dtos.GradPlanDTO;
 import io.trishul.classplanner.ui.gradplans.GradPlansAdapter;
 import io.trishul.classplanner.ui.classplans.create.CreateNewClassPlanActivityModel;
 import java.util.List;
@@ -10,7 +11,7 @@ public class SelectableGradPlansAdapter extends GradPlansAdapter {
     private Long selectedGradPlanId = null;
     private final CreateNewClassPlanActivityModel viewModel;
 
-    public SelectableGradPlansAdapter(List<GradPlan> gradPlans, CreateNewClassPlanActivityModel viewModel) {
+    public SelectableGradPlansAdapter(List<GradPlanDTO.Get> gradPlans, CreateNewClassPlanActivityModel viewModel) {
         super(gradPlans);
         this.viewModel = viewModel;
     }
@@ -18,16 +19,16 @@ public class SelectableGradPlansAdapter extends GradPlansAdapter {
     @Override
     public void onBindViewHolder(@NonNull GradPlansAdapter.ViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
-        
-        GradPlan gradPlan = getGradPlanAt(position);
+
+        GradPlanDTO.Get gradPlan = getGradPlanAt(position);
         
         // Set selected state
-        holder.itemView.setActivated(gradPlan.getGradPlanId().equals(selectedGradPlanId));
+        holder.itemView.setActivated(gradPlan.getId().equals(selectedGradPlanId));
         
         // Add click listener
         holder.itemView.setOnClickListener(v -> {
             Long oldSelectedId = selectedGradPlanId;
-            selectedGradPlanId = gradPlan.getGradPlanId();
+            selectedGradPlanId = gradPlan.getId();
             
             // Update view model
             viewModel.setSelectedGradPlanId(selectedGradPlanId);
@@ -42,14 +43,14 @@ public class SelectableGradPlansAdapter extends GradPlansAdapter {
 
     private int getPositionForGradPlanId(Long gradPlanId) {
         for (int i = 0; i < getItemCount(); i++) {
-            if (getGradPlanAt(i).getGradPlanId().equals(gradPlanId)) {
+            if (getGradPlanAt(i).getId().equals(gradPlanId)) {
                 return i;
             }
         }
         return -1;
     }
 
-    private GradPlan getGradPlanAt(int position) {
+    private GradPlanDTO.Get getGradPlanAt(int position) {
         return getGradPlans().get(position);
     }
 }

@@ -11,7 +11,7 @@ import io.trishul.classplanner.R;
 import io.trishul.classplanner.network.dtos.ClassPlanDTO;
 
 public class ClassPlansAdapter extends RecyclerView.Adapter<ClassPlansAdapter.ViewHolder> {
-    private final List<ClassPlanDTO> classPlans;
+    private final List<ClassPlanDTO.Get> classPlans;
 
     public ClassPlansAdapter(List<ClassPlanDTO.Get> classPlans) {
         this.classPlans = classPlans;
@@ -28,12 +28,16 @@ public class ClassPlansAdapter extends RecyclerView.Adapter<ClassPlansAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ClassPlanDTO.Get classPlan = classPlans.get(position);
-        holder.programName.setText(classPlan);
-        holder.credits.setText(String.format("%d credits", classPlan.getTotalCredits()));
-        holder.courses.setText(String.format("%d courses", classPlan.getTotalCourses()));
-        holder.term.setText(classPlan.getTerm());
-        holder.year.setText(String.valueOf(classPlan.getYear()));
+        holder.programName.setText(classPlan.getGradPlan().getProgramName());
+//        holder.credits.setText(String.format("%d credits", getTotalCredits(classPlan)));
+        holder.courses.setText(String.format("%d courses", classPlan.getClasses().size()));
     }
+
+//    private int getTotalCredits(ClassPlanDTO.Get classPlan) {
+//        return classPlan.getClasses().stream()
+//                .mapToInt(course -> course.getNumCredits())
+//                .sum();
+//    }
 
     @Override
     public int getItemCount() {
@@ -41,15 +45,13 @@ public class ClassPlansAdapter extends RecyclerView.Adapter<ClassPlansAdapter.Vi
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView programName, credits, courses, term, year;
+        TextView programName, credits, courses;
 
         ViewHolder(View itemView) {
             super(itemView);
             programName = itemView.findViewById(R.id.program_name);
             credits = itemView.findViewById(R.id.credits);
             courses = itemView.findViewById(R.id.courses);
-            term = itemView.findViewById(R.id.term);
-            year = itemView.findViewById(R.id.year);
         }
     }
 }

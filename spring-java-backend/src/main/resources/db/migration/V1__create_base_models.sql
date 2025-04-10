@@ -14,7 +14,7 @@ CREATE TABLE _USER (
 
 -- Create default unauthenticated user
 INSERT INTO _USER (FIRST_NAME, LAST_NAME, EMAIL, PASSWORD)
-VALUES ('Unauthenticated', 'User', 'test@test.com', 'NONE');
+VALUES ('UFV', 'Student', 'test@student.ufv.ca', 'test');
 
 CREATE SEQUENCE grad_plan_sequence START 1;
 CREATE TABLE grad_plan (

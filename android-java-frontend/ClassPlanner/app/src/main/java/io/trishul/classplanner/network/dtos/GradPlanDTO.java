@@ -15,7 +15,7 @@ public class GradPlanDTO {
         private Long creditsRequired;
         private Double cgpa;
         private String programLevel;
-        private LocalDateTime createdAt;
-        private LocalDateTime updatedAt;
+        private String createdAt;
+        private String updatedAt;
     }
 }

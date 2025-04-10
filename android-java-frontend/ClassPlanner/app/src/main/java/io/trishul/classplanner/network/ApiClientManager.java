@@ -2,17 +2,21 @@ package io.trishul.classplanner.network;
 
 import android.content.Context;
 import retrofit2.Retrofit;
+import io.trishul.classplanner.network.api.UserApi;
 
 public class ApiClientManager {
     private static ApiClientManager instance;
-    private final Retrofit retrofit;
+    private final Retrofit authenticatedRetrofit;
+    private final Retrofit loginRetrofit;
     
     private ClassPlanApi classPlanApi;
     private UserApi userApi;
+    private LoginApi loginApi;
     private GradPlanApi gradPlanApi;
     
     private ApiClientManager(Context context) {
-        this.retrofit = ApiConfig.getClient(context);
+        this.loginRetrofit = ApiConfig.getClient(context, true);
+        this.authenticatedRetrofit = ApiConfig.getClient(context, false);
     }
     
     public static synchronized ApiClientManager getInstance(Context context) {
@@ -22,23 +26,30 @@ public class ApiClientManager {
         return instance;
     }
 
+    public LoginApi getLoginApi() {
+        if (loginApi == null) {
+            loginApi = loginRetrofit.create(LoginApi.class);
+        }
+        return loginApi;
+    }
+
     public UserApi getUserApi() {
         if (userApi == null) {
-            userApi = retrofit.create(UserApi.class);
+            userApi = authenticatedRetrofit.create(UserApi.class);
         }
         return userApi;
     }
 
     public GradPlanApi getGradPlanApi() {
         if (gradPlanApi == null) {
-            gradPlanApi = retrofit.create(GradPlanApi.class);
+            gradPlanApi = authenticatedRetrofit.create(GradPlanApi.class);
         }
         return gradPlanApi;
     }
 
     public ClassPlanApi getClassPlanApi() {
         if (classPlanApi == null) {
-            classPlanApi = retrofit.create(ClassPlanApi.class);
+            classPlanApi = authenticatedRetrofit.create(ClassPlanApi.class);
         }
         return classPlanApi;
     }

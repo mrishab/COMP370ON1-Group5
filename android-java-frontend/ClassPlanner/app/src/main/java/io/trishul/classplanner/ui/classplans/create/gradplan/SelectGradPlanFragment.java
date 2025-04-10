@@ -13,12 +13,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import java.util.List;
+
 import io.trishul.classplanner.R;
 import io.trishul.classplanner.databinding.FragmentSelectGradPlanBinding;
 import io.trishul.classplanner.network.ApiClientManager;
+import io.trishul.classplanner.network.dtos.GradPlanDTO;
 import io.trishul.classplanner.ui.classplans.create.CreateNewClassPlanActivityModel;
 import io.trishul.classplanner.ui.gradplans.GradPlansAdapter;
-import io.trishul.classplanner.ui.gradplans.GradPlansViewModel;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -29,14 +31,11 @@ public class SelectGradPlanFragment extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
     private CreateNewClassPlanActivityModel createNewClassPlanActivityModel;
     private Button nextButton;
-    private GradPlansViewModel gradPlansViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                            ViewGroup container, Bundle savedInstanceState) {
         this.createNewClassPlanActivityModel = 
             new ViewModelProvider(requireActivity()).get(CreateNewClassPlanActivityModel.class);
-        this.gradPlansViewModel = 
-            new ViewModelProvider(requireActivity()).get(GradPlansViewModel.class);
         this.nextButton = getActivity().findViewById(R.id.button_create_class_plan_next);
 
         binding = FragmentSelectGradPlanBinding.inflate(inflater, container, false);
@@ -45,52 +44,77 @@ public class SelectGradPlanFragment extends Fragment {
         recyclerView = binding.recyclerViewGradPlans;
         swipeRefreshLayout = binding.swipeRefreshLayout;
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        swipeRefreshLayout.setRefreshing(true);
-        swipeRefreshLayout.setOnRefreshListener(this::fetchGradPlans);
+        setupRecyclerView();
+        setupSwipeRefresh();
+        observeViewModel();
+        fetchGradPlans();
+        
+        return root;
+    }
 
+    private void setupRecyclerView() {
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setHasFixedSize(true);
+    }
+
+    private void setupSwipeRefresh() {
+        swipeRefreshLayout.setOnRefreshListener(this::fetchGradPlans);
+    }
+
+    private void observeViewModel() {
         createNewClassPlanActivityModel.getSelectedGradPlanId().observe(
             getViewLifecycleOwner(), 
             gradPlanId -> nextButton.setEnabled(gradPlanId != null)
         );
-
-        fetchGradPlans();
-        return root;
     }
 
     private void fetchGradPlans() {
-        // Reuse existing grad plans fetching logic
         recyclerView.setVisibility(View.GONE);
+        if (!swipeRefreshLayout.isRefreshing()) {
+            swipeRefreshLayout.setRefreshing(true);
+        }
+
         ApiClientManager.getInstance(requireContext())
-            .getClassPlanApi()
-            .getGradPlans(null, null, null, null, null, null, null, null, null, null, null, null)
-            .enqueue(new Callback<GradPlansResponse>() {
+            .getGradPlanApi()
+            .getPlans(null, null, null, null, null, null, null)
+            .enqueue(new Callback<List<GradPlanDTO.Get>>() {
                 @Override
-                public void onResponse(Call<GradPlansResponse> call, Response<GradPlansResponse> response) {
-                    recyclerView.setVisibility(View.VISIBLE);
-                    swipeRefreshLayout.setRefreshing(false);
-                    
-                    if (response.isSuccessful() && response.body() != null) {
-                        GradPlansAdapter adapter = new SelectableGradPlansAdapter(
-                            response.body().getGradPlans(),
-                            createNewClassPlanActivityModel
-                        );
-                        recyclerView.setAdapter(adapter);
-                    } else {
-                        Toast.makeText(requireContext(),
-                            getString(R.string.error_load_grad_plans, response.code()),
-                            Toast.LENGTH_SHORT).show();
-                    }
+                public void onResponse(Call<List<GradPlanDTO.Get>> call, Response<List<GradPlanDTO.Get>> response) {
+                    handleApiResponse(response);
                 }
 
                 @Override
-                public void onFailure(Call<GradPlansResponse> call, Throwable t) {
-                    swipeRefreshLayout.setRefreshing(false);
-                    Toast.makeText(requireContext(),
-                        getString(R.string.error_load_grad_plans_network, t.getMessage()),
-                        Toast.LENGTH_LONG).show();
+                public void onFailure(Call<List<GradPlanDTO.Get>> call, Throwable t) {
+                    t.printStackTrace();
+                    handleApiError(t);
                 }
             });
+    }
+
+    private void handleApiResponse(Response<List<GradPlanDTO.Get>> response) {
+        swipeRefreshLayout.setRefreshing(false);
+        
+        if (response.isSuccessful() && response.body() != null) {
+            recyclerView.setVisibility(View.VISIBLE);
+            GradPlansAdapter adapter = new SelectableGradPlansAdapter(
+                response.body(),
+                createNewClassPlanActivityModel
+            );
+            recyclerView.setAdapter(adapter);
+        } else {
+            showError(getString(R.string.error_load_grad_plans, response.code()));
+        }
+    }
+
+    private void handleApiError(Throwable t) {
+        t.printStackTrace();
+        swipeRefreshLayout.setRefreshing(false);
+        showError(getString(R.string.error_load_grad_plans_network, t.getMessage()));
+    }
+
+    private void showError(String message) {
+        recyclerView.setVisibility(View.GONE);
+        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show();
     }
 
     @Override

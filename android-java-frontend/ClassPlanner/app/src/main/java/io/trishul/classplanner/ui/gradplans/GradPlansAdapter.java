@@ -8,15 +8,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 import io.trishul.classplanner.R;
+import io.trishul.classplanner.network.dtos.GradPlanDTO;
 
 public class GradPlansAdapter extends RecyclerView.Adapter<GradPlansAdapter.ViewHolder> {
-    private final List<GradPlan> gradPlans;
+    private final List<GradPlanDTO.Get> gradPlans;
 
-    public GradPlansAdapter(List<GradPlan> gradPlans) {
+    public GradPlansAdapter(List<GradPlanDTO.Get> gradPlans) {
         this.gradPlans = gradPlans;
     }
 
-    protected List<GradPlan> getGradPlans() {
+    protected List<GradPlanDTO.Get> getGradPlans() {
         return gradPlans;
     }
 
@@ -29,11 +30,29 @@ public class GradPlansAdapter extends RecyclerView.Adapter<GradPlansAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        GradPlan gradPlan = gradPlans.get(position);
-        holder.programName.setText(gradPlan.getProgramName());
-        holder.credits.setText(String.format("%d/%d", gradPlan.getCreditsCompleted(), gradPlan.getCreditsRequired()));
-        holder.gpa.setText(String.valueOf(gradPlan.getCurrentGpa()));
-        holder.createdAt.setText(gradPlan.getCreatedAt());
+        GradPlanDTO.Get gradPlan = gradPlans.get(position);
+        
+        // Set program name, handle nulls
+        holder.programName.setText(gradPlan.getProgramName() != null ? 
+            gradPlan.getProgramName() : "Unknown Program");
+
+        // Format credits as completed/required
+        String credits = String.format("%d/%d", 
+            gradPlan.getCreditsCompleted() != null ? gradPlan.getCreditsCompleted() : 0,
+            gradPlan.getCreditsRequired() != null ? gradPlan.getCreditsRequired() : 0);
+        holder.credits.setText(credits);
+
+        // Format CGPA with 2 decimal places
+        String gpa = String.format("%.2f", 
+            gradPlan.getCgpa() != null ? gradPlan.getCgpa() : 0.0);
+        holder.gpa.setText(gpa);
+
+        // Format created date
+        if (gradPlan.getCreatedAt() != null) {
+            holder.createdAt.setText(gradPlan.getCreatedAt().toString());
+        } else {
+            holder.createdAt.setText("Unknown Date");
+        }
     }
 
     @Override

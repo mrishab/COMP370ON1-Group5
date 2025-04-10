@@ -4,12 +4,22 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import io.trishul.classplanner.network.dtos.AvailabilityDTO;
+import io.trishul.classplanner.network.dtos.BurdenCapacity;
+import io.trishul.classplanner.network.dtos.ClassDistribution;
+import io.trishul.classplanner.network.dtos.ClassPlanDTO;
+import io.trishul.classplanner.network.dtos.GradPlanDTO;
 import io.trishul.classplanner.ui.base.BaseActivity;
 import io.trishul.classplanner.ui.classplans.create.CreateNewClassPlanActivityModel;
 import io.trishul.classplanner.ui.classplans.create.CreateNewClassPlanFragmentContainer;
@@ -26,6 +36,17 @@ public class CreateNewClassPlanActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_new_class_plan);
 
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (currentStep > 0) {
+                    onFragmentChange(-1, findViewById(R.id.button_create_class_plan_next));
+                } else {
+                    showExitConfirmationDialog();
+                }
+            }
+        });
+
         viewModel = new ViewModelProvider(this).get(CreateNewClassPlanActivityModel.class);
 
         if (savedInstanceState != null) {
@@ -37,6 +58,8 @@ public class CreateNewClassPlanActivity extends BaseActivity {
 
         Button backButton = findViewById(R.id.button_create_class_plan_back);
         Button nextButton = findViewById(R.id.button_create_class_plan_next);
+
+        setupButtonObservers(nextButton);
 
         backButton.setOnClickListener(v -> {
             if (currentStep > 0) {
@@ -55,11 +78,52 @@ public class CreateNewClassPlanActivity extends BaseActivity {
         });
     }
 
+    private void setupButtonObservers(Button nextButton) {
+        viewModel.getSelectedGradPlanId().observe(this, id -> {
+            if (currentStep == 0) {
+                nextButton.setEnabled(id != null);
+            }
+        });
+
+        viewModel.getAvailability().observe(this, availability -> {
+            if (currentStep == 1) {
+                nextButton.setEnabled(viewModel.isMinimumAvailabilitySelected());
+            }
+        });
+
+        viewModel.getBurdenCapacity().observe(this, burden -> {
+            if (currentStep == 2) {
+                nextButton.setEnabled(burden != null && viewModel.getClassDistribution().getValue() != null);
+            }
+        });
+
+        viewModel.getClassDistribution().observe(this, distribution -> {
+            if (currentStep == 2) {
+                nextButton.setEnabled(distribution != null && viewModel.getBurdenCapacity().getValue() != null);
+            }
+        });
+    }
+
     private void onFragmentChange(int increment, Button nextButton) {
         int nextStep = getNthStep(increment);
         showFragment(nextStep);
         currentStep = nextStep;
         updateNextButtonText(nextButton);
+        nextButton.setEnabled(isCurrentStepValid());
+    }
+
+    private boolean isCurrentStepValid() {
+        switch (currentStep) {
+            case 0:
+                return viewModel.getSelectedGradPlanId().getValue() != null;
+            case 1:
+                return viewModel.isMinimumAvailabilitySelected();
+            case 2:
+                return viewModel.getBurdenCapacity().getValue() != null && 
+                       viewModel.getClassDistribution().getValue() != null;
+            default:
+                return false;
+        }
     }
 
     private void updateNextButtonText(Button nextButton) {
@@ -89,12 +153,19 @@ public class CreateNewClassPlanActivity extends BaseActivity {
                 .setTitle(R.string.submit_confirmation_title)
                 .setMessage(R.string.submit_confirmation_message)
                 .setPositiveButton(R.string.submit_confirmation_positive, (dialog, which) -> {
-                    // Create request and start the submit activity
-                    PlanCreationRequest request = createRequestFromViewModel();
-                    Intent intent = new Intent(this, SubmitCreateNewClassPlanActivity.class);
-                    intent.putExtra("request", request);
-                    startActivity(intent);
-                    finish();
+                    try {
+                        ClassPlanDTO.Post request = createRequestFromViewModel();
+                        Intent intent = new Intent(this, SubmitCreateNewClassPlanActivity.class);
+                        intent.putExtra("request", request);
+                        startActivity(intent);
+                        finish();
+                    } catch (IllegalStateException e) {
+                        new AlertDialog.Builder(this)
+                                .setTitle("Error")
+                                .setMessage(e.getMessage())
+                                .setPositiveButton("OK", (errorDialog, which2) -> errorDialog.dismiss())
+                                .show();
+                    }
                 })
                 .setNegativeButton(R.string.submit_confirmation_negative, (dialog, which) -> {
                     dialog.dismiss();
@@ -103,23 +174,57 @@ public class CreateNewClassPlanActivity extends BaseActivity {
                 .show();
     }
 
-    private PlanCreationRequest createRequestFromViewModel() {
-        PlanCreationRequest request = new PlanCreationRequest();
-        request.setGradPlanId(viewModel.getSelectedGradPlanId().getValue());
-        request.setDesiredNumberOfClasses(viewModel.getDesiredNumberOfClasses().getValue());
-        request.setBurdenCapacity(viewModel.getBurdenCapacity().getValue());
-        request.setClassDistribution(viewModel.getClassDistribution().getValue());
-        request.setAvailability(viewModel.getAvailability().getValue());
+    private ClassPlanDTO.Post createRequestFromViewModel() {
+        Long gradPlanId = viewModel.getSelectedGradPlanId().getValue();
+        BurdenCapacity burdenCapacity = viewModel.getBurdenCapacity().getValue();
+        ClassDistribution distribution = viewModel.getClassDistribution().getValue();
+        Map<String, boolean[]> availability = viewModel.getAvailability().getValue();
+
+        if (gradPlanId == null) {
+            throw new IllegalStateException("Graduation plan not selected");
+        }
+        if (burdenCapacity == null) {
+            throw new IllegalStateException("Burden capacity not set");
+        }
+        if (distribution == null) {
+            throw new IllegalStateException("Class distribution not set");
+        }
+        if (availability == null) {
+            throw new IllegalStateException("Availability not set");
+        }
+
+        ClassPlanDTO.Post request = new ClassPlanDTO.Post();
+        request.setGradPlanId(gradPlanId);
+        request.setBurdenCapacity(burdenCapacity);
+        request.setClassDistribution(distribution);
+        request.setAvailability(createAvailabilityDTO(availability));
         return request;
     }
 
-    @Override
-    public void onBackPressed() {
-        if (currentStep > 0) {
-            onFragmentChange(-1, findViewById(R.id.button_create_class_plan_next));
-        } else {
-            showExitConfirmationDialog();
+    private AvailabilityDTO createAvailabilityDTO(Map<String, boolean[]> availabilityMap) {
+        AvailabilityDTO dto = new AvailabilityDTO();
+        List<AvailabilityDTO.AvailabilityDayDTO> days = new ArrayList<>();
+
+        for (Map.Entry<String, boolean[]> entry : availabilityMap.entrySet()) {
+            AvailabilityDTO.AvailabilityDayDTO dayDTO = new AvailabilityDTO.AvailabilityDayDTO();
+            dayDTO.setDay(entry.getKey());
+
+            List<AvailabilityDTO.AvailabilityHourDTO> hours = new ArrayList<>();
+            boolean[] dailyHours = entry.getValue();
+
+            for (int i = 0; i < dailyHours.length; i++) {
+                AvailabilityDTO.AvailabilityHourDTO hourDTO = new AvailabilityDTO.AvailabilityHourDTO();
+                hourDTO.setHourOfTheDay(i);
+                hourDTO.setIsAvailable(dailyHours[i]);
+                hours.add(hourDTO);
+            }
+
+            dayDTO.setHours(hours);
+            days.add(dayDTO);
         }
+
+        dto.setDays(days);
+        return dto;
     }
 
     private int getNthStep(int increment) {

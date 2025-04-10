@@ -16,7 +16,15 @@ import retrofit2.http.Query;
 
 public interface GradPlanApi {
     @GET("api/v1/gradplans")
-    Call<List<GradPlanDTO.Get>> getPlans();
+    Call<List<GradPlanDTO.Get>> getPlans(
+        @Query("fileName") String fileName,
+        @Query("programName") String programName,
+        @Query("majorName") String majorName,
+        @Query("creditsCompleted") Long creditsCompleted,
+        @Query("creditsRequired") Long creditsRequired,
+        @Query("cgpa") Double cgpa,
+        @Query("programLevel") String programLevel
+    );
 
     @GET("api/v1/gradplans/{id}")
     Call<GradPlanDTO.Get> getPlan(@Path("id") Long id);

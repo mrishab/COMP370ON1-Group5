@@ -13,7 +13,12 @@ import retrofit2.http.Query;
 
 public interface ClassPlanApi {
     @GET("api/v1/classplans")
-    Call<List<ClassPlanDTO.Get>> getPlans();
+    Call<List<ClassPlanDTO.Get>> getPlans(
+        @Query("description") String description,
+        @Query("classDistribution") String classDistribution,
+        @Query("burdenCapacity") String burdenCapacity,
+        @Query("gradPlanId") Long gradPlanId
+    );
 
     @GET("api/v1/classplans/{id}")
     Call<ClassPlanDTO.Get> getPlan(@Path("id") Long id);

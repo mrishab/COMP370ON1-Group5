@@ -20,9 +20,12 @@ import io.trishul.classplanner.UploadGradPlanActivity;
 import io.trishul.classplanner.databinding.FragmentGradPlansBinding;
 
 import io.trishul.classplanner.network.ApiClientManager;
+import io.trishul.classplanner.network.dtos.GradPlanDTO;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import java.util.List;
 
 public class GradPlansFragment extends Fragment {
 
@@ -70,29 +73,16 @@ public class GradPlansFragment extends Fragment {
         String terms = filter.getTerms() != null ? String.join(",", filter.getTerms()) : null;
 
         ApiClientManager.getInstance(requireContext())
-            .getClassPlanApi()
-            .getGradPlans(
-                filter.getMinCreditsRequired(),
-                filter.getMaxCreditsRequired(),
-                filter.getMinCreditsCompleted(),
-                filter.getMaxCreditsCompleted(),
-                filter.getMinCGPA(),
-                filter.getMaxCGPA(),
-                levels,
-                filter.getDegree(),
-                filter.getMajor(),
-                terms,
-                filter.getYearStart(),
-                filter.getYearEnd()
-            )
-            .enqueue(new Callback<GradPlansResponse>() {
+            .getGradPlanApi()
+            .getPlans(null, null, null, null, null, null, null)  // Use getPlans() instead of getGradPlans() with parameters
+            .enqueue(new Callback<List<GradPlanDTO.Get>>() {
                 @Override
-                public void onResponse(Call<GradPlansResponse> call, Response<GradPlansResponse> response) {
+                public void onResponse(Call<List<GradPlanDTO.Get>> call, Response<List<GradPlanDTO.Get>> response) {
                     recyclerView.setVisibility(View.VISIBLE);
                     swipeRefreshLayout.setRefreshing(false);
                     
                     if (response.isSuccessful() && response.body() != null) {
-                        recyclerView.setAdapter(new GradPlansAdapter(response.body().getGradPlans()));
+                        recyclerView.setAdapter(new GradPlansAdapter(response.body()));
                     } else {
                         Toast.makeText(requireContext(), 
                             getString(R.string.error_load_grad_plans, response.code()), 
@@ -101,7 +91,8 @@ public class GradPlansFragment extends Fragment {
                 }
 
                 @Override
-                public void onFailure(Call<GradPlansResponse> call, Throwable t) {
+                public void onFailure(Call<List<GradPlanDTO.Get>> call, Throwable t) {
+                    t.printStackTrace();
                     swipeRefreshLayout.setRefreshing(false);
                     Toast.makeText(requireContext(), 
                         getString(R.string.error_load_grad_plans_network, t.getMessage()),

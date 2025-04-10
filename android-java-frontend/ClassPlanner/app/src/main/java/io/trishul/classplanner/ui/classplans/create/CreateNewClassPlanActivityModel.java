@@ -7,6 +7,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.trishul.classplanner.network.dtos.BurdenCapacity;
+import io.trishul.classplanner.network.dtos.ClassDistribution;
+
 public class CreateNewClassPlanActivityModel extends ViewModel {
     // Grad plan URI logic
     private final MutableLiveData<Uri> gradPlanUri = new MutableLiveData<>();
@@ -30,28 +33,31 @@ public class CreateNewClassPlanActivityModel extends ViewModel {
 
     // Preferences logic
     private final MutableLiveData<Integer> desiredNumberOfClasses = new MutableLiveData<>(5);
-    private final MutableLiveData<String> burdenCapacity = new MutableLiveData<>("MEDIUM");
-    private final MutableLiveData<String> classDistribution = new MutableLiveData<>("CONCENTRATED");
+    private final MutableLiveData<BurdenCapacity> burdenCapacity = new MutableLiveData<>(BurdenCapacity.MEDIUM);
+    private final MutableLiveData<ClassDistribution> classDistribution = new MutableLiveData<>(ClassDistribution.CONCENTRATED);
 
     public MutableLiveData<Integer> getDesiredNumberOfClasses() {
         return desiredNumberOfClasses;
     }
+
     public void setDesiredNumberOfClasses(Integer desiredNumberOfClasses) {
         this.desiredNumberOfClasses.setValue(desiredNumberOfClasses);
     }
 
-    public MutableLiveData<String> getBurdenCapacity() {
+    public MutableLiveData<BurdenCapacity> getBurdenCapacity() {
         return burdenCapacity;
     }
+
     public void setBurdenCapacity(String burdenCapacity) {
-        this.burdenCapacity.setValue(burdenCapacity.toUpperCase());
+        this.burdenCapacity.setValue(BurdenCapacity.valueOf(burdenCapacity.toUpperCase()));
     }
 
-    public MutableLiveData<String> getClassDistribution() {
+    public MutableLiveData<ClassDistribution> getClassDistribution() {
         return classDistribution;
     }
+
     public void setClassDistribution(String classDistribution) {
-        this.classDistribution.setValue(classDistribution.toUpperCase());
+        this.classDistribution.setValue(ClassDistribution.valueOf(classDistribution.toUpperCase()));
     }
 
     // Availability logic

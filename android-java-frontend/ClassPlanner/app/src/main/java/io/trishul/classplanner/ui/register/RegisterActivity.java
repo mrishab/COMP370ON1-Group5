@@ -9,19 +9,18 @@ import android.widget.TextView;
 import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
-import io.trishul.classplanner.network.AuthApi;
-import io.trishul.classplanner.network.RegisterRequest;
+
+import io.trishul.classplanner.R;
+import io.trishul.classplanner.network.LoginApi;
+import io.trishul.classplanner.network.dtos.UserDTO;
 import io.trishul.classplanner.ui.base.BaseActivity;
 import io.trishul.classplanner.ui.login.LoginActivity;
-import io.trishul.classplanner.model.User;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import androidx.appcompat.app.AppCompatActivity;
-import io.trishul.classplanner.R;
 import io.trishul.classplanner.constants.EmailConstants;
 import io.trishul.classplanner.constants.PasswordConstants;
 import io.trishul.classplanner.network.ApiClientManager;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RegisterActivity extends BaseActivity {
 
@@ -56,57 +55,56 @@ public class RegisterActivity extends BaseActivity {
         setupTextWatchers();
 
         TextView goToLogin = findViewById(R.id.goToLogin);
-        goToLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
-            }
+        goToLogin.setOnClickListener(v -> {
+            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
         });
 
-        registerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String firstName = firstNameInput.getText().toString().trim();
-                String lastName = lastNameInput.getText().toString().trim();
-                String email = emailInput.getText().toString().trim();
-                String password = passwordInput.getText().toString().trim();
+        registerButton.setOnClickListener(v -> {
+            String firstName = firstNameInput.getText().toString().trim();
+            String lastName = lastNameInput.getText().toString().trim();
+            String email = emailInput.getText().toString().trim();
+            String password = passwordInput.getText().toString().trim();
 
-                if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty()) {
-                    Toast.makeText(RegisterActivity.this, R.string.error_fill_all_fields, Toast.LENGTH_SHORT).show();
-                    return;
+            if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty()) {
+                Toast.makeText(RegisterActivity.this, R.string.error_fill_all_fields, Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            LoginApi authApi = ApiClientManager.getInstance(RegisterActivity.this).getLoginApi();
+            UserDTO.Post registerRequest = new UserDTO.Post();
+            registerRequest.setFirstName(firstName);
+            registerRequest.setLastName(lastName);
+            registerRequest.setEmail(email);
+            registerRequest.setPassword(password);
+
+            authApi.register(registerRequest).enqueue(new Callback<UserDTO.Get>() {
+                @Override
+                public void onResponse(Call<UserDTO.Get> call, Response<UserDTO.Get> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        UserDTO.Get user = response.body();
+                        Toast.makeText(RegisterActivity.this, 
+                            getString(R.string.success_registration, user.getFirstName()), 
+                            Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast.makeText(RegisterActivity.this, 
+                            getString(R.string.error_registration_failed, response.code()), 
+                            Toast.LENGTH_SHORT).show();
+                    }
                 }
 
-                AuthApi authApi = ApiClientManager.getInstance(RegisterActivity.this).getAuthApi();
-                RegisterRequest registerRequest = new RegisterRequest(firstName, lastName, email, password);
-
-                authApi.register(registerRequest).enqueue(new Callback<User>() {
-                    @Override
-                    public void onResponse(Call<User> call, Response<User> response) {
-                        if (response.isSuccessful()) {
-                            User user = response.body();
-                            Toast.makeText(RegisterActivity.this, 
-                                getString(R.string.success_registration, user.getFirstName()), 
-                                Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                            startActivity(intent);
-                            finish();
-                        } else {
-                            Toast.makeText(RegisterActivity.this, 
-                                getString(R.string.error_registration_failed, response.code()), 
-                                Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<User> call, Throwable t) {
-                        Toast.makeText(RegisterActivity.this, 
-                            getString(R.string.error_generic, t.getMessage()), 
-                            Toast.LENGTH_LONG).show();
-                    }
-                });
-            }
+                @Override
+                public void onFailure(Call<UserDTO.Get> call, Throwable t) {
+                    t.printStackTrace();
+                    Toast.makeText(RegisterActivity.this, 
+                        getString(R.string.error_generic, t.getMessage()), 
+                        Toast.LENGTH_LONG).show();
+                }
+            });
         });
     }
 

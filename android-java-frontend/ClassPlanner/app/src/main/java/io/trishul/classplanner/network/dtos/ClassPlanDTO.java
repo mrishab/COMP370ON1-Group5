@@ -2,7 +2,10 @@ package io.trishul.classplanner.network.dtos;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import android.os.Parcel;
+import android.os.Parcelable;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 public class ClassPlanDTO {
@@ -15,16 +18,51 @@ public class ClassPlanDTO {
         private AvailabilityDTO availability;
         private ClassDistribution classDistribution;
         private BurdenCapacity burdenCapacity;
-        private LocalDateTime createdAt;
-        private LocalDateTime updatedAt;
+        private String createdAt;
+        private String updatedAt;
     }
 
     @Data
-    public static class Post {
+    @NoArgsConstructor
+    public static class Post implements Parcelable {
         private Long gradPlanId;
         private String description;
         private AvailabilityDTO availability;
         private ClassDistribution classDistribution;
         private BurdenCapacity burdenCapacity;
+
+        public Post(Parcel in) {
+            gradPlanId = in.readLong();
+            description = in.readString();
+            availability = in.readParcelable(AvailabilityDTO.class.getClassLoader());
+            classDistribution = in.readParcelable(ClassDistribution.class.getClassLoader());
+            burdenCapacity = in.readParcelable(BurdenCapacity.class.getClassLoader());
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeLong(gradPlanId);
+            dest.writeString(description);
+            dest.writeParcelable(availability, flags);
+            dest.writeParcelable(classDistribution, flags);
+            dest.writeParcelable(burdenCapacity, flags);
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        public static final Creator<Post> CREATOR = new Creator<Post>() {
+            @Override
+            public Post createFromParcel(Parcel in) {
+                return new Post(in);
+            }
+
+            @Override
+            public Post[] newArray(int size) {
+                return new Post[size];
+            }
+        };
     }
 }

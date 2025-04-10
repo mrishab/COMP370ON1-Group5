@@ -2,7 +2,6 @@ package io.trishul.classplanner.ui.profile;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import io.trishul.classplanner.R;
-import io.trishul.classplanner.model.User;
+import io.trishul.classplanner.network.dtos.UserDTO;
 import io.trishul.classplanner.ui.login.LoginActivity;
 import io.trishul.classplanner.utils.SessionManager;
 
@@ -44,9 +43,9 @@ public class ProfileFragment extends Fragment {
     }
 
     private void displayUserProfile() {
-        String firstName = sessionManager.getUserInfo(User.ATTR_NAME_FIRST_NAME, "N/A");
-        String lastName = sessionManager.getUserInfo(User.ATTR_NAME_LAST_NAME, "N/A");
-        String email = sessionManager.getUserInfo(User.ATTR_NAME_EMAIL, "N/A");
+        String firstName = sessionManager.getUserInfo(UserDTO.ATTR_FIRST_NAME, "N/A");
+        String lastName = sessionManager.getUserInfo(UserDTO.ATTR_LAST_NAME, "N/A");
+        String email = sessionManager.getUserInfo(UserDTO.ATTR_EMAIL, "N/A");
     
         StringBuilder profileInfo = new StringBuilder();
         profileInfo.append("Name\n")

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
-import io.trishul.classplanner.model.User;
+import io.trishul.classplanner.network.dtos.UserDTO;
 import io.trishul.classplanner.ui.login.LoginActivity;
 
 public class SessionManager {
@@ -17,23 +17,36 @@ public class SessionManager {
         this.prefs = context.getSharedPreferences(APP_PREFS, Context.MODE_PRIVATE);
     }
 
-    public void setLoginSession(User user) {
+    public void setLoginSession(UserDTO.Get user, String password) {
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(User.ATTR_NAME_ID, String.valueOf(user.getId()));
-        editor.putString(User.ATTR_NAME_EMAIL, user.getEmail());
-        editor.putString(User.ATTR_NAME_FIRST_NAME, user.getFirstName());
-        editor.putString(User.ATTR_NAME_LAST_NAME, user.getLastName());
+        editor.putString(UserDTO.ATTR_ID, String.valueOf(user.getId()));
+        editor.putString(UserDTO.ATTR_EMAIL, user.getEmail());
+        editor.putString(UserDTO.ATTR_FIRST_NAME, user.getFirstName());
+        editor.putString(UserDTO.ATTR_LAST_NAME, user.getLastName());
+        editor.putString(UserDTO.ATTR_PASSWORD, password);
         editor.apply();
     }
 
     public boolean isLoggedIn() {
-        return prefs.getString(User.ATTR_NAME_EMAIL, null) != null;
+        String email = prefs.getString(UserDTO.ATTR_EMAIL, null);
+        String password = prefs.getString(UserDTO.ATTR_PASSWORD, null);
+        return (email != null && password != null);
     }
 
     public void clearSession() {
         SharedPreferences.Editor editor = prefs.edit();
         editor.clear();
         editor.apply();
+    }
+
+    public String getBasicAuthPlain() {
+        String email = prefs.getString(UserDTO.ATTR_EMAIL, null);
+        String password = prefs.getString(UserDTO.ATTR_PASSWORD, null);
+        if (isLoggedIn()) {
+            return email + ":" + password;
+        }
+        clearSession();
+        throw new IllegalStateException("User is not logged in");
     }
 
     public String getUserInfo(String key, String defaultValue) {

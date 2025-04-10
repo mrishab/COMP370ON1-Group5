@@ -14,14 +14,14 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments += mapOf(
-                    "lombok.addLombokGeneratedAnnotation" to "true"
-                )
-            }
-        }
+//
+//        javaCompileOptions {
+//            annotationProcessorOptions {
+//                arguments += mapOf(
+//                    "lombok.addLombokGeneratedAnnotation" to "true"
+//                )
+//            }
+//        }
     }
 
     buildTypes {
