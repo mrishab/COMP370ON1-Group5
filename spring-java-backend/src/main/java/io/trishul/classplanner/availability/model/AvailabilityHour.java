@@ -2,6 +2,7 @@ package io.trishul.classplanner.availability.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,7 +19,7 @@ public class AvailabilityHour {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "availability_hour_generator")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name = "availability_day_id")
     private AvailabilityDay availabilityDay;
 
@@ -26,5 +27,5 @@ public class AvailabilityHour {
     private Integer hourOfTheDay;
 
     @Column
-    private boolean isAvailable;
+    private Boolean isAvailable;
 }

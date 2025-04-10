@@ -97,7 +97,9 @@ public class GradPlanController {
         String aiResponse = aiService.processImageContent(base64Content);
         aiResponseProcessor.updateGradPlanFromAIResponse(plan, aiResponse);
         
-        return mapper.toGetDTO(repository.save(plan));
+        GradPlan persisted = repository.save(plan);
+        repository.flush();
+        return mapper.toGetDTO(persisted);
     }
 
     @DeleteMapping

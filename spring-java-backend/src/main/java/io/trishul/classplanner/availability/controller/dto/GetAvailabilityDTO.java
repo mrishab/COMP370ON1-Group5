@@ -2,6 +2,8 @@ package io.trishul.classplanner.availability.controller.dto;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Data;
 
 @Data
@@ -17,6 +19,8 @@ public class GetAvailabilityDTO {
     @Data
     public static class GetAvailabilityHourDTO {
         private Integer hourOfTheDay;
-        private boolean isAvailable;
+        
+        @JsonProperty("isAvailable")
+        private Boolean isAvailable;
     }
 }

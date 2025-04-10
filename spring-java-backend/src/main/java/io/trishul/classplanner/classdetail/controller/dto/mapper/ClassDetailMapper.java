@@ -1,21 +1,12 @@
 package io.trishul.classplanner.classdetail.controller.dto.mapper;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
 
 import io.trishul.classplanner.classdetail.dto.classdetail.GetClassDetailDTO;
-import io.trishul.classplanner.classdetail.dto.classdetail.PostClassDetailDTO;
-import io.trishul.classplanner.classdetail.dto.classdetail.PutClassDetailDTO;
 import io.trishul.classplanner.classdetail.model.ClassDetail;
+import io.trishul.classplanner.classschedule.controller.dto.mapper.ClassScheduleMapper;
 
-@Mapper(componentModel = "spring", uses = {TimeSlotMapper.class})
+@Mapper(componentModel = "spring", uses = {ClassScheduleMapper.class})
 public interface ClassDetailMapper {
     GetClassDetailDTO toGetDTO(ClassDetail entity);
-    
-    @Mapping(target = "id", ignore = true)
-    ClassDetail toEntity(PostClassDetailDTO dto);
-    
-    @Mapping(target = "id", ignore = true)
-    void updateEntity(@MappingTarget ClassDetail entity, PutClassDetailDTO dto);
 }

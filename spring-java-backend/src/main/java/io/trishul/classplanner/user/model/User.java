@@ -42,5 +42,5 @@ public class User {
     private LocalDateTime updatedAt;
 
     @Column(name = "archived")
-    private boolean archived;
+    private Boolean archived;
 }

@@ -29,7 +29,7 @@ import io.trishul.classplanner.user.repository.UserRepository;
 @RequestMapping("/api/v1/users")
 public class UserController {
     @Autowired
-    private UserRepository userRepository;
+    private UserRepository repository;
 
     @Autowired
     private UserMapper userMapper;
@@ -51,7 +51,7 @@ public class UserController {
 
     @GetMapping("/me")
     public ResponseEntity<GetUserDTO> getUser() {
-        return userRepository.findById(sessionManager.getCurrentUserId())
+        return repository.findById(sessionManager.getCurrentUserId())
                 .map(userMapper::toGetDTO)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -61,16 +61,19 @@ public class UserController {
     @Transactional
     public GetUserDTO createUser(@RequestBody PostUserDTO dto) {
         User user = userMapper.toEntity(dto);
-        return userMapper.toGetDTO(userRepository.save(user));
+
+        User persisted = repository.save(user);
+        repository.flush();
+        return userMapper.toGetDTO(persisted);
     }
 
     @PutMapping("/me")
     @Transactional
     public ResponseEntity<GetUserDTO> updateUser(@RequestBody PutUserDTO dto) {
-        return userRepository.findById(sessionManager.getCurrentUserId())
+        return repository.findById(sessionManager.getCurrentUserId())
                 .map(user -> {
                     userMapper.updateEntity(user, dto);
-                    return userMapper.toGetDTO(userRepository.save(user));
+                    return userMapper.toGetDTO(repository.save(user));
                 })
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -79,7 +82,7 @@ public class UserController {
     @DeleteMapping("/me")
     @Transactional
     public ResponseEntity<Void> deleteUsers() {
-        userRepository.softDelete(List.of(sessionManager.getCurrentUserId()), null);
+        repository.softDelete(List.of(sessionManager.getCurrentUserId()), null);
         sessionManager.endSession();
         return ResponseEntity.noContent().build();
     }
@@ -87,7 +90,7 @@ public class UserController {
     @PutMapping("/archived")
     @Transactional
     public ResponseEntity<Void> activateUsers(@RequestParam List<Long> ids) {
-        userRepository.restore(ids, null);
+        repository.restore(ids, null);
         return ResponseEntity.noContent().build();
     }
 }

@@ -1,8 +1,8 @@
 package io.trishul.classplanner.classdetail.dto.classdetail;
 
-import java.util.Map;
+import java.util.List;
 
-import io.trishul.classplanner.classdetail.dto.timeslot.GetTimeSlotDTO;
+import io.trishul.classplanner.classschedule.controller.dto.GetClassScheduleDTO;
 import lombok.Data;
 
 @Data
@@ -12,5 +12,5 @@ public class GetClassDetailDTO {
     private String instructor;
     private String room;
     private String method;
-    private Map<String, GetTimeSlotDTO> schedule;
+    private List<GetClassScheduleDTO> schedule;
 }

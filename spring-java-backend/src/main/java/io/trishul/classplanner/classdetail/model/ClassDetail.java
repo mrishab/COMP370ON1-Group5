@@ -1,16 +1,17 @@
 package io.trishul.classplanner.classdetail.model;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
-import jakarta.persistence.CollectionTable;
+import io.trishul.classplanner.classschedule.model.ClassSchedule;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.MapKeyColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import lombok.Data;
 
@@ -34,9 +35,19 @@ public class ClassDetail {
     @Column
     private String method;
 
-    @ElementCollection
-    @CollectionTable(name = "class_detail_schedule", 
-        joinColumns = @JoinColumn(name = "class_detail_id"))
-    @MapKeyColumn(name = "day")
-    private Map<String, TimeSlot> schedule;
+    @OneToMany(mappedBy = "classDetail", cascade=CascadeType.ALL, orphanRemoval = true, fetch=FetchType.EAGER)
+    private List<ClassSchedule> schedule;
+
+    public void setSchedule(List<ClassSchedule> schedule) {
+        if (this.schedule != null) {
+            this.schedule.forEach(s -> s.setClassDetail(null));
+        } else {
+            this.schedule = new ArrayList<>();
+        }
+        this.schedule.clear();
+        if (schedule != null) {
+            schedule.forEach(s -> s.setClassDetail(this));
+            this.schedule.addAll(schedule);
+        }
+    }
 }

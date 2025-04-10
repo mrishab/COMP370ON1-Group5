@@ -5,7 +5,6 @@ import org.mapstruct.Mapping;
 
 import io.trishul.classplanner.availability.controller.dto.GetAvailabilityDTO.GetAvailabilityDayDTO;
 import io.trishul.classplanner.availability.controller.dto.PostAvailabilityDTO.PostAvailabilityDayDTO;
-import io.trishul.classplanner.availability.controller.dto.PutAvailabilityDTO.PutAvailabilityDayDTO;
 import io.trishul.classplanner.availability.model.AvailabilityDay;
 
 @Mapper(componentModel = "spring", uses = {AvailabilityHourMapper.class})
@@ -15,8 +14,4 @@ public interface AvailabilityDayMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "availability", ignore = true)
     AvailabilityDay toEntity(PostAvailabilityDayDTO dto);
-
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "availability", ignore = true)
-    AvailabilityDay toEntity(PutAvailabilityDayDTO dto);
 }

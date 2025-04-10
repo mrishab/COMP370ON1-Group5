@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import io.trishul.classplanner.availability.controller.dto.GetAvailabilityDTO;
-import io.trishul.classplanner.classdetail.dto.classentry.GetClassEntryDTO;
+import io.trishul.classplanner.classdetail.dto.course.GetCourseDTO;
 import io.trishul.classplanner.classdistribution.model.ClassDistribution;
 import io.trishul.classplanner.classplan.model.BurdenCapacity;
 import io.trishul.classplanner.gradplan.controller.dto.GetGradPlanDTO;
@@ -15,7 +15,7 @@ public class GetClassPlanDTO {
     private Long id;
     private GetGradPlanDTO gradPlan;
     private String description;
-    private List<GetClassEntryDTO> classes;
+    private List<GetCourseDTO> classes;
     private GetAvailabilityDTO availability;
     private ClassDistribution classDistribution;
     private BurdenCapacity burdenCapacity;

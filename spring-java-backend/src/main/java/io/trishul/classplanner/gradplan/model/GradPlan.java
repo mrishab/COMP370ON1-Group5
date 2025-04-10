@@ -8,6 +8,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import io.trishul.classplanner.user.model.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -54,12 +55,12 @@ public class GradPlan {
     @Column
     private String programLevel;
 
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 
     @Column
-    private boolean archived;
+    private Boolean archived;
 
     @Lob
     @Column
