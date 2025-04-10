@@ -3,6 +3,7 @@ package io.trishul.classplanner.classplan.service;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
+
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.SystemMessage;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StreamUtils;
+
 import io.trishul.classplanner.availability.model.Availability;
 import io.trishul.classplanner.classplan.model.ClassPlan;
 
@@ -36,6 +38,7 @@ public class ClassPlanAIService {
                 %s
 
                 PREFERENCES:
+                - Desired number of courses: %d
                 - Desired class distribution: %s
                 - Burden capacity: %s
 
@@ -52,6 +55,7 @@ public class ClassPlanAIService {
                 2. All selected class times MUST fit entirely within the provided availability — NO EXCEPTIONS.
                 3. There must be NO time conflicts between classes.
                 4. Match the preferred class distribution (%s) and burden capacity (%s).
+                5. Try to match the desired number of courses (%d) strictly.
 
                 Return this response in EXACTLY this JSON format (no extra text):
                 {
@@ -78,12 +82,14 @@ public class ClassPlanAIService {
                 }
                 """,
                 gradPlanDetails,
+                classPlan.getDesiredNumOfCourses(),
                 classPlan.getClassDistribution(),
                 classPlan.getBurdenCapacity(),
                 availabilityString,
                 timetable,
                 classPlan.getClassDistribution(),
-                classPlan.getBurdenCapacity()
+                classPlan.getBurdenCapacity(),
+                classPlan.getDesiredNumOfCourses()
             );
 
             Message systemMessage = new SystemMessage("""

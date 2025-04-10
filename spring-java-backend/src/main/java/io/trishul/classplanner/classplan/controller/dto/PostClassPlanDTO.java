@@ -12,4 +12,5 @@ public class PostClassPlanDTO {
   private PostAvailabilityDTO availability;
   private ClassDistribution classDistribution;
   private BurdenCapacity burdenCapacity;
+  private Integer desiredNumOfCourses;
 }
