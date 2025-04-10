@@ -6,13 +6,6 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import io.trishul.classplanner.api.models.PlanCreationRequest;
-import io.trishul.classplanner.api.models.PlanCreationResponse;
-
-import java.util.concurrent.CompletableFuture;
-
 import io.trishul.classplanner.network.ApiClientManager;
 import io.trishul.classplanner.ui.base.BaseActivity;
 import retrofit2.Call;

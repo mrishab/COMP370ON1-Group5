@@ -7,8 +7,9 @@ public class ApiClientManager {
     private static ApiClientManager instance;
     private final Retrofit retrofit;
     
-    private AuthApi authApi;
     private ClassPlanApi classPlanApi;
+    private UserApi userApi;
+    private GradPlanApi gradPlanApi;
     
     private ApiClientManager(Context context) {
         this.retrofit = ApiConfig.getClient(context);
@@ -20,14 +21,21 @@ public class ApiClientManager {
         }
         return instance;
     }
-    
-    public AuthApi getAuthApi() {
-        if (authApi == null) {
-            authApi = retrofit.create(AuthApi.class);
+
+    public UserApi getUserApi() {
+        if (userApi == null) {
+            userApi = retrofit.create(UserApi.class);
         }
-        return authApi;
+        return userApi;
     }
-    
+
+    public GradPlanApi getGradPlanApi() {
+        if (gradPlanApi == null) {
+            gradPlanApi = retrofit.create(GradPlanApi.class);
+        }
+        return gradPlanApi;
+    }
+
     public ClassPlanApi getClassPlanApi() {
         if (classPlanApi == null) {
             classPlanApi = retrofit.create(ClassPlanApi.class);

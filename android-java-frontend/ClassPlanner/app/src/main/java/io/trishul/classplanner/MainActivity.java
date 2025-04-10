@@ -2,7 +2,7 @@ package io.trishul.classplanner;
 
 import android.os.Bundle;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
@@ -10,8 +10,8 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import io.trishul.classplanner.api.models.ClassPlanFilterRequest;
-import io.trishul.classplanner.api.models.GradPlanFilterRequest;
+import io.trishul.classplanner.ui.classplans.ClassPlanFilterRequest;
+import io.trishul.classplanner.ui.gradplans.GradPlanFilterRequest;
 import io.trishul.classplanner.databinding.ActivityMainBinding;
 import android.view.Menu;
 import android.view.MenuItem;

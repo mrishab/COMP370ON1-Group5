@@ -8,12 +8,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 import io.trishul.classplanner.R;
-import io.trishul.classplanner.api.models.ClassPlan;
+import io.trishul.classplanner.network.dtos.ClassPlanDTO;
 
 public class ClassPlansAdapter extends RecyclerView.Adapter<ClassPlansAdapter.ViewHolder> {
-    private final List<ClassPlan> classPlans;
+    private final List<ClassPlanDTO> classPlans;
 
-    public ClassPlansAdapter(List<ClassPlan> classPlans) {
+    public ClassPlansAdapter(List<ClassPlanDTO.Get> classPlans) {
         this.classPlans = classPlans;
     }
 
@@ -27,8 +27,8 @@ public class ClassPlansAdapter extends RecyclerView.Adapter<ClassPlansAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        ClassPlan classPlan = classPlans.get(position);
-        holder.programName.setText(classPlan.getProgramName());
+        ClassPlanDTO.Get classPlan = classPlans.get(position);
+        holder.programName.setText(classPlan);
         holder.credits.setText(String.format("%d credits", classPlan.getTotalCredits()));
         holder.courses.setText(String.format("%d courses", classPlan.getTotalCourses()));
         holder.term.setText(classPlan.getTerm());

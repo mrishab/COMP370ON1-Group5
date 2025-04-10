@@ -1,49 +1,32 @@
-    package io.trishul.classplanner.network;
+package io.trishul.classplanner.network;
 
-import io.trishul.classplanner.api.models.PlanCreationRequest;
-import io.trishul.classplanner.api.models.PlanCreationResponse;
-import io.trishul.classplanner.api.models.GradPlansResponse;
+import java.util.List;
+import io.trishul.classplanner.network.dtos.ClassPlanDTO;
 import retrofit2.Call;
-import retrofit2.http.Header;
 import retrofit2.http.Body;
-import retrofit2.http.POST;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
+import retrofit2.http.PUT;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface ClassPlanApi {
-    @POST("/api/v1/plans/create")
-    Call<PlanCreationResponse> createClassPlan(@Body PlanCreationRequest request);
+    @GET("api/v1/classplans")
+    Call<List<ClassPlanDTO.Get>> getPlans();
 
-    @GET("/api/v1/grad-plans")
-    Call<GradPlansResponse> getGradPlans(
-        @Query("minCreditsRequired") Integer minCreditsRequired,
-        @Query("maxCreditsRequired") Integer maxCreditsRequired,
-        @Query("minCreditsCompleted") Integer minCreditsCompleted,
-        @Query("maxCreditsCompleted") Integer maxCreditsCompleted,
-        @Query("minCGPA") Double minCGPA,
-        @Query("maxCGPA") Double maxCGPA,
-        @Query("levels") String levels,
-        @Query("degree") String degree,
-        @Query("major") String major,
-        @Query("terms") String terms,
-        @Query("yearStart") Integer yearStart,
-        @Query("yearEnd") Integer yearEnd
-    );
+    @GET("api/v1/classplans/{id}")
+    Call<ClassPlanDTO.Get> getPlan(@Path("id") Long id);
 
-    @GET("/api/v1/class-plans")
-    Call<ClassPlansResponse> getClassPlans(
-        @Header("X-USER-ID") String userId,
-        @Query("gradPlanIds") String gradPlanIds,
-        @Query("programName") String programName,
-        @Query("description") String description,
-        @Query("minCourses") Integer minCourses,
-        @Query("maxCourses") Integer maxCourses,
-        @Query("minCredits") Integer minCredits,
-        @Query("maxCredits") Integer maxCredits,
-        @Query("terms") String terms,
-        @Query("yearStart") Integer yearStart,
-        @Query("yearEnd") Integer yearEnd,
-        @Query("burdenCapacity") String burdenCapacity,
-        @Query("classDistribution") String classDistribution
-    );
+    @POST("api/v1/classplans")
+    Call<ClassPlanDTO.Get> createPlan(@Body ClassPlanDTO.Post classPlan);
+
+    @DELETE("api/v1/classplans")
+    Call<Void> deletePlans(@Query("ids") List<Long> ids);
+
+    @GET("api/v1/classplans/archived")
+    Call<List<ClassPlanDTO.Get>> getArchivedPlans();
+
+    @PUT("api/v1/classplans/archived")
+    Call<Void> activatePlans(@Query("ids") List<Long> ids);
 }

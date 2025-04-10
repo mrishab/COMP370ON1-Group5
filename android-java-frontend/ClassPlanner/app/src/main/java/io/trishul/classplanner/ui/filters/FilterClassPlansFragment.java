@@ -15,7 +15,7 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.slider.RangeSlider;
 import com.google.android.material.textfield.TextInputEditText;
 import io.trishul.classplanner.R;
-import io.trishul.classplanner.api.models.ClassPlanFilterRequest;
+import io.trishul.classplanner.ui.classplans.ClassPlanFilterRequest;
 import io.trishul.classplanner.ui.classplans.ClassPlansViewModel;
 
 import java.util.ArrayList;

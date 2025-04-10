@@ -1,8 +1,7 @@
 package io.trishul.classplanner.ui.classplans.create.gradplan;
 
-import android.view.View;
 import androidx.annotation.NonNull;
-import io.trishul.classplanner.api.models.GradPlan;
+
 import io.trishul.classplanner.ui.gradplans.GradPlansAdapter;
 import io.trishul.classplanner.ui.classplans.create.CreateNewClassPlanActivityModel;
 import java.util.List;

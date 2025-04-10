@@ -10,7 +10,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
-import io.trishul.classplanner.api.models.PlanCreationRequest;
 import io.trishul.classplanner.ui.base.BaseActivity;
 import io.trishul.classplanner.ui.classplans.create.CreateNewClassPlanActivityModel;
 import io.trishul.classplanner.ui.classplans.create.CreateNewClassPlanFragmentContainer;

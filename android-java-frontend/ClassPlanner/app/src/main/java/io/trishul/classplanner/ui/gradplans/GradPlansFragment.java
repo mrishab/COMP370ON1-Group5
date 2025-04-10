@@ -18,8 +18,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import io.trishul.classplanner.R;
 import io.trishul.classplanner.UploadGradPlanActivity;
 import io.trishul.classplanner.databinding.FragmentGradPlansBinding;
-import io.trishul.classplanner.api.models.GradPlansResponse;
-import io.trishul.classplanner.api.models.GradPlanFilterRequest;
 
 import io.trishul.classplanner.network.ApiClientManager;
 import retrofit2.Call;

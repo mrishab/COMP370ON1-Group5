@@ -16,7 +16,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import io.trishul.classplanner.CreateNewClassPlanActivity;
 import io.trishul.classplanner.R;
 import io.trishul.classplanner.databinding.FragmentClassPlansBinding;
-import io.trishul.classplanner.api.models.ClassPlanFilterRequest;
 import io.trishul.classplanner.model.User;
 import io.trishul.classplanner.network.ApiClientManager;
 import io.trishul.classplanner.network.ClassPlansResponse;

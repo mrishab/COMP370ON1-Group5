@@ -17,7 +17,7 @@ import com.google.android.material.slider.RangeSlider;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputEditText;
 import io.trishul.classplanner.R;
-import io.trishul.classplanner.api.models.GradPlanFilterRequest;
+import io.trishul.classplanner.ui.gradplans.GradPlanFilterRequest;
 import io.trishul.classplanner.ui.gradplans.GradPlansViewModel;
 
 import java.util.ArrayList;

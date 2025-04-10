@@ -3,7 +3,6 @@ package io.trishul.classplanner.ui.classplans;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import io.trishul.classplanner.api.models.ClassPlanFilterRequest;
 
 public class ClassPlansViewModel extends ViewModel {
     private final MutableLiveData<String> mText;

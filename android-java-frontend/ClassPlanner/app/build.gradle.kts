@@ -14,6 +14,14 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += mapOf(
+                    "lombok.addLombokGeneratedAnnotation" to "true"
+                )
+            }
+        }
     }
 
     buildTypes {
@@ -54,4 +62,8 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
     implementation("com.google.code.gson:gson:2.8.9")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+    compileOnly("org.projectlombok:lombok:1.18.30")
+    annotationProcessor("org.projectlombok:lombok:1.18.30")
+    testCompileOnly("org.projectlombok:lombok:1.18.30")
+    testAnnotationProcessor("org.projectlombok:lombok:1.18.30")
 }

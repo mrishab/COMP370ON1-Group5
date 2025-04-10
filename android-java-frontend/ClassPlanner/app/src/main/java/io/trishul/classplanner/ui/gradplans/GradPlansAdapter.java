@@ -8,7 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 import io.trishul.classplanner.R;
-import io.trishul.classplanner.api.models.GradPlan;
 
 public class GradPlansAdapter extends RecyclerView.Adapter<GradPlansAdapter.ViewHolder> {
     private final List<GradPlan> gradPlans;

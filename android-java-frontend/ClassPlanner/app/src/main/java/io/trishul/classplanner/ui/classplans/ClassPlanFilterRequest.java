@@ -1,4 +1,4 @@
-package io.trishul.classplanner.api.models;
+package io.trishul.classplanner.ui.classplans;
 
 import java.util.List;
 

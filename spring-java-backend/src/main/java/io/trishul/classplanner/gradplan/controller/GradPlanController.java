@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,13 +51,31 @@ public class GradPlanController {
   private GradPlanAIResponseProcessor aiResponseProcessor;
 
   @GetMapping
-  public List<GetGradPlanDTO> getPlans() {
+  public List<GetGradPlanDTO> getPlans(@RequestParam(required = false) String fileName,
+      @RequestParam(required = false) String programName,
+      @RequestParam(required = false) String majorName,
+      @RequestParam(required = false) Long creditsCompleted,
+      @RequestParam(required = false) Long creditsRequired,
+      @RequestParam(required = false) Double cgpa,
+      @RequestParam(required = false) String programLevel) {
+
     GradPlan probe = new GradPlan();
     User user = new User();
     user.setId(sessionManager.getCurrentUserId());
     probe.setUser(user);
 
-    return repository.findAll(Example.of(probe)).stream().map(mapper::toGetDTO)
+    probe.setFileName(fileName);
+    probe.setProgramName(programName);
+    probe.setMajorName(majorName);
+    probe.setCreditsCompleted(creditsCompleted);
+    probe.setCreditsRequired(creditsRequired);
+    probe.setCgpa(cgpa);
+    probe.setProgramLevel(programLevel);
+
+    ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreNullValues()
+        .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING).withIgnoreCase();
+
+    return repository.findAll(Example.of(probe, matcher)).stream().map(mapper::toGetDTO)
         .collect(Collectors.toList());
   }
 
