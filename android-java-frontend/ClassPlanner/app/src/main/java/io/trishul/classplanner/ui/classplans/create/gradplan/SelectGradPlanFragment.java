@@ -1,5 +1,6 @@
 package io.trishul.classplanner.ui.classplans.create.gradplan;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,6 +49,14 @@ public class SelectGradPlanFragment extends Fragment {
         setupSwipeRefresh();
         observeViewModel();
         fetchGradPlans();
+
+        binding.buttonGotoGradPlans.setOnClickListener(v -> {
+            requireActivity().finish();
+            requireActivity().getSharedPreferences("navigation", Context.MODE_PRIVATE)
+                .edit()
+                .putInt("selected_tab", R.id.navigation_grad_plans)
+                .apply();
+        });
         
         return root;
     }
@@ -95,12 +104,17 @@ public class SelectGradPlanFragment extends Fragment {
         swipeRefreshLayout.setRefreshing(false);
         
         if (response.isSuccessful() && response.body() != null) {
-            recyclerView.setVisibility(View.VISIBLE);
-            GradPlansAdapter adapter = new SelectableGradPlansAdapter(
-                response.body(),
-                createNewClassPlanActivityModel
-            );
-            recyclerView.setAdapter(adapter);
+            if (response.body().isEmpty()) {
+                showEmptyState(true);
+            } else {
+                showEmptyState(false);
+                recyclerView.setVisibility(View.VISIBLE);
+                GradPlansAdapter adapter = new SelectableGradPlansAdapter(
+                    response.body(),
+                    createNewClassPlanActivityModel
+                );
+                recyclerView.setAdapter(adapter);
+            }
         } else {
             showError(getString(R.string.error_load_grad_plans, response.code()));
         }
@@ -110,6 +124,12 @@ public class SelectGradPlanFragment extends Fragment {
         t.printStackTrace();
         swipeRefreshLayout.setRefreshing(false);
         showError(getString(R.string.error_load_grad_plans_network, t.getMessage()));
+    }
+
+    private void showEmptyState(boolean show) {
+        binding.textNoGradPlans.setVisibility(show ? View.VISIBLE : View.GONE);
+        binding.buttonGotoGradPlans.setVisibility(show ? View.VISIBLE : View.GONE);
+        binding.swipeRefreshLayout.setVisibility(show ? View.GONE : View.VISIBLE);
     }
 
     private void showError(String message) {

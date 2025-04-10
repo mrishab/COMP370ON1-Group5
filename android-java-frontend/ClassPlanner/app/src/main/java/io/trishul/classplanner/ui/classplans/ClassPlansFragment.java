@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -47,6 +48,9 @@ public class ClassPlansFragment extends Fragment {
         recyclerView = binding.recyclerViewClassPlans;
         swipeRefreshLayout = binding.swipeRefreshLayout;
 
+        // Initialize empty view
+        TextView emptyView = binding.emptyView;
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         swipeRefreshLayout.setRefreshing(true);
         swipeRefreshLayout.setOnRefreshListener(this::fetchClassPlans);
@@ -69,6 +73,7 @@ public class ClassPlansFragment extends Fragment {
 
     private void fetchClassPlans() {
         recyclerView.setVisibility(View.GONE);
+        binding.emptyView.setVisibility(View.GONE);
         ClassPlanFilterRequest filter = activityViewModel.getCurrentFilter().getValue();
 
         SessionManager sessionManager = new SessionManager(requireContext());
@@ -105,26 +110,33 @@ public class ClassPlansFragment extends Fragment {
             .enqueue(new Callback<List<ClassPlanDTO.Get>>() {
                 @Override
                 public void onResponse(Call<List<ClassPlanDTO.Get>> call, Response<List<ClassPlanDTO.Get>> response) {
-                    recyclerView.setVisibility(View.VISIBLE);
                     swipeRefreshLayout.setRefreshing(false);
                     
                     if (response.isSuccessful() && response.body() != null) {
-                        ClassPlansAdapter adapter = new ClassPlansAdapter(response.body());
-                        adapter.setOnItemClickListener(classPlan -> {
-                            // Get the ClassesViewModel
-                            ClassesViewModel classesViewModel = new ViewModelProvider(requireActivity()).get(ClassesViewModel.class);
-                            
-                            // Create and set the filter
-                            ClassesFilterRequest filter = new ClassesFilterRequest();
-                            filter.setClassPlanId(classPlan.getId());
-                            classesViewModel.setCurrentFilter(filter);
-                            classesViewModel.setFiltersApplied(true);
+                        List<ClassPlanDTO.Get> classPlans = response.body();
+                        if (classPlans.isEmpty()) {
+                            recyclerView.setVisibility(View.GONE);
+                            binding.emptyView.setVisibility(View.VISIBLE);
+                        } else {
+                            recyclerView.setVisibility(View.VISIBLE);
+                            binding.emptyView.setVisibility(View.GONE);
+                            ClassPlansAdapter adapter = new ClassPlansAdapter(classPlans);
+                            adapter.setOnItemClickListener(classPlan -> {
+                                // Get the ClassesViewModel
+                                ClassesViewModel classesViewModel = new ViewModelProvider(requireActivity()).get(ClassesViewModel.class);
+                                
+                                // Create and set the filter
+                                ClassesFilterRequest filter = new ClassesFilterRequest();
+                                filter.setClassPlanId(classPlan.getId());
+                                classesViewModel.setCurrentFilter(filter);
+                                classesViewModel.setFiltersApplied(true);
 
-                            // Use the bottom navigation view to navigate
-                            MainActivity activity = (MainActivity) requireActivity();
-                            activity.findViewById(R.id.navigation_classes).performClick();
-                        });
-                        recyclerView.setAdapter(adapter);
+                                // Use the bottom navigation view to navigate
+                                MainActivity activity = (MainActivity) requireActivity();
+                                activity.findViewById(R.id.navigation_classes).performClick();
+                            });
+                            recyclerView.setAdapter(adapter);
+                        }
                     } else {
                         Toast.makeText(requireContext(), 
                             getString(R.string.error_load_class_plans, response.code()),

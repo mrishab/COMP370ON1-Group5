@@ -127,4 +127,6 @@
 
     <!-- Grad Plans -->
     <string name="no_grad_plans">No graduation plans found.\nTap + to add one.</string>
+    <string name="no_grad_plans_for_class_plan">You need to add a graduation plan first.\nTap below to get started.</string>
+    <string name="button_go_to_grad_plans">Go to Grad Plans</string>
 </resources>
