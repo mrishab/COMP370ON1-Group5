@@ -16,10 +16,6 @@ CREATE TABLE _USER (
 INSERT INTO _USER (FIRST_NAME, LAST_NAME, EMAIL, PASSWORD)
 VALUES ('Unauthenticated', 'User', 'test@test.com', 'NONE');
 
--- Create admin user
-INSERT INTO _USER (FIRST_NAME, LAST_NAME, EMAIL, PASSWORD)
-VALUES ('admin', '', 'admin@test.com', 'admin');
-
 CREATE SEQUENCE grad_plan_sequence START 1;
 CREATE TABLE grad_plan (
     id BIGINT PRIMARY KEY DEFAULT nextval('grad_plan_sequence'),

@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,7 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 import io.trishul.classplanner.auth.SessionManager;
 import io.trishul.classplanner.gradplan.controller.dto.GetGradPlanDTO;
 import io.trishul.classplanner.gradplan.controller.dto.PostGradPlanDTO;
-import io.trishul.classplanner.gradplan.controller.dto.PutGradPlanDTO;
 import io.trishul.classplanner.gradplan.controller.dto.mapper.GradPlanMapper;
 import io.trishul.classplanner.gradplan.model.GradPlan;
 import io.trishul.classplanner.gradplan.repository.GradPlanRepository;
@@ -100,39 +99,40 @@ public class GradPlanController {
         return mapper.toGetDTO(repository.save(plan));
     }
 
-    @PutMapping("/{id}")
-    @Transactional
-    public ResponseEntity<GetGradPlanDTO> updatePlan(@PathVariable Long id, @RequestBody PutGradPlanDTO dto) {
-        GradPlan probe = new GradPlan();
-        probe.setId(id);
-        User user = new User();
-        user.setId(sessionManager.getCurrentUserId());
-        probe.setUser(user);
-
-        return repository.findOne(Example.of(probe))
-            .map(plan -> {
-                mapper.updateEntity(plan, dto);
-                return mapper.toGetDTO(repository.save(plan));
-            })
-            .map(ResponseEntity::ok)
-            .orElse(ResponseEntity.notFound().build());
-    }
-
     @DeleteMapping
     @Transactional
-    public ResponseEntity<Void> deletePlans(@RequestBody List<Long> ids) {
+    public ResponseEntity<Void> deletePlans(@RequestParam List<Long> ids) {
         GradPlan probe = new GradPlan();
         User user = new User();
         user.setId(sessionManager.getCurrentUserId());
         probe.setUser(user);
 
-        List<Long> toDelete = repository.findAll(Example.of(probe))
-            .stream()
-            .filter(plan -> ids.contains(plan.getId()))
-            .map(GradPlan::getId)
-            .collect(Collectors.toList());
+        repository.softDelete(ids, Example.of(probe));
+        return ResponseEntity.noContent().build();
+    }
 
-        repository.softDelete(toDelete);
+    @GetMapping("/archived")
+    public List<GetGradPlanDTO> getArchivedPlans() {
+        GradPlan probe = new GradPlan();
+        User user = new User();
+        user.setId(sessionManager.getCurrentUserId());
+        probe.setUser(user);
+
+        return repository.findAllArchived(Example.of(probe))
+            .stream()
+            .map(mapper::toGetDTO)
+            .collect(Collectors.toList());
+    }
+
+    @PutMapping("/archived")
+    @Transactional
+    public ResponseEntity<Void> activatePlans(@RequestParam List<Long> ids) {
+        GradPlan probe = new GradPlan();
+        User user = new User();
+        user.setId(sessionManager.getCurrentUserId());
+        probe.setUser(user);
+
+        repository.restore(ids, Example.of(probe));
         return ResponseEntity.noContent().build();
     }
 }

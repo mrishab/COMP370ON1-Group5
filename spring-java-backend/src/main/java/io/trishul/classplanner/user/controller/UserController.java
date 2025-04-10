@@ -1,7 +1,6 @@
 package io.trishul.classplanner.user.controller;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,14 +8,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.trishul.classplanner.auth.AuthenticationService;
+import io.trishul.classplanner.auth.SessionManager;
 import io.trishul.classplanner.user.controller.dto.GetUserDTO;
 import io.trishul.classplanner.user.controller.dto.PostUserDTO;
 import io.trishul.classplanner.user.controller.dto.PutUserDTO;
@@ -37,6 +37,9 @@ public class UserController {
     @Autowired
     private AuthenticationService authService;
 
+    @Autowired
+    private SessionManager sessionManager;
+
     @PostMapping("/login")
     public ResponseEntity<User> login(@RequestBody LoginRequest request) {
         User user = authService.login(request);
@@ -46,16 +49,9 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
-    @GetMapping
-    public List<GetUserDTO> getUsers() {
-        return userRepository.findAll().stream()
-                .map(userMapper::toGetDTO)
-                .collect(Collectors.toList());
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<GetUserDTO> getUser(@PathVariable Long id) {
-        return userRepository.findById(id)
+    @GetMapping("/me")
+    public ResponseEntity<GetUserDTO> getUser() {
+        return userRepository.findById(sessionManager.getCurrentUserId())
                 .map(userMapper::toGetDTO)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -68,10 +64,10 @@ public class UserController {
         return userMapper.toGetDTO(userRepository.save(user));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/me")
     @Transactional
-    public ResponseEntity<GetUserDTO> updateUser(@PathVariable Long id, @RequestBody PutUserDTO dto) {
-        return userRepository.findById(id)
+    public ResponseEntity<GetUserDTO> updateUser(@RequestBody PutUserDTO dto) {
+        return userRepository.findById(sessionManager.getCurrentUserId())
                 .map(user -> {
                     userMapper.updateEntity(user, dto);
                     return userMapper.toGetDTO(userRepository.save(user));
@@ -80,10 +76,18 @@ public class UserController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping
+    @DeleteMapping("/me")
     @Transactional
-    public ResponseEntity<Void> deleteUsers(@RequestBody List<Long> ids) {
-        userRepository.softDelete(ids);
+    public ResponseEntity<Void> deleteUsers() {
+        userRepository.softDelete(List.of(sessionManager.getCurrentUserId()), null);
+        sessionManager.endSession();
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/archived")
+    @Transactional
+    public ResponseEntity<Void> activateUsers(@RequestParam List<Long> ids) {
+        userRepository.restore(ids, null);
         return ResponseEntity.noContent().build();
     }
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.trishul.classplanner.auth.SessionManager;
@@ -90,19 +91,40 @@ public class ClassPlanController {
 
     @DeleteMapping
     @Transactional
-    public ResponseEntity<Void> deletePlans(@RequestBody List<Long> ids) {
+    public ResponseEntity<Void> deletePlans(@RequestParam List<Long> ids) {
         ClassPlan probe = new ClassPlan();
         GradPlan gradPlan = new GradPlan();
         gradPlan.setId(sessionManager.getCurrentUserId());
         probe.setGradPlan(gradPlan);
 
-        List<Long> toDelete = repository.findAll(Example.of(probe))
-                .stream()
-                .filter(plan -> ids.contains(plan.getId()))
-                .map(ClassPlan::getId)
-                .collect(Collectors.toList());
+        repository.softDelete(ids, Example.of(probe));
+        return ResponseEntity.noContent().build();
+    }
 
-        repository.softDelete(toDelete);
+    @GetMapping("/archived")
+    public List<GetClassPlanDTO> getArchivedPlans() {
+        ClassPlan probe = new ClassPlan();
+        GradPlan gradPlan = new GradPlan();
+        gradPlan.setArchived(true);
+        gradPlan.setId(sessionManager.getCurrentUserId());
+        probe.setGradPlan(gradPlan);
+
+        return repository.findAllArchived(Example.of(probe))
+                .stream()
+                .filter(plan -> plan.getGradPlan().getId().equals(sessionManager.getCurrentUserId()))
+                .map(mapper::toGetDTO)
+                .collect(Collectors.toList());
+    }
+
+    @PutMapping("/archived")
+    @Transactional
+    public ResponseEntity<Void> activatePlans(@RequestParam List<Long> ids) {
+        ClassPlan probe = new ClassPlan();
+        GradPlan gradPlan = new GradPlan();
+        gradPlan.setId(sessionManager.getCurrentUserId());
+        probe.setGradPlan(gradPlan);
+
+        repository.restore(ids, Example.of(probe));
         return ResponseEntity.noContent().build();
     }
 }
