@@ -16,15 +16,20 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import io.trishul.classplanner.MainActivity;
 import io.trishul.classplanner.R;
 import io.trishul.classplanner.UploadGradPlanActivity;
 import io.trishul.classplanner.databinding.FragmentGradPlansBinding;
 
 import io.trishul.classplanner.network.ApiClientManager;
 import io.trishul.classplanner.network.dtos.GradPlanDTO;
+import io.trishul.classplanner.ui.classplans.ClassPlanFilterRequest;
+import io.trishul.classplanner.ui.classplans.ClassPlansViewModel;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import androidx.navigation.NavController;
 
 import java.util.List;
 
@@ -90,7 +95,20 @@ public class GradPlansFragment extends Fragment {
                             emptyView.setVisibility(View.VISIBLE);
                         } else {
                             recyclerView.setVisibility(View.VISIBLE);
-                            recyclerView.setAdapter(new GradPlansAdapter(gradPlans));
+                            GradPlansAdapter adapter = new GradPlansAdapter(gradPlans);
+                            adapter.setOnItemClickListener(gradPlan -> {
+                                // Update ClassPlanFilterRequest with the selected gradPlanId
+                                ClassPlansViewModel classPlansViewModel = new ViewModelProvider(requireActivity()).get(ClassPlansViewModel.class);
+                                ClassPlanFilterRequest classPlanFilter = classPlansViewModel.getCurrentFilter().getValue();
+                                classPlanFilter.setGradPlanIds(List.of(gradPlan.getId()));
+                                classPlansViewModel.setCurrentFilter(classPlanFilter);
+                                classPlansViewModel.setFiltersApplied(true);
+
+                                // Navigate to the classPlan tab
+                                NavController navController = ((MainActivity) requireActivity()).getNavController();
+                                navController.navigate(R.id.navigation_class_plans);
+                            });
+                            recyclerView.setAdapter(adapter);
                         }
                     } else {
                         Toast.makeText(requireContext(), 

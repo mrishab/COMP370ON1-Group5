@@ -17,9 +17,18 @@ import java.util.List;
 public class GradPlansAdapter extends RecyclerView.Adapter<GradPlansAdapter.ViewHolder> {
 
     protected final List<GradPlanDTO.Get> gradPlans;
+    private OnItemClickListener onItemClickListener;
 
     public GradPlansAdapter(List<GradPlanDTO.Get> gradPlans) {
         this.gradPlans = gradPlans;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(GradPlanDTO.Get gradPlan);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.onItemClickListener = listener;
     }
 
     @NonNull
@@ -48,6 +57,13 @@ public class GradPlansAdapter extends RecyclerView.Adapter<GradPlansAdapter.View
         LocalDateTime createdAt = LocalDateTime.parse(gradPlan.getCreatedAt());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d, yyyy");
         holder.createdAt.setText("Created: " + createdAt.format(formatter));
+
+        // Set click listener
+        holder.itemView.setOnClickListener(v -> {
+            if (onItemClickListener != null) {
+                onItemClickListener.onItemClick(gradPlan);
+            }
+        });
     }
 
     private void setCgpaBackground(TextView cgpaView, double cgpa) {

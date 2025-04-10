@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class ClassPlanFilterRequest {
-    private List<Integer> gradPlanIds;
+    private List<Long> gradPlanIds;
     private String programName;
     private String description;
     private int minCourses;

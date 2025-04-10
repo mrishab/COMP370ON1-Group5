@@ -181,4 +181,8 @@ public class MainActivity extends BaseActivity {
             viewModel.setFiltersApplied(true);
         }
     }
+
+    public NavController getNavController() {
+        return Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
+    }
 }

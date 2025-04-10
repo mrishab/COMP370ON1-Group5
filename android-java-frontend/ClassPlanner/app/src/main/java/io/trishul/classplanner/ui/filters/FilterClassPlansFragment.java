@@ -91,9 +91,9 @@ public class FilterClassPlansFragment extends Fragment {
         TextInputEditText gradPlanIdsInput = requireView().findViewById(R.id.et_grad_plan_ids);
         String gradPlanIdsText = gradPlanIdsInput.getText().toString();
         if (!gradPlanIdsText.isEmpty()) {
-            List<Integer> gradPlanIds = Arrays.stream(gradPlanIdsText.split(","))
+            List<Long> gradPlanIds = Arrays.stream(gradPlanIdsText.split(","))
                 .map(String::trim)
-                .map(Integer::parseInt)
+                .map(Long::parseLong)
                 .collect(Collectors.toList());
             filter.setGradPlanIds(gradPlanIds);
         }
