@@ -24,6 +24,7 @@ import io.trishul.classplanner.classplan.controller.dto.PostClassPlanDTO;
 import io.trishul.classplanner.classplan.controller.dto.mapper.ClassPlanMapper;
 import io.trishul.classplanner.classplan.model.ClassPlan;
 import io.trishul.classplanner.classplan.repository.ClassPlanRepository;
+import io.trishul.classplanner.classplan.service.ClassPlanAIResponseProcessor;
 import io.trishul.classplanner.classplan.service.ClassPlanAIService;
 import io.trishul.classplanner.gradplan.model.GradPlan;
 import io.trishul.classplanner.gradplan.repository.GradPlanRepository;
@@ -47,8 +48,8 @@ public class ClassPlanController {
     @Autowired
     private ClassPlanAIService aiService;
 
-    // @Autowired
-    // private ClassPlanAIResponseProcessor aiResponseProcessor;
+    @Autowired
+    private ClassPlanAIResponseProcessor aiResponseProcessor;
 
     @GetMapping
     public List<GetClassPlanDTO> getPlans() {
@@ -95,15 +96,10 @@ public class ClassPlanController {
             .orElseThrow(() -> new RuntimeException("Grad plan not found"));
 
         // Generate class plan using AI
-        // String aiResponse = aiService.generateClassPlan(
-        //     gradPlan.getDetails(),
-        //     dto.getAvailability().toString(),
-        //     dto.getClassDistribution().toString(),
-        //     dto.getBurdenCapacity().toString()
-        // );
+        String aiResponse = aiService.generateClassPlan(classPlan, gradPlan.getDetails());
 
         // Process AI response and update class plan
-        // aiResponseProcessor.updateClassPlanFromAIResponse(classPlan, aiResponse);
+        aiResponseProcessor.updateClassPlanFromAIResponse(classPlan, aiResponse);
 
         ClassPlan persisted = repository.save(classPlan);
         repository.flush();
