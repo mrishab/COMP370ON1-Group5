@@ -2,7 +2,6 @@ package io.trishul.classplanner.classplan.controller.dto;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
 import io.trishul.classplanner.availability.controller.dto.GetAvailabilityDTO;
 import io.trishul.classplanner.classdetail.dto.course.GetCourseDTO;
 import io.trishul.classplanner.classdistribution.model.ClassDistribution;

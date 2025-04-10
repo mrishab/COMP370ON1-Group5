@@ -3,7 +3,6 @@ package io.trishul.classplanner.gradplan.controller;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
 import io.trishul.classplanner.auth.SessionManager;
 import io.trishul.classplanner.gradplan.controller.dto.GetGradPlanDTO;
 import io.trishul.classplanner.gradplan.controller.dto.mapper.GradPlanMapper;
@@ -79,8 +77,8 @@ public class GradPlanController {
     ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreNullValues()
         .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING).withIgnoreCase();
 
-    return repository.findAll(Example.of(probe, matcher), Sort.by("createdAt")).stream().map(mapper::toGetDTO)
-        .collect(Collectors.toList());
+    return repository.findAll(Example.of(probe, matcher), Sort.by("createdAt")).stream()
+        .map(mapper::toGetDTO).collect(Collectors.toList());
   }
 
   @GetMapping("/{id}")

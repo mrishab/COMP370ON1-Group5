@@ -3,10 +3,8 @@ package io.trishul.classplanner.classplan.model;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
 import io.trishul.classplanner.availability.model.Availability;
 import io.trishul.classplanner.classdetail.model.Course;
 import io.trishul.classplanner.classdistribution.model.ClassDistribution;

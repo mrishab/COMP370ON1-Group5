@@ -72,8 +72,8 @@ public class ClassPlanController {
     ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreNullValues()
         .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING).withIgnoreCase();
 
-    return repository.findAll(Example.of(probe, matcher), Sort.by("createdAt")).stream().map(mapper::toGetDTO)
-        .collect(Collectors.toList());
+    return repository.findAll(Example.of(probe, matcher), Sort.by("createdAt")).stream()
+        .map(mapper::toGetDTO).collect(Collectors.toList());
   }
 
   @GetMapping("/{id}")
