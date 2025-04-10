@@ -10,8 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class GradPlanAIService {
-    
-    @Autowired
+    @Autowired    
     private ChatClient chatClient;
     public String processImageContent(String base64Image) {
         Message userMessage = new UserMessage(String.format("""

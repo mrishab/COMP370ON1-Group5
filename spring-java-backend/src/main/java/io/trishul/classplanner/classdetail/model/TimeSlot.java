@@ -19,6 +19,6 @@ public class TimeSlot {
     @Column(nullable = false)
     private String start;
 
-    @Column(nullable = false)
+    @Column(name = "_end", nullable = false)
     private String end;
 }
