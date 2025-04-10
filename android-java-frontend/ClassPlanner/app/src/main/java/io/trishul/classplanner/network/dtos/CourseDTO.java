@@ -18,7 +18,9 @@ public class CourseDTO {
         private String instructor;
         private Integer credits;
         private List<ClassScheduleDTO> schedule;
-        private String location;
+        private String room;
+        private String method;
+        private String section;
     }
 
     @Data

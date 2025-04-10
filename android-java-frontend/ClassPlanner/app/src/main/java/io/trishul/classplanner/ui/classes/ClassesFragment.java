@@ -16,6 +16,7 @@ import com.google.android.material.chip.Chip;
 import io.trishul.classplanner.databinding.FragmentClassesBinding;
 import io.trishul.classplanner.network.ApiClientManager;
 import io.trishul.classplanner.network.dtos.ClassPlanDTO;
+import io.trishul.classplanner.network.dtos.CourseDTO;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -87,7 +88,14 @@ public class ClassesFragment extends Fragment {
         // Setup recycler view with courses
         RecyclerView recyclerView = binding.recyclerViewCourses;
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        // TODO: Create and set CourseAdapter for the RecyclerView
+        
+        if (classPlan.getClasses() != null && !classPlan.getClasses().isEmpty()) {
+            recyclerView.setVisibility(View.VISIBLE);
+            recyclerView.setAdapter(new CourseAdapter(classPlan.getClasses()));
+        } else {
+            recyclerView.setVisibility(View.GONE);
+            Toast.makeText(requireContext(), "No courses found in this class plan", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
