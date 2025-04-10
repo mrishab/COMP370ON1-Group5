@@ -18,6 +18,7 @@ public class ClassPlanDTO {
         private AvailabilityDTO availability;
         private ClassDistribution classDistribution;
         private BurdenCapacity burdenCapacity;
+        private Integer desiredNumOfCourses;
         private String createdAt;
         private String updatedAt;
     }
@@ -30,6 +31,7 @@ public class ClassPlanDTO {
         private AvailabilityDTO availability;
         private ClassDistribution classDistribution;
         private BurdenCapacity burdenCapacity;
+        private Integer desiredNumOfCourses;
 
         public Post(Parcel in) {
             gradPlanId = in.readLong();
@@ -37,6 +39,7 @@ public class ClassPlanDTO {
             availability = in.readParcelable(AvailabilityDTO.class.getClassLoader());
             classDistribution = in.readParcelable(ClassDistribution.class.getClassLoader());
             burdenCapacity = in.readParcelable(BurdenCapacity.class.getClassLoader());
+            desiredNumOfCourses = in.readInt();
         }
 
         @Override
@@ -46,6 +49,7 @@ public class ClassPlanDTO {
             dest.writeParcelable(availability, flags);
             dest.writeParcelable(classDistribution, flags);
             dest.writeParcelable(burdenCapacity, flags);
+            dest.writeInt(desiredNumOfCourses);
         }
 
         @Override
