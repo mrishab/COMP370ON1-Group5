@@ -41,6 +41,7 @@ public class SubmitCreateNewClassPlanActivity extends BaseActivity {
         Runnable makeApiCall = () -> {
             retryButton.setEnabled(false);
             viewButton.setEnabled(false);
+            classPlanCard.setVisibility(View.GONE);
             progressBar.setVisibility(ProgressBar.VISIBLE);
 
             ApiClientManager.getInstance(this)
@@ -87,8 +88,6 @@ public class SubmitCreateNewClassPlanActivity extends BaseActivity {
                             viewButton.setEnabled(true);
                             viewButton.setOnClickListener(v -> {
                                 Intent intent = new Intent(SubmitCreateNewClassPlanActivity.this, MainActivity.class);
-                                intent.putExtra("selectedTab", R.id.navigation_grad_plans);
-                                intent.putExtra("planId", classPlan.getId());
                                 startActivity(intent);
                             });
                         } else {
@@ -116,6 +115,7 @@ public class SubmitCreateNewClassPlanActivity extends BaseActivity {
 
         // Retry button logic
         retryButton.setOnClickListener(v -> {
+            classPlanCard.setVisibility(View.GONE); 
             makeApiCall.run();
         });
     }
