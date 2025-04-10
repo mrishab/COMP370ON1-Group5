@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import io.trishul.classplanner.auth.SessionManager;
+import io.trishul.classplanner.classdistribution.model.ClassDistribution;
 import io.trishul.classplanner.classplan.controller.dto.GetClassPlanDTO;
 import io.trishul.classplanner.classplan.controller.dto.PostClassPlanDTO;
 import io.trishul.classplanner.classplan.controller.dto.mapper.ClassPlanMapper;
+import io.trishul.classplanner.classplan.model.BurdenCapacity;
 import io.trishul.classplanner.classplan.model.ClassPlan;
 import io.trishul.classplanner.classplan.repository.ClassPlanRepository;
 import io.trishul.classplanner.classplan.service.ClassPlanAIResponseProcessor;
@@ -50,13 +52,23 @@ public class ClassPlanController {
   private ClassPlanAIResponseProcessor aiResponseProcessor;
 
   @GetMapping
-  public List<GetClassPlanDTO> getPlans() {
+  public List<GetClassPlanDTO> getPlans(@RequestParam(required = false) String description,
+      @RequestParam(required = false) ClassDistribution classDistribution,
+      @RequestParam(required = false) BurdenCapacity burdenCapacity,
+      @RequestParam(required = false) Long gradPlanId) {
+
     ClassPlan probe = new ClassPlan();
     GradPlan gradPlan = new GradPlan();
-    gradPlan.setId(sessionManager.getCurrentUserId());
+    gradPlan.setId(gradPlanId != null ? gradPlanId : sessionManager.getCurrentUserId());
     probe.setGradPlan(gradPlan);
+    probe.setDescription(description);
+    probe.setClassDistribution(classDistribution);
+    probe.setBurdenCapacity(burdenCapacity);
 
-    return repository.findAll(Example.of(probe)).stream().map(mapper::toGetDTO)
+    ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreNullValues()
+        .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING).withIgnoreCase();
+
+    return repository.findAll(Example.of(probe, matcher)).stream().map(mapper::toGetDTO)
         .collect(Collectors.toList());
   }
 
