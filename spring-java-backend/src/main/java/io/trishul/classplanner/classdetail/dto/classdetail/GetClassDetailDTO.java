@@ -11,5 +11,7 @@ public class GetClassDetailDTO {
   private String instructor;
   private String room;
   private String method;
+  private String crn;
+  private Integer credits;
   private List<GetClassScheduleDTO> schedule;
 }

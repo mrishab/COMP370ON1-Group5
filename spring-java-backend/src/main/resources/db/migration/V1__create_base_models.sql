@@ -85,7 +85,9 @@ CREATE TABLE class_detail (
     section VARCHAR(255) NOT NULL,
     instructor VARCHAR(255) NOT NULL,
     room VARCHAR(255) NOT NULL,
-    method VARCHAR(255) NOT NULL
+    method VARCHAR(255) NOT NULL,
+    crn VARCHAR(255),
+    credits INTEGER
 );
 
 CREATE SEQUENCE course_sequence START 1;

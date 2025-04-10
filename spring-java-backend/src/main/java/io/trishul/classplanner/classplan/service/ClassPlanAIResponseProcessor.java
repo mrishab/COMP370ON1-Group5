@@ -32,6 +32,8 @@ public class ClassPlanAIResponseProcessor {
         classDetail.setInstructor(classDetailNode.get("instructor").asText());
         classDetail.setRoom(classDetailNode.get("room").asText());
         classDetail.setMethod(classDetailNode.get("method").asText());
+        classDetail.setCrn(classDetailNode.get("crn").asText());
+        classDetail.setCredits(classDetailNode.get("credits").asInt());
 
         List<ClassSchedule> schedules = new ArrayList<>();
         for (JsonNode scheduleNode : courseNode.get("classDetail").get("schedule")) {

@@ -35,6 +35,12 @@ public class ClassDetail {
   @Column
   private String method;
 
+  @Column
+  private String crn;
+
+  @Column
+  private Integer credits;
+
   @OneToMany(mappedBy = "classDetail", cascade = CascadeType.ALL, orphanRemoval = true,
       fetch = FetchType.EAGER)
   private List<ClassSchedule> schedule;

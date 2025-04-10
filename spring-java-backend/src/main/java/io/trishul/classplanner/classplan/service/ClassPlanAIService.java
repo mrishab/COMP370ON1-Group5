@@ -67,6 +67,8 @@ public class ClassPlanAIService {
                         "instructor": "",
                         "room": "",
                         "method": "",
+                        "crn": "" ,
+                        "credits": number,
                         "schedule": [
                         {
                             "day": "",
