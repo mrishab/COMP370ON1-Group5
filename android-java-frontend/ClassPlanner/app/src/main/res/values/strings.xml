@@ -129,4 +129,11 @@
     <string name="no_grad_plans">No graduation plans found.\nTap + to add one.</string>
     <string name="no_grad_plans_for_class_plan">You need to add a graduation plan first.\nTap below to get started.</string>
     <string name="button_go_to_grad_plans">Go to Grad Plans</string>
+
+    <!-- Class Plans Fragment -->
+    <string name="text_no_class_plans">No class plans found.\nPress + to get started.</string>
+    <string name="content_description_add_class_plan">Add class plan</string>
+
+    <!-- Top Bar Menu -->
+    <string name="action_filter">Filter</string>
 </resources>

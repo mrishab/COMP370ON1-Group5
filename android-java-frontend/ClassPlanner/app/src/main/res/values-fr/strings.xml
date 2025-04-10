@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Error Messages -->
+    <string name="error_registration_failed">Échec de l\'inscription : %1$d</string>
+    <string name="error_generic">Erreur : %1$s</string>
+    <string name="error_login_failed">Échec de la connexion : %1$d</string>
+    <string name="error_load_grad_plans">Échec du chargement des plans d\'études : %1$d</string>
+    <string name="error_load_grad_plans_network">Erreur de chargement des plans d\'études : %1$s</string>
+    <string name="error_load_class_plans">Échec du chargement des plans de cours : %1$d</string>
+    <string name="error_load_class_plans_network">Erreur de chargement des plans de cours : %1$s</string>
+    <string name="error_create_plan">Échec de la création du plan : %1$s</string>
+    <string name="error_create_plan_network">Erreur de création du plan : %1$s</string>
+
+    <!-- Success Messages -->
+    <string name="success_registration">Bienvenue %1$s</string>
+    <string name="success_login">Bienvenue %1$s</string>
+    <string name="success_logout">Déconnexion réussie</string>
+    
+    <!-- Profile Fragment -->
+    <string name="title_profile_heading">Profil</string>
+    <string name="button_logout">Déconnexion</string>
+
+    <!-- Main Activity -->
+    <string name="toolbar_title_grad_plans">Plans d\'études</string>
+    <string name="toolbar_title_class_plans">Plans de cours</string>
+    <string name="toolbar_title_classes">Cours</string>
+    <string name="toolbar_title_profile">Profil</string>
+    <string name="drawer_filter">Filtrer</string>
+
+    <!-- Grad Plans -->
+    <string name="no_grad_plans">Aucun plan d\'études trouvé.\nAppuyez sur + pour en ajouter un.</string>
+    <string name="no_grad_plans_for_class_plan">Vous devez d\'abord ajouter un plan d\'études.\nAppuyez ci-dessous pour commencer.</string>
+    <string name="button_go_to_grad_plans">Aller aux plans d\'études</string>
+</resources>
