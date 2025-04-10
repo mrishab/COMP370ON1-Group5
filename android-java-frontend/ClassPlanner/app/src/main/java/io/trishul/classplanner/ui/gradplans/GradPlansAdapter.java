@@ -5,54 +5,60 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
-import java.util.List;
+import com.google.android.material.chip.Chip;
 import io.trishul.classplanner.R;
 import io.trishul.classplanner.network.dtos.GradPlanDTO;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class GradPlansAdapter extends RecyclerView.Adapter<GradPlansAdapter.ViewHolder> {
-    private final List<GradPlanDTO.Get> gradPlans;
+
+    protected final List<GradPlanDTO.Get> gradPlans;
 
     public GradPlansAdapter(List<GradPlanDTO.Get> gradPlans) {
         this.gradPlans = gradPlans;
     }
 
-    protected List<GradPlanDTO.Get> getGradPlans() {
-        return gradPlans;
-    }
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_grad_plan, parent, false);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_grad_plan, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         GradPlanDTO.Get gradPlan = gradPlans.get(position);
-        
-        // Set program name, handle nulls
-        holder.programName.setText(gradPlan.getProgramName() != null ? 
-            gradPlan.getProgramName() : "Unknown Program");
 
-        // Format credits as completed/required
-        String credits = String.format("%d/%d", 
-            gradPlan.getCreditsCompleted() != null ? gradPlan.getCreditsCompleted() : 0,
-            gradPlan.getCreditsRequired() != null ? gradPlan.getCreditsRequired() : 0);
-        holder.credits.setText(credits);
+        holder.programName.setText(gradPlan.getProgramName());
+        holder.majorName.setText(gradPlan.getMajorName());
+        holder.credits.setText(String.format("Credits: %d/%d", 
+            gradPlan.getCreditsCompleted(), gradPlan.getCreditsRequired()));
 
-        // Format CGPA with 2 decimal places
-        String gpa = String.format("%.2f", 
-            gradPlan.getCgpa() != null ? gradPlan.getCgpa() : 0.0);
-        holder.gpa.setText(gpa);
+        holder.cgpa.setText(String.format("%.2f", gradPlan.getCgpa()));
+        setCgpaBackground(holder.cgpa, gradPlan.getCgpa());
 
-        // Format created date
-        if (gradPlan.getCreatedAt() != null) {
-            holder.createdAt.setText(gradPlan.getCreatedAt().toString());
-        } else {
-            holder.createdAt.setText("Unknown Date");
-        }
+        holder.programLevel.setText(gradPlan.getProgramLevel());
+
+        // Format date nicely
+        LocalDateTime createdAt = LocalDateTime.parse(gradPlan.getCreatedAt());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d, yyyy");
+        holder.createdAt.setText("Created: " + createdAt.format(formatter));
+    }
+
+    private void setCgpaBackground(TextView cgpaView, double cgpa) {
+        int colorResId;
+        if (cgpa >= 3.7) colorResId = R.color.cgpa_excellent;
+        else if (cgpa >= 3.0) colorResId = R.color.cgpa_good;
+        else if (cgpa >= 2.0) colorResId = R.color.cgpa_fair;
+        else colorResId = R.color.cgpa_poor;
+
+        cgpaView.getBackground().setTint(
+            ContextCompat.getColor(cgpaView.getContext(), colorResId));
     }
 
     @Override
@@ -60,15 +66,22 @@ public class GradPlansAdapter extends RecyclerView.Adapter<GradPlansAdapter.View
         return gradPlans.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView programName, credits, gpa, createdAt;
+    protected List<GradPlanDTO.Get> getGradPlans() {
+        return gradPlans;
+    }
 
-        ViewHolder(View itemView) {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView programName, majorName, credits, cgpa, createdAt;
+        Chip programLevel;
+
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
-            programName = itemView.findViewById(R.id.program_name);
-            credits = itemView.findViewById(R.id.credits);
-            gpa = itemView.findViewById(R.id.gpa);
-            createdAt = itemView.findViewById(R.id.created_at);
+            programName = itemView.findViewById(R.id.tv_program_name);
+            majorName = itemView.findViewById(R.id.tv_major_name);
+            credits = itemView.findViewById(R.id.tv_credits);
+            cgpa = itemView.findViewById(R.id.tv_cgpa);
+            createdAt = itemView.findViewById(R.id.tv_created_at);
+            programLevel = itemView.findViewById(R.id.chip_program_level);
         }
     }
 }

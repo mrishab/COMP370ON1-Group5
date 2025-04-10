@@ -15,6 +15,16 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.InputStream;
+
+import io.trishul.classplanner.network.ApiClientManager;
+import io.trishul.classplanner.network.dtos.GradPlanDTO;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 import io.trishul.classplanner.databinding.FragmentUploadGradPlanBinding;
 
 public class UploadGradPlanFragment extends Fragment {
@@ -85,13 +95,50 @@ public class UploadGradPlanFragment extends Fragment {
     }
 
     private void uploadFile() {
-        // TODO: Implement actual file upload logic here
+        Uri fileUri = viewModel.getSelectedFileUri().getValue();
+        if (fileUri == null) {
+            Snackbar.make(binding.getRoot(), "No file selected", Snackbar.LENGTH_SHORT).show();
+            return;
+        }
+
+        String fileName = viewModel.getSelectedFileName().getValue();
         viewModel.setIsUploading(true);
-        // Simulate upload
-        binding.getRoot().postDelayed(() -> {
+
+        try {
+            InputStream inputStream = requireContext().getContentResolver().openInputStream(fileUri);
+            byte[] fileBytes = new byte[inputStream.available()];
+            inputStream.read(fileBytes);
+            inputStream.close();
+
+            RequestBody fileNamePart = RequestBody.create(fileName, okhttp3.MultipartBody.FORM);
+            RequestBody filePart = RequestBody.create(fileBytes, okhttp3.MediaType.parse("application/pdf"));
+            MultipartBody.Part file = MultipartBody.Part.createFormData("file", fileName, filePart);
+
+            ApiClientManager.getInstance(requireContext())
+                .getGradPlanApi()
+                .createPlan(fileNamePart, file)
+                .enqueue(new Callback<GradPlanDTO.Get>() {
+                    @Override
+                    public void onResponse(Call<GradPlanDTO.Get> call, Response<GradPlanDTO.Get> response) {
+                        viewModel.setIsUploading(false);
+                        if (response.isSuccessful()) {
+                            Snackbar.make(binding.getRoot(), "File uploaded successfully", Snackbar.LENGTH_SHORT).show();
+                            requireActivity().finish();
+                        } else {
+                            Snackbar.make(binding.getRoot(), "Upload failed: " + response.code(), Snackbar.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<GradPlanDTO.Get> call, Throwable t) {
+                        viewModel.setIsUploading(false);
+                        Snackbar.make(binding.getRoot(), "Upload failed: " + t.getMessage(), Snackbar.LENGTH_LONG).show();
+                    }
+                });
+        } catch (Exception e) {
             viewModel.setIsUploading(false);
-            requireActivity().finish();
-        }, 2000);
+            Snackbar.make(binding.getRoot(), "Error reading file: " + e.getMessage(), Snackbar.LENGTH_LONG).show();
+        }
     }
 
     @Override

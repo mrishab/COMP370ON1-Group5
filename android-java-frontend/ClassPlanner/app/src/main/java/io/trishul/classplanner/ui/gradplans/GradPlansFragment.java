@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -34,6 +35,7 @@ public class GradPlansFragment extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
     private GradPlansViewModel gradPlanViewModel;
     private GradPlansViewModel activityViewModel;
+    private TextView emptyView;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
@@ -45,6 +47,7 @@ public class GradPlansFragment extends Fragment {
 
         recyclerView = binding.recyclerViewGradPlans;
         swipeRefreshLayout = binding.swipeRefreshLayout;
+        emptyView = root.findViewById(R.id.empty_view);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         swipeRefreshLayout.setRefreshing(true);
@@ -66,6 +69,7 @@ public class GradPlansFragment extends Fragment {
 
     private void fetchGradPlans() {
         recyclerView.setVisibility(View.GONE);
+        emptyView.setVisibility(View.GONE);
         GradPlanFilterRequest filter = activityViewModel.getCurrentFilter().getValue();
 
         // Convert lists to comma-separated strings for API
@@ -78,11 +82,16 @@ public class GradPlansFragment extends Fragment {
             .enqueue(new Callback<List<GradPlanDTO.Get>>() {
                 @Override
                 public void onResponse(Call<List<GradPlanDTO.Get>> call, Response<List<GradPlanDTO.Get>> response) {
-                    recyclerView.setVisibility(View.VISIBLE);
                     swipeRefreshLayout.setRefreshing(false);
                     
                     if (response.isSuccessful() && response.body() != null) {
-                        recyclerView.setAdapter(new GradPlansAdapter(response.body()));
+                        List<GradPlanDTO.Get> gradPlans = response.body();
+                        if (gradPlans.isEmpty()) {
+                            emptyView.setVisibility(View.VISIBLE);
+                        } else {
+                            recyclerView.setVisibility(View.VISIBLE);
+                            recyclerView.setAdapter(new GradPlansAdapter(gradPlans));
+                        }
                     } else {
                         Toast.makeText(requireContext(), 
                             getString(R.string.error_load_grad_plans, response.code()), 

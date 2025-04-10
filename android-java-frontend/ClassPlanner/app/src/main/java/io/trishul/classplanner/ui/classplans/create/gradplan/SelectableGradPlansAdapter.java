@@ -14,19 +14,21 @@ public class SelectableGradPlansAdapter extends GradPlansAdapter {
     public SelectableGradPlansAdapter(List<GradPlanDTO.Get> gradPlans, CreateNewClassPlanActivityModel viewModel) {
         super(gradPlans);
         this.viewModel = viewModel;
+        // Initialize selection from view model
+        this.selectedGradPlanId = viewModel.getSelectedGradPlanId().getValue();
     }
 
     @Override
     public void onBindViewHolder(@NonNull GradPlansAdapter.ViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
-
-        GradPlanDTO.Get gradPlan = getGradPlanAt(position);
+        GradPlanDTO.Get gradPlan = gradPlans.get(position);
         
         // Set selected state
-        holder.itemView.setActivated(gradPlan.getId().equals(selectedGradPlanId));
+        holder.itemView.setSelected(gradPlan.getId().equals(selectedGradPlanId));
         
         // Add click listener
         holder.itemView.setOnClickListener(v -> {
+            // Update selection
             Long oldSelectedId = selectedGradPlanId;
             selectedGradPlanId = gradPlan.getId();
             
@@ -42,8 +44,8 @@ public class SelectableGradPlansAdapter extends GradPlansAdapter {
     }
 
     private int getPositionForGradPlanId(Long gradPlanId) {
-        for (int i = 0; i < getItemCount(); i++) {
-            if (getGradPlanAt(i).getId().equals(gradPlanId)) {
+        for (int i = 0; i < gradPlans.size(); i++) {
+            if (gradPlans.get(i).getId().equals(gradPlanId)) {
                 return i;
             }
         }
@@ -51,6 +53,6 @@ public class SelectableGradPlansAdapter extends GradPlansAdapter {
     }
 
     private GradPlanDTO.Get getGradPlanAt(int position) {
-        return getGradPlans().get(position);
+        return gradPlans.get(position);
     }
 }

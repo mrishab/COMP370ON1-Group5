@@ -9,4 +9,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="color_on">#0000FF</color> <!-- Blue color when toggled on -->
     <color name="color_off">#808080</color> <!-- Grey color when toggled off -->
+    <color name="cgpa_excellent">#4CAF50</color>
+    <color name="cgpa_good">#8BC34A</color>
+    <color name="cgpa_fair">#FFC107</color>
+    <color name="cgpa_poor">#F44336</color>
 </resources>

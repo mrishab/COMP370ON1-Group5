@@ -121,4 +121,7 @@
     <string name="toolbar_title_classes">Classes</string>
     <string name="toolbar_title_profile">Profile</string>
     <string name="drawer_filter">Filter</string>
+
+    <!-- Grad Plans -->
+    <string name="no_grad_plans">No graduation plans found.\nTap + to add one.</string>
 </resources>
