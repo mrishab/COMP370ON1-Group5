@@ -131,6 +131,11 @@ public class MainActivity extends BaseActivity {
                 toolbar.setTitle(getString(titleId));
             }
             
+            // Show/hide filter icon based on destination
+            boolean showFilter = destination.getId() == R.id.navigation_grad_plans || 
+                               destination.getId() == R.id.navigation_class_plans;
+            toolbar.setNavigationIcon(showFilter ? R.drawable.ic_filter : android.R.color.transparent);
+            
             // Handle filter fragment visibility
             Fragment selectedFragment = fragmentMap.get(destination.getId());
             if (selectedFragment != null) {
@@ -141,6 +146,14 @@ public class MainActivity extends BaseActivity {
                             .commit();
                 }
                 fragmentManager.beginTransaction().show(selectedFragment).commit();
+            }
+            
+            // Close drawer if it's open and we're navigating to Classes/Profile
+            if (!showFilter) {
+                DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+                if (drawerLayout.isDrawerOpen(GravityCompat.END)) {
+                    drawerLayout.closeDrawer(GravityCompat.END);
+                }
             }
         });
     }
