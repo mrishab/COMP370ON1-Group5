@@ -2,12 +2,17 @@ package io.trishul.classplanner;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.cardview.widget.CardView;
 
 import io.trishul.classplanner.network.ApiClientManager;
 import io.trishul.classplanner.network.dtos.ClassPlanDTO;
+import io.trishul.classplanner.network.dtos.CourseDTO;
 import io.trishul.classplanner.ui.base.BaseActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -22,6 +27,12 @@ public class SubmitCreateNewClassPlanActivity extends BaseActivity {
         ProgressBar progressBar = findViewById(R.id.progressBar);
         Button retryButton = findViewById(R.id.button_submit_create_class_plan_retry);
         Button viewButton = findViewById(R.id.button_submit_create_class_plan_view);
+        CardView classPlanCard = findViewById(R.id.class_plan_card);
+        TextView classPlanDescription = findViewById(R.id.class_plan_description);
+        TextView classPlanDistribution = findViewById(R.id.class_plan_distribution);
+        TextView classPlanBurden = findViewById(R.id.class_plan_burden);
+        TextView classPlanCoursesCount = findViewById(R.id.class_plan_courses_count);
+        TextView classPlanCourses = findViewById(R.id.class_plan_courses);
 
         // Retrieve the request from the intent
         ClassPlanDTO.Post request = getIntent().getParcelableExtra("request");
@@ -42,11 +53,42 @@ public class SubmitCreateNewClassPlanActivity extends BaseActivity {
                         retryButton.setEnabled(true);
 
                         if (response.isSuccessful() && response.body() != null) {
+                            ClassPlanDTO.Get classPlan = response.body();
+                            
+                            // Show card and populate data
+                            classPlanCard.setVisibility(View.VISIBLE);
+                            
+                            // Set description
+                            String description = classPlan.getDescription() != null ? 
+                                classPlan.getDescription() : "New Class Plan";
+                            classPlanDescription.setText(description);
+                            
+                            // Set distribution
+                            classPlanDistribution.setText("Distribution: " + classPlan.getClassDistribution());
+                            
+                            // Set burden
+                            classPlanBurden.setText("Burden Capacity: " + classPlan.getBurdenCapacity());
+                            
+                            // Set courses count
+                            classPlanCoursesCount.setText("Desired Courses: " + classPlan.getDesiredNumOfCourses());
+                            
+                            // Set courses
+                            if (classPlan.getClasses() != null && !classPlan.getClasses().isEmpty()) {
+                                StringBuilder courses = new StringBuilder();
+                                for (CourseDTO course : classPlan.getClasses()) {
+                                    courses.append("• ").append(course.getTitle()).append("\n");
+                                }
+                                classPlanCourses.setText(courses.toString());
+                            } else {
+                                classPlanCourses.setText("Courses will be generated shortly");
+                            }
+
+                            // Enable view button
                             viewButton.setEnabled(true);
                             viewButton.setOnClickListener(v -> {
                                 Intent intent = new Intent(SubmitCreateNewClassPlanActivity.this, MainActivity.class);
                                 intent.putExtra("selectedTab", R.id.navigation_grad_plans);
-                                intent.putExtra("planId", response.body().getId());
+                                intent.putExtra("planId", classPlan.getId());
                                 startActivity(intent);
                             });
                         } else {
