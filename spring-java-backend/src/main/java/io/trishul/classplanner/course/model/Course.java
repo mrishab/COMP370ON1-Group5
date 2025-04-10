@@ -11,42 +11,35 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Course {
     @Id
     @SequenceGenerator(name = "course_generator", sequenceName = "course_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "course_generator")
     private Long id;
 
-    @Column(nullable = false)
+    @Column
     private String title;
 
     private String description;
 
-    @Column(nullable = false)
+    @Column
     private String courseCode;
 
-    @Column(nullable = false)
+    @Column
     private String credits;
 
-    @Column(nullable = false)
+    @Column
     private String courseNumber;
 
     @CreationTimestamp
-    @Column(nullable = false, updatable = false)
+    @Column(updatable = false)
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    @Column(nullable = false)
+    @Column
     private LocalDateTime updatedAt;
-
-    @Column(nullable = true)
-    private boolean archived;
 }

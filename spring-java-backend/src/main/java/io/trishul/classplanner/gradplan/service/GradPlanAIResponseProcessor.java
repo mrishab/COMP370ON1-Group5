@@ -1,7 +1,5 @@
 package io.trishul.classplanner.gradplan.service;
 
-import java.time.LocalDateTime;
-
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -22,19 +20,13 @@ public class GradPlanAIResponseProcessor {
             // Update basic information
             setIfPresent(json, "programName", value -> plan.setProgramName(value.asText()));
             setIfPresent(json, "majorName", value -> plan.setMajorName(value.asText()));
+            setIfPresent(json, "programLevel", value -> plan.setProgramLevel(value.asText()));
             
             // Update numeric values
             setIfPresent(json, "creditsCompleted", value -> plan.setCreditsCompleted(value.asLong()));
             setIfPresent(json, "creditsRequired", value -> plan.setCreditsRequired(value.asLong()));
             setIfPresent(json, "cgpa", value -> plan.setCgpa(value.asDouble()));
-            
-            // Update term information
-            setIfPresent(json, "calendarTermSemester", value -> plan.setCalendarTermSemester(value.asText()));
-            setIfPresent(json, "calendarTermYear", value -> plan.setCalendarTermYear(value.asInt()));
-            
-            // Set audit timestamp
-            plan.setAuditedAt(LocalDateTime.now());
-            
+                        
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Failed to process AI response", e);
         }

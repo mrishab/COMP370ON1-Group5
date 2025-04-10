@@ -28,19 +28,19 @@ public class CourseClass {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "course_class_generator")
     private Long id;
 
-    @Column(nullable = false)
+    @Column
     private String section;
 
-    @Column(nullable = false)
+    @Column
     private String instructor;
 
-    @Column(nullable = false)
+    @Column
     private String crn;
 
-    @Column(nullable = false)
+    @Column
     private String room;
 
-    @Column(nullable = false)
+    @Column
     private String method;
 
     @ElementCollection
@@ -48,17 +48,14 @@ public class CourseClass {
     private List<ClassSchedule> classSchedules;
 
     @ManyToOne
-    @JoinColumn(name = "course_id", nullable = false)
+    @JoinColumn(name = "course_id")
     private Course course;
 
     @CreationTimestamp
-    @Column(nullable = false, updatable = false)
+    @Column(updatable = false)
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    @Column(nullable = false)
+    @Column
     private LocalDateTime updatedAt;
-
-    @Column(nullable = true)
-    private boolean archived;
 }

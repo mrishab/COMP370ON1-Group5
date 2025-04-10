@@ -22,7 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import io.trishul.classplanner.auth.SessionManager;
 import io.trishul.classplanner.gradplan.controller.dto.GetGradPlanDTO;
-import io.trishul.classplanner.gradplan.controller.dto.PostGradPlanDTO;
 import io.trishul.classplanner.gradplan.controller.dto.mapper.GradPlanMapper;
 import io.trishul.classplanner.gradplan.model.GradPlan;
 import io.trishul.classplanner.gradplan.repository.GradPlanRepository;
@@ -82,9 +81,11 @@ public class GradPlanController {
     @PostMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     @Transactional
     public GetGradPlanDTO createPlan(
-            @RequestPart("data") PostGradPlanDTO dto,
-            @RequestPart("file") MultipartFile file) throws IOException {
-        GradPlan plan = mapper.toEntity(dto);
+        @RequestPart("file-name") String fileName,
+        @RequestPart("file") MultipartFile file) throws IOException {
+        GradPlan plan = new GradPlan();
+        plan.setFileName(fileName);
+
         User user = new User();
         user.setId(sessionManager.getCurrentUserId());
         plan.setUser(user);

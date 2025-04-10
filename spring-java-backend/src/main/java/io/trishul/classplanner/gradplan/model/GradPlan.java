@@ -15,66 +15,56 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class GradPlan {
     @Id
     @SequenceGenerator(name = "grad_plan_generator", sequenceName = "grad_plan_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "grad_plan_generator")
     private Long id;
 
-    @Column(nullable = false)
+    @Column
     private String fileName;
 
-    @Column(nullable = false)
+    @Column
     private String programName;
 
-    @Column(nullable = false)
+    @Column
     private String majorName;
 
-    @Column(nullable = false)
-    private long creditsCompleted;
+    @Column
+    private Long creditsCompleted;
 
-    @Column(nullable = false)
-    private long creditsRequired;
+    @Column
+    private Long creditsRequired;
 
-    @Column(nullable = false)
-    private double cgpa;
+    @Column
+    private Double cgpa;
 
     @CreationTimestamp
-    @Column(nullable = false, updatable = false)
+    @Column
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    @Column(nullable = false)
+    @Column
     private LocalDateTime updatedAt;
 
-    @Column(nullable = false)
-    private LocalDateTime auditedAt;
-
-    @Column(nullable = false)
-    private String calendarTermSemester;
-
-    @Column(nullable = false)
-    private int calendarTermYear;
-
-    @Column(nullable = false)
+    @Column
     private String programLevel;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(nullable = true)
+    @Column
     private boolean archived;
 
     @Lob
-    @Column(columnDefinition = "TEXT")
+    @Column
     private String pdfContentBase64;
+
+    @Column
+    private String details;
 }

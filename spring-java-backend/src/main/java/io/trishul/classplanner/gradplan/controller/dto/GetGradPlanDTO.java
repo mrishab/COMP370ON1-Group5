@@ -10,12 +10,9 @@ public class GetGradPlanDTO {
     private String fileName;
     private String programName;
     private String majorName;
-    private long creditsCompleted;
-    private long creditsRequired;
-    private double cgpa;
-    private LocalDateTime auditedAt;
-    private String calendarTermSemester;
-    private int calendarTermYear;
+    private Long creditsCompleted;
+    private Long creditsRequired;
+    private Double cgpa;
     private String programLevel;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

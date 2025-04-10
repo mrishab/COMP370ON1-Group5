@@ -19,7 +19,7 @@ public class PDFProcessingService {
         try (PDDocument document = PDDocument.load(pdfFile.getInputStream());
              ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             PDFRenderer pdfRenderer = new PDFRenderer(document);
-            BufferedImage image = pdfRenderer.renderImageWithDPI(0, 150); // First page at 150 DPI
+            BufferedImage image = pdfRenderer.renderImageWithDPI(0, 50);
             
             ImageIO.write(image, "png", baos);
             byte[] imageBytes = baos.toByteArray();

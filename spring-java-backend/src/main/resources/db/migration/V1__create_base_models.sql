@@ -21,17 +21,15 @@ CREATE TABLE grad_plan (
     id BIGINT PRIMARY KEY DEFAULT nextval('grad_plan_sequence'),
     file_name VARCHAR(255) NOT NULL,
     pdf_content_base64 TEXT,
-    program_name VARCHAR(255) NOT NULL,
-    major_name VARCHAR(255) NOT NULL,
-    credits_completed BIGINT NOT NULL,
-    credits_required BIGINT NOT NULL,
+    details TEXT,
+    program_name VARCHAR(255),
+    major_name VARCHAR(255),
+    credits_completed BIGINT,
+    credits_required BIGINT,
     cgpa DOUBLE PRECISION,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    audited_at TIMESTAMP,
-    calendar_term_semester VARCHAR(255) NOT NULL,
-    calendar_term_year INTEGER NOT NULL,
-    program_level VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    program_level VARCHAR(255),
     user_id BIGINT NOT NULL,
     archived BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (user_id) REFERENCES _user(id)
@@ -44,8 +42,7 @@ CREATE SEQUENCE availability_hour_sequence START WITH 1 INCREMENT BY 1;
 CREATE TABLE availability (
     id BIGINT PRIMARY KEY DEFAULT nextval('availability_sequence'),
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    archived BOOLEAN DEFAULT FALSE
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE availability_day (
@@ -69,8 +66,8 @@ CREATE TABLE class_plan (
     description VARCHAR(255),
     grad_plan_id BIGINT NOT NULL,
     availability_id BIGINT,
-    class_distribution VARCHAR(255),
-    burden_capacity VARCHAR(255),
+    class_distribution VARCHAR(255) NOT NULL,
+    burden_capacity VARCHAR(255) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     archived BOOLEAN DEFAULT FALSE,
@@ -87,12 +84,11 @@ CREATE TABLE course (
     id BIGINT PRIMARY KEY DEFAULT nextval('course_sequence'),
     title VARCHAR(255) NOT NULL,
     description TEXT,
-    course_code VARCHAR(255) NOT NULL,
-    credits VARCHAR(255) NOT NULL,
-    course_number VARCHAR(255) NOT NULL,
+    course_code VARCHAR(255),
+    credits VARCHAR(255),
+    course_number VARCHAR(255),
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    archived BOOLEAN DEFAULT FALSE
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Course class and schedules
@@ -107,7 +103,6 @@ CREATE TABLE course_class (
     course_id BIGINT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    archived BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (course_id) REFERENCES course(id)
 );
 
@@ -164,8 +159,7 @@ CREATE TABLE class_schedule (
     start_time VARCHAR(255) NOT NULL,
     end_time VARCHAR(255) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    archived BOOLEAN DEFAULT FALSE
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE SEQUENCE class_distribution_sequence START 1;
@@ -174,8 +168,7 @@ CREATE TABLE class_distribution (
     key VARCHAR(255) NOT NULL UNIQUE,
     input VARCHAR(255) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    archived BOOLEAN DEFAULT FALSE
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Insert initial enum values
@@ -189,7 +182,6 @@ CREATE TABLE burden_capacity (
     id BIGINT PRIMARY KEY DEFAULT nextval('burden_capacity_sequence'),
     key VARCHAR(255) NOT NULL,
     input VARCHAR(255) NOT NULL,
-    archived BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

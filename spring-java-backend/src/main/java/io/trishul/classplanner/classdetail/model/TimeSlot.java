@@ -16,9 +16,9 @@ public class TimeSlot {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "time_slot_generator")
     private Long id;
 
-    @Column(nullable = false)
+    @Column
     private String start;
 
-    @Column(name = "_end", nullable = false)
+    @Column(name = "_end")
     private String end;
 }

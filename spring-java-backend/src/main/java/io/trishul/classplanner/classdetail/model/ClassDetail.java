@@ -22,16 +22,16 @@ public class ClassDetail {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "class_detail_generator")
     private Long id;
 
-    @Column(nullable = false)
+    @Column
     private String section;
 
-    @Column(nullable = false)
+    @Column
     private String instructor;
 
-    @Column(nullable = false)
+    @Column
     private String room;
 
-    @Column(nullable = false)
+    @Column
     private String method;
 
     @ElementCollection

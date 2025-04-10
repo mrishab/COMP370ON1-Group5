@@ -21,20 +21,20 @@ public class ClassSchedule {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "class_schedule_generator")
     private Long id;
 
-    @Column(nullable = false)
+    @Column
     private String day;
 
-    @Column(nullable = false)
+    @Column
     private String startTime;
 
-    @Column(nullable = false)
+    @Column
     private String endTime;
 
     @CreationTimestamp
-    @Column(nullable = false, updatable = false)
+    @Column(updatable = false)
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    @Column(nullable = false)
+    @Column
     private LocalDateTime updatedAt;
 }

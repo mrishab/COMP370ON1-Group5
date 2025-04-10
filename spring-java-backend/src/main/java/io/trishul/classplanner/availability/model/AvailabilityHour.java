@@ -19,12 +19,12 @@ public class AvailabilityHour {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "availability_day_id", nullable = false)
+    @JoinColumn(name = "availability_day_id")
     private AvailabilityDay availabilityDay;
 
-    @Column(nullable = false)
-    private int hourOfTheDay;
+    @Column
+    private Integer hourOfTheDay;
 
-    @Column(nullable = false)
+    @Column
     private boolean isAvailable;
 }

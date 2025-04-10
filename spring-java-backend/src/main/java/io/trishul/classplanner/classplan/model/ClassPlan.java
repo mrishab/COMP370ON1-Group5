@@ -34,7 +34,7 @@ public class ClassPlan {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "grad_plan_id", nullable = false)
+    @JoinColumn(name = "grad_plan_id")
     private GradPlan gradPlan;
 
     private String description;
@@ -55,13 +55,13 @@ public class ClassPlan {
     private BurdenCapacity burdenCapacity;
 
     @CreationTimestamp
-    @Column(nullable = false, updatable = false)
+    @Column
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    @Column(nullable = false)
+    @Column
     private LocalDateTime updatedAt;
 
-    @Column(nullable = true)
+    @Column
     private boolean archived;
 }

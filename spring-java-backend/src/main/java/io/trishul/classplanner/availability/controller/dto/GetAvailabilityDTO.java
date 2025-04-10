@@ -16,7 +16,7 @@ public class GetAvailabilityDTO {
 
     @Data
     public static class GetAvailabilityHourDTO {
-        private int hourOfTheDay;
+        private Integer hourOfTheDay;
         private boolean isAvailable;
     }
 }

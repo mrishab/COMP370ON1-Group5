@@ -22,7 +22,7 @@ public class AvailabilityDay {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "availability_id", nullable = false)
+    @JoinColumn(name = "availability_id")
     private Availability availability;
 
     private String day;

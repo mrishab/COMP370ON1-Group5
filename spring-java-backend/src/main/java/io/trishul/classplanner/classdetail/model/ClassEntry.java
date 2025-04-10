@@ -19,19 +19,19 @@ public class ClassEntry {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "class_entry_generator")
     private Long id;
 
-    @Column(nullable = false)
+    @Column
     private String course;
 
-    @Column(nullable = false)
+    @Column
     private String courseNumber;
 
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "class_detail_id", nullable = false)
+    @JoinColumn(name = "class_detail_id")
     private ClassDetail classDetail;
 
     @ManyToOne
-    @JoinColumn(name = "class_plan_id", nullable = false)
+    @JoinColumn(name = "class_plan_id")
     private ClassPlan classPlan;
 }
