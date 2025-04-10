@@ -76,6 +76,17 @@
                 app:layout_constraintTop_toBottomOf="@id/overview_card"
                 app:layout_constraintStart_toStartOf="parent"/>
 
+            <TextView
+                android:id="@+id/empty_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No courses found in this class plan"
+                android:textAlignment="center"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:layout_marginTop="32dp"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/courses_header"/>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view_courses"
                 android:layout_width="match_parent"

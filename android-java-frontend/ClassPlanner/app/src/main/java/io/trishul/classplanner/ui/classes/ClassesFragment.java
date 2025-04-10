@@ -89,12 +89,14 @@ public class ClassesFragment extends Fragment {
         RecyclerView recyclerView = binding.recyclerViewCourses;
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         
-        if (classPlan.getClasses() != null && !classPlan.getClasses().isEmpty()) {
-            recyclerView.setVisibility(View.VISIBLE);
+        // Update visibility of components based on data
+        boolean hasClasses = classPlan.getClasses() != null && !classPlan.getClasses().isEmpty();
+        recyclerView.setVisibility(hasClasses ? View.VISIBLE : View.GONE);
+        binding.coursesHeader.setVisibility(hasClasses ? View.VISIBLE : View.GONE);
+        binding.emptyView.setVisibility(hasClasses ? View.GONE : View.VISIBLE);
+        
+        if (hasClasses) {
             recyclerView.setAdapter(new CourseAdapter(classPlan.getClasses()));
-        } else {
-            recyclerView.setVisibility(View.GONE);
-            Toast.makeText(requireContext(), "No courses found in this class plan", Toast.LENGTH_SHORT).show();
         }
     }
 
