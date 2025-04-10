@@ -81,6 +81,9 @@
     <string name="button_submit_create_class_plan_retry">Retry</string>
     <string name="button_submit_create_class_plan_view">Home</string>
 
+    <!-- Selection states -->
+    <string name="selected">Selected</string>
+
     <!-- Login Activity -->
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>

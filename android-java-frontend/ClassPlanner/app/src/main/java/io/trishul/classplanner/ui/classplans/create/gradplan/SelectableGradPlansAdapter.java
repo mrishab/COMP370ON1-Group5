@@ -1,7 +1,9 @@
 package io.trishul.classplanner.ui.classplans.create.gradplan;
 
 import androidx.annotation.NonNull;
+import android.widget.ImageView;
 
+import io.trishul.classplanner.R;
 import io.trishul.classplanner.network.dtos.GradPlanDTO;
 import io.trishul.classplanner.ui.gradplans.GradPlansAdapter;
 import io.trishul.classplanner.ui.classplans.create.CreateNewClassPlanActivityModel;
@@ -23,8 +25,22 @@ public class SelectableGradPlansAdapter extends GradPlansAdapter {
         super.onBindViewHolder(holder, position);
         GradPlanDTO.Get gradPlan = gradPlans.get(position);
         
-        // Set selected state
-        holder.itemView.setSelected(gradPlan.getId().equals(selectedGradPlanId));
+        boolean isSelected = gradPlan.getId().equals(selectedGradPlanId);
+        
+        // Set selected state with animation
+        holder.itemView.setSelected(isSelected);
+        holder.itemView.animate()
+            .scaleX(isSelected ? 1.02f : 1.0f)
+            .scaleY(isSelected ? 1.02f : 1.0f)
+            .setDuration(200)
+            .start();
+
+        // Animate check mark
+        ImageView checkMark = holder.itemView.findViewById(io.trishul.classplanner.R.id.iv_check_mark);
+        checkMark.animate()
+            .alpha(isSelected ? 1f : 0f)
+            .setDuration(200)
+            .start();
         
         // Add click listener
         holder.itemView.setOnClickListener(v -> {
@@ -35,7 +51,7 @@ public class SelectableGradPlansAdapter extends GradPlansAdapter {
             // Update view model
             viewModel.setSelectedGradPlanId(selectedGradPlanId);
             
-            // Refresh views
+            // Refresh views with animation
             if (oldSelectedId != null) {
                 notifyItemChanged(getPositionForGradPlanId(oldSelectedId));
             }
