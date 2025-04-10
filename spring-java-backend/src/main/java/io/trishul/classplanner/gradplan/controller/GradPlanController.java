@@ -3,9 +3,11 @@ package io.trishul.classplanner.gradplan.controller;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
 import io.trishul.classplanner.auth.SessionManager;
 import io.trishul.classplanner.gradplan.controller.dto.GetGradPlanDTO;
 import io.trishul.classplanner.gradplan.controller.dto.mapper.GradPlanMapper;
@@ -28,6 +31,7 @@ import io.trishul.classplanner.gradplan.service.GradPlanAIResponseProcessor;
 import io.trishul.classplanner.gradplan.service.GradPlanAIService;
 import io.trishul.classplanner.gradplan.service.PDFProcessingService;
 import io.trishul.classplanner.user.model.User;
+import jakarta.persistence.criteria.Order;
 
 @RestController
 @RequestMapping("/api/v1/gradplans")
@@ -75,7 +79,7 @@ public class GradPlanController {
     ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreNullValues()
         .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING).withIgnoreCase();
 
-    return repository.findAll(Example.of(probe, matcher)).stream().map(mapper::toGetDTO)
+    return repository.findAll(Example.of(probe, matcher), Sort.by("createdAt")).stream().map(mapper::toGetDTO)
         .collect(Collectors.toList());
   }
 

@@ -178,6 +178,7 @@ public class CreateNewClassPlanActivity extends BaseActivity {
         Long gradPlanId = viewModel.getSelectedGradPlanId().getValue();
         BurdenCapacity burdenCapacity = viewModel.getBurdenCapacity().getValue();
         ClassDistribution distribution = viewModel.getClassDistribution().getValue();
+        Integer desiredNumOfCourses = viewModel.getDesiredNumberOfClasses().getValue();
         Map<String, boolean[]> availability = viewModel.getAvailability().getValue();
 
         if (gradPlanId == null) {
@@ -193,11 +194,16 @@ public class CreateNewClassPlanActivity extends BaseActivity {
             throw new IllegalStateException("Availability not set");
         }
 
+        if (desiredNumOfCourses == null) {
+            throw new IllegalStateException("Desired number of courses not set");
+        }
+
         ClassPlanDTO.Post request = new ClassPlanDTO.Post();
         request.setGradPlanId(gradPlanId);
         request.setBurdenCapacity(burdenCapacity);
         request.setClassDistribution(distribution);
         request.setAvailability(createAvailabilityDTO(availability));
+        request.setDesiredNumOfCourses(desiredNumOfCourses);
         return request;
     }
 

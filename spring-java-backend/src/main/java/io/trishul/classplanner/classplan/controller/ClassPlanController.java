@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -71,7 +72,7 @@ public class ClassPlanController {
     ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreNullValues()
         .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING).withIgnoreCase();
 
-    return repository.findAll(Example.of(probe, matcher)).stream().map(mapper::toGetDTO)
+    return repository.findAll(Example.of(probe, matcher), Sort.by("createdAt")).stream().map(mapper::toGetDTO)
         .collect(Collectors.toList());
   }
 
