@@ -1,5 +1,6 @@
 package io.trishul.classplanner.network.dtos;
 
+import java.util.List;
 import lombok.Data;
 
 @Data
@@ -16,7 +17,15 @@ public class CourseDTO {
         private String crn;
         private String instructor;
         private Integer credits;
-        private String schedule;
+        private List<ClassScheduleDTO> schedule;
         private String location;
+    }
+
+    @Data
+    public static class ClassScheduleDTO {
+        private Long id;
+        private String day;
+        private String startTime;
+        private String endTime;
     }
 }
